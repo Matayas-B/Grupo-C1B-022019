@@ -1,5 +1,5 @@
-# Subasteando
-Application with a SpringBoot backend + VueJS frontend.
+# ViendasYa
+Application with a SpringBoot backend.
 
 ## Commits nomenclature:
 - "Core": for including new libraries, packages, changes on the general architecture.

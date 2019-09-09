@@ -5,7 +5,7 @@
 	<groupId>ar.edu.unq.desapp.grupoC1B</groupId>
 	<artifactId>desapp-groupC1B-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Subasteando</name>
+	<name>ViendasYa</name>
 	<description>Application with a SpringBoot backend + VueJS frontend.</description>
 
 	<properties>
@@ -41,6 +41,13 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.10.3</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

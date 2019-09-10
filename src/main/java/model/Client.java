@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupoC1B.desappgroupC1Bbackend.model;
+package model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

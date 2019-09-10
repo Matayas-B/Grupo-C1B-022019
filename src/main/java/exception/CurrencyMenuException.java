@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupoC1B.desappgroupC1Bbackend.execption;
+package exception;
 
 
 public class CurrencyMenuException extends RuntimeException{

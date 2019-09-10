@@ -1,7 +1,9 @@
-package ar.edu.unq.desapp.grupoC1B.desappgroupC1Bbackend.repository;
+package persistence;
 
-import ar.edu.unq.desapp.grupoC1B.desappgroupC1Bbackend.model.Client;
 import org.springframework.stereotype.Repository;
+
+import model.Client;
+
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

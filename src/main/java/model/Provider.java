@@ -1,7 +1,8 @@
-package ar.edu.unq.desapp.grupoC1B.desappgroupC1Bbackend.model;
+package model;
 
-import ar.edu.unq.desapp.grupoC1B.desappgroupC1Bbackend.execption.CurrencyMenuException;
 import org.joda.time.LocalDate;
+
+import exception.CurrencyMenuException;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ViendasYaApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ViendasYaApplication.class, args);
-	}
-
+        SpringApplication.run(ViendasYaApplication.class,args);
+    }
 }

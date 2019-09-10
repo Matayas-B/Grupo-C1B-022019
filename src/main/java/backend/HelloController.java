@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupoC1B.desappgroupC1Bbackend;
+package backend;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;

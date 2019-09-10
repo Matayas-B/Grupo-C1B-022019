@@ -5,8 +5,8 @@
 	<groupId>ar.edu.unq.desapp.grupoC1B</groupId>
 	<artifactId>desapp-groupC1B-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Subasteando</name>
-	<description>Application with a SpringBoot backend + VueJS frontend.</description>
+	<name>ViendasYa</name>
+	<description>Application with a SpringBoot backend</description>
 
 	<properties>
 		<java.version>1.8</java.version>

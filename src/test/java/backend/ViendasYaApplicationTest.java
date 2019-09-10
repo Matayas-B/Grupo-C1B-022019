@@ -1,4 +1,4 @@
-package backendTests;
+package backend;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,8 +10,13 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ViendasYaApplicationTest {
-        @Test
-        public void contextLoads() {
-            assertEquals("First test", "First test");
-        }
+
+
+    @Test
+    public void contextLoads() {
+        assertEquals("First test", "First test");
+    }
+
+
+
 }

@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupoC1B.desappgroupC1Bbackend;
+package backendTests;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ViendasYaApplicationTests {
+public class ViendasYaApplicationTest {
         @Test
         public void contextLoads() {
             assertEquals("First test", "First test");

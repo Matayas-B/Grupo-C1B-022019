@@ -2,14 +2,12 @@ package persistence;
 
 import org.springframework.stereotype.Repository;
 
-import model.Client;
+import model.CustomerUser;
 
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
-
 @Repository
-public interface ClientRepository extends CrudRepository<Client, Long> {
+public interface ClientRepository extends CrudRepository<CustomerUser, Long> {
 
- //   List<Client> findByNombre(String name);
+ //   List<CustomerUser> findByNombre(String name);
 }

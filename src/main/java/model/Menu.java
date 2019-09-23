@@ -9,7 +9,7 @@ public class Menu {
     private String name;
     private String description;
     private double deliveryValue;
-    private String category;
+    private Category category;
     private LocalDate validityDate;
     private LocalDate validateEnd;
     //Turnos/Horarios de entrega/Envio
@@ -27,7 +27,7 @@ public class Menu {
 
     public Menu() { }
 
-    public Menu(String name, String description, double deliveryValue, String category, LocalDate validityDate, LocalDate validateEnd, String turn,
+    public Menu(String name, String description, double deliveryValue, Category category, LocalDate validityDate, LocalDate validateEnd, String turn,
                 String deliveryTime, String averageTime, double price, double cantMin, double priceCantMin, double cantMinTwo, double priceCantMinTwo,
                 double priceCantMax, double cantMaxPeerDay) {
         this.name = name;
@@ -61,7 +61,7 @@ public class Menu {
         return deliveryValue;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
@@ -112,4 +112,6 @@ public class Menu {
     public double getCantMaxPeerDay() {
         return cantMaxPeerDay;
     }
+
+
 }

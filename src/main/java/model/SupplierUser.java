@@ -11,6 +11,7 @@ public class SupplierUser extends User {
 
 
     private ArrayList<Menu> menus = new ArrayList<Menu>();
+    private MoneyAccount account = new MoneyAccount();
 
     public SupplierUser(String name, String lastName, String eMail, String phone, String address) {
         super(name, lastName, eMail, phone, address);

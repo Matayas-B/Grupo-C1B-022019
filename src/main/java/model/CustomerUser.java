@@ -9,6 +9,7 @@ import javax.persistence.Id;
 
 public class CustomerUser extends User{
 
+    private MoneyAccount account = new MoneyAccount();
 
     public CustomerUser(String name, String lastName, String eMail, String phone, String address, Long id) {
         super(name, lastName, eMail, phone, address);

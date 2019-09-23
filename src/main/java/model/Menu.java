@@ -8,7 +8,7 @@ public class Menu {
 
     private String name;
     private String description;
-    private double deliveryValue;
+    private int deliveryValue;
     private Category category;
     private LocalDate validityDate;
     private LocalDate validateEnd;
@@ -16,20 +16,20 @@ public class Menu {
     private String turn;
     private String deliveryTime;
     private String averageTime;
-    private double price;
-    private double cantMin = 1;
-    private double priceCantMin = 0;
-    private double cantMinTwo = 2;
-    private double priceCantMinTwo = 0;
-    private double priceCantMax;
-    private double cantMaxPeerDay= 0;
+    private int price;
+    private int cantMin = 1;
+    private int priceCantMin = 0;
+    private int cantMinTwo = 2;
+    private int priceCantMinTwo = 0;
+    private int priceCantMax;
+    private int cantMaxPeerDay= 0;
 
 
     public Menu() { }
 
-    public Menu(String name, String description, double deliveryValue, Category category, LocalDate validityDate, LocalDate validateEnd, String turn,
-                String deliveryTime, String averageTime, double price, double cantMin, double priceCantMin, double cantMinTwo, double priceCantMinTwo,
-                double priceCantMax, double cantMaxPeerDay) {
+    public Menu(String name, String description, int deliveryValue, Category category, LocalDate validityDate, LocalDate validateEnd, String turn,
+                String deliveryTime, String averageTime, int price, int cantMin, int priceCantMin, int cantMinTwo, int priceCantMinTwo,
+                int priceCantMax, int cantMaxPeerDay) {
         this.name = name;
         this.description = description;
         this.deliveryValue = deliveryValue;
@@ -57,7 +57,7 @@ public class Menu {
         return description;
     }
 
-    public double getDeliveryValue() {
+    public int getDeliveryValue() {
         return deliveryValue;
     }
 
@@ -85,31 +85,31 @@ public class Menu {
         return averageTime;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public double getCantMin() {
+    public int getCantMin() {
         return cantMin;
     }
 
-    public double getPriceCantMin() {
+    public int getPriceCantMin() {
         return priceCantMin;
     }
 
-    public double getCantMinTwo() {
+    public int getCantMinTwo() {
         return cantMinTwo;
     }
 
-    public double getPriceCantMinTwo() {
+    public int getPriceCantMinTwo() {
         return priceCantMinTwo;
     }
 
-    public double getPriceCantMax() {
+    public int getPriceCantMax() {
         return priceCantMax;
     }
 
-    public double getCantMaxPeerDay() {
+    public int getCantMaxPeerDay() {
         return cantMaxPeerDay;
     }
 

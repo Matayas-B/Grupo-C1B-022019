@@ -2,26 +2,26 @@ package model;
 
 import exception.CurrencyMenuException;
 
-import java.security.PublicKey;
+
 
 public class MoneyAccount {
 
-    private double account;
+    private int account;
 
     public MoneyAccount(){
         account = 0;
     }
 
 
-    public double getAccount(){
+    public int getAccount(){
         return  account;
     }
 
-    public void addMoney(Double diner){
+    public void addMoney(int diner){
         account = account + diner;
     }
 
-    public void extract(double diner){
+    public void extract(int diner){
 
             if(diner >= account){
                 throw new CurrencyMenuException("No tiene suficiente Dinero") ;

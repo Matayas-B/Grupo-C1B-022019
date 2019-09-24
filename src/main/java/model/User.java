@@ -1,5 +1,10 @@
 package model;
 
+import model.enums.Category;
+import model.enums.OfficeHours;
+
+import java.time.LocalDate;
+
 public abstract class User {
 
     private String name;
@@ -15,7 +20,6 @@ public abstract class User {
         this.phone = phone;
         this.address = address;
     }
-
 
     public String getName() {
         return name;

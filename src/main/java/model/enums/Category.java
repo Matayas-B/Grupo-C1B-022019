@@ -1,7 +1,6 @@
-package model;
+package model.enums;
 
 public enum Category {
-
     Pizza,
     Cervveza,
     Hamburguesa,

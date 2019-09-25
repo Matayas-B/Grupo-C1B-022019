@@ -1,7 +1,5 @@
 package backend;
 
-
-import exception.CurrencyMenuException;
 import model.MoneyAccount;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,26 +14,21 @@ public class MoneyAccountTest {
 
     private MoneyAccount account = new MoneyAccount();
 
-
     @Test
     public void addmoneyTest() {
-
-
-        account.addMoney( 50);
-        assertEquals(50, account.getAccount());
+        account.depositMoney(50);
+        assertEquals(50, account.getFunds());
     }
 
-    @Test (expected = CurrencyMenuException.class)
-    public void moneyExtractionException(){
-
-        account.extract(50);
+    @Test (expected = Exception.class)
+    public void moneyExtractionException() throws Exception {
+        account.extractMoney(50);
     }
 
     @Test
-    public void moneyExtraction(){
-
-        account.addMoney(50);
-        account.extract(30);
-        assertEquals(20, account.getAccount());
+    public void moneyExtraction() throws Exception {
+        account.depositMoney(50);
+        account.extractMoney(30);
+        assertEquals(20, account.getFunds());
     }
 }

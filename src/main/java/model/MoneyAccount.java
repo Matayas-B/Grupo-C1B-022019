@@ -2,31 +2,26 @@ package model;
 
 import exception.CurrencyMenuException;
 
-
-
 public class MoneyAccount {
 
-    private int account;
+    private int funds;
 
     public MoneyAccount(){
-        account = 0;
+        funds = 0;
     }
 
-
-    public int getAccount(){
-        return  account;
+    public int getFunds(){
+        return funds;
     }
 
-    public void addMoney(int diner){
-        account = account + diner;
+    public void depositMoney(int money) {
+        funds = funds + money;
     }
 
-    public void extract(int diner){
+    public void extractMoney(int money) throws Exception {
+        if(money > funds)
+            throw new Exception("No tiene suficiente Dinero");
 
-            if(diner >= account){
-                throw new CurrencyMenuException("No tiene suficiente Dinero") ;
-            }
-
-            account = account - diner;
+        funds -= money;
     }
 }

@@ -1,117 +1,135 @@
 package model;
 
-import org.joda.time.DateTime;
+import model.enums.Category;
+import model.enums.OfficeHours;
 import org.joda.time.LocalDate;
 
 
 public class Menu {
 
+    private int menuId;
     private String name;
     private String description;
-    private int deliveryValue;
     private Category category;
-    private LocalDate validityDate;
-    private LocalDate validateEnd;
-    //Turnos/Horarios de entrega/Envio
-    private String turn;
-    private String deliveryTime;
-    private String averageTime;
+    private int deliveryFee;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private OfficeHours deliveryHours;
+    private int averageDeliveryMinutes;
     private int price;
-    private int cantMin = 1;
-    private int priceCantMin = 0;
-    private int cantMinTwo = 2;
-    private int priceCantMinTwo = 0;
-    private int priceCantMax;
-    private int cantMaxPeerDay= 0;
+    private int minQuantity;
+    private int minQuantityPrice;
+    private int maxDailySales;
 
-
-    public Menu() { }
-
-    public Menu(String name, String description, int deliveryValue, Category category, LocalDate validityDate, LocalDate validateEnd, String turn,
-                String deliveryTime, String averageTime, int price, int cantMin, int priceCantMin, int cantMinTwo, int priceCantMinTwo,
-                int priceCantMax, int cantMaxPeerDay) {
+    public Menu(int id, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
+        this.menuId = id;
         this.name = name;
         this.description = description;
-        this.deliveryValue = deliveryValue;
         this.category = category;
-        this.validityDate = validityDate;
-        this.validateEnd = validateEnd;
-        this.turn = turn;
-        this.deliveryTime = deliveryTime;
-        this.averageTime = averageTime;
+        this.deliveryFee = deliveryFee;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.deliveryHours = deliveryHours;
+        this.averageDeliveryMinutes = averageDeliveryMinutes;
         this.price = price;
-        this.cantMin = cantMin;
-        this.priceCantMin = priceCantMin;
-        this.cantMinTwo = cantMinTwo;
-        this.priceCantMinTwo = priceCantMinTwo;
-        this.priceCantMax = priceCantMax;
-        this.cantMaxPeerDay = cantMaxPeerDay;
+        this.minQuantity = minQuantity;
+        this.minQuantityPrice = minQuantityPrice;
+        this.maxDailySales = maxDailySales;
     }
-
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public int getDeliveryValue() {
-        return deliveryValue;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Category getCategory() {
         return category;
     }
 
-    public LocalDate getValidityDate() {
-        return validityDate;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public LocalDate getValidateEnd() {
-        return validateEnd;
+    public int getDeliveryFee() {
+        return deliveryFee;
     }
 
-    public String getTurn() {
-        return turn;
+    public void setDeliveryFee(int deliveryFee) {
+        this.deliveryFee = deliveryFee;
     }
 
-    public String getDeliveryTime() {
-        return deliveryTime;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public String getAverageTime() {
-        return averageTime;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public OfficeHours getDeliveryHours() {
+        return deliveryHours;
+    }
+
+    public void setDeliveryHours(OfficeHours deliveryHours) {
+        this.deliveryHours = deliveryHours;
+    }
+
+    public int getAverageDeliveryMinutes() {
+        return averageDeliveryMinutes;
+    }
+
+    public void setAverageDeliveryMinutes(int averageDeliveryMinutes) {
+        this.averageDeliveryMinutes = averageDeliveryMinutes;
     }
 
     public int getPrice() {
         return price;
     }
 
-    public int getCantMin() {
-        return cantMin;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
-    public int getPriceCantMin() {
-        return priceCantMin;
+    public int getMinQuantity() {
+        return minQuantity;
     }
 
-    public int getCantMinTwo() {
-        return cantMinTwo;
+    public void setMinQuantity(int minQuantity) {
+        this.minQuantity = minQuantity;
     }
 
-    public int getPriceCantMinTwo() {
-        return priceCantMinTwo;
+    public int getMinQuantityPrice() {
+        return minQuantityPrice;
     }
 
-    public int getPriceCantMax() {
-        return priceCantMax;
+    public void setMinQuantityPrice(int minQuantityPrice) {
+        this.minQuantityPrice = minQuantityPrice;
     }
 
-    public int getCantMaxPeerDay() {
-        return cantMaxPeerDay;
+    public int getMaxDailySales() {
+        return maxDailySales;
     }
 
-
+    public void setMaxDailySales(int maxDailySales) {
+        this.maxDailySales = maxDailySales;
+    }
 }

@@ -4,16 +4,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 
 public class CustomerUser extends User{
 
+    private int id;
+    private List<Purchase> purchases = new ArrayList<Purchase>();
     private MoneyAccount account = new MoneyAccount();
 
-    public CustomerUser(String name, String lastName, String eMail, String phone, String address, Long id) {
+    public CustomerUser(String name, String lastName, String eMail, String phone, String address) {
         super(name, lastName, eMail, phone, address);
+    }
 
+    public void createPurchase(Menu menu) {
+        purchases.add(new Purchase(this, menu));
     }
 
 }

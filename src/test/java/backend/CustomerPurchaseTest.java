@@ -2,9 +2,11 @@ package backend;
 
 import model.CustomerUser;
 import model.SupplierUser;
+import model.ViendasYaFacade;
 import model.enums.Category;
 import model.enums.OfficeDays;
 import model.enums.OfficeHours;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,11 +22,7 @@ import static org.junit.Assert.assertEquals;
 /*
 1. Compra:
 
-    a. Selecciona un servicio, y selecciona un menuid
-    b. Compra
-    c. Se genera una purchase, y se guarda dentro de la lista de purchases del cliente
-    d. Se descuenta dinero de la cuenta del cliente
-    e. Se acredita dinero en la cuenta del supplier
+
  */
 
 
@@ -44,14 +42,18 @@ public class CustomerPurchaseTest {
                 10);
         supplier.addMenu(1, "Whopper", "Hamburguesa de la ostia", Category.Hamburguesa, 10, LocalDate.now(), LocalDate.now(), OfficeHours.Afternoon, 15, 50, 1, 50, 100);
 
+        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        viendasYa.addCustomer(customer);
+        viendasYa.addSupplier(supplier);
+
         // Act
-        customer.purchase("Burguer King", 1);
+
 
         // Assert
         // Genera purchase dentro de la lista de customer
         // Descuenta dinero de la cuenta de customer
         // Acredita dinero en cuenta de supplier
-
-
     }
+
+
 }

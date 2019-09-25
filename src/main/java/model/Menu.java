@@ -37,6 +37,10 @@ public class Menu {
         this.maxDailySales = maxDailySales;
     }
 
+    public int getMenuId() {
+        return menuId;
+    }
+
     public String getName() {
         return name;
     }

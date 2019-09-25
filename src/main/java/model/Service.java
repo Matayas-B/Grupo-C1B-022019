@@ -20,10 +20,11 @@ public class Service {
     private List<OfficeDays> officeDays;
     private List<OfficeHours> officeHours;
     private int deliveryDistanceKm;
+    private SupplierUser supplier;
 
     private List<Menu> menus = new ArrayList<Menu>();
 
-    public Service(String serviceName, String icon, String address, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance) {
+    public Service(String serviceName, String icon, String address, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance, SupplierUser supp) {
         this.serviceName = serviceName;
         this.icon = icon;
         this.address = address;
@@ -33,10 +34,15 @@ public class Service {
         this.officeDays = officeDays;
         this.officeHours = officeHours;
         this.deliveryDistanceKm = deliveryDistance;
+        this.supplier = supp;
     }
 
     public void addMenu(int id, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales){
         menus.add(new Menu(id, name, description, category, deliveryFee, startDate, endDate, deliveryHours, averageDeliveryMinutes, price, minQuantity, minQuantityPrice, maxDailySales));
+    }
+
+    public SupplierUser getSupplier() {
+        return supplier;
     }
 
     public String getServiceName() {
@@ -113,6 +119,10 @@ public class Service {
 
     public List<Menu> getMenus() {
         return menus;
+    }
+
+    public Menu getMenuByMenuId(int menuId) {
+        return menus.stream().filter(m -> m.getMenuId() == menuId).findFirst().orElse(null);
     }
 
     public void setMenus(List<Menu> menus) {

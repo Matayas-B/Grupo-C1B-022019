@@ -12,15 +12,14 @@ import java.util.List;
 public class CustomerUser extends User{
 
     private int id;
-    private List<Purchase> purchases = new ArrayList<Purchase>();
+
+    public MoneyAccount getAccount() {
+        return account;
+    }
+
     private MoneyAccount account = new MoneyAccount();
 
     public CustomerUser(String name, String lastName, String eMail, String phone, String address) {
         super(name, lastName, eMail, phone, address);
     }
-
-    public void createPurchase(Menu menu) {
-        purchases.add(new Purchase(this, menu));
-    }
-
 }

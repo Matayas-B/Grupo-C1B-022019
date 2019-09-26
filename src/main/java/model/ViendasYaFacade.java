@@ -1,7 +1,7 @@
 package model;
 
-import exception.MenuNotFoundException;
-import exception.ServiceNotFoundException;
+import model.exception.MenuNotFoundException;
+import model.exception.ServiceNotFoundException;
 import model.enums.Category;
 import model.enums.OfficeDays;
 import model.enums.OfficeHours;

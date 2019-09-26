@@ -8,7 +8,6 @@ public class Purchase {
     private Service service;
     private Menu purchasedMenu;
     private LocalDate purchasedDate;
-    // TODO: Add List<Score>
 
     public CustomerUser getCustomer() {
         return customer;

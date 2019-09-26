@@ -3,7 +3,7 @@ package model;
 import model.enums.Category;
 import model.enums.OfficeHours;
 import org.joda.time.LocalDate;
-
+import java.util.ArrayList;
 
 public class Menu {
 
@@ -20,6 +20,8 @@ public class Menu {
     private int minQuantity;
     private int minQuantityPrice;
     private int maxDailySales;
+
+    // TODO: Add List<Score>
 
     public Menu(int id, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
         this.menuId = id;

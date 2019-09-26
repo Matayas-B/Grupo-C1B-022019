@@ -1,19 +1,20 @@
-package backend;
+package model;
 
-import model.MoneyAccount;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class MoneyAccountTest {
 
-    private MoneyAccount account = new MoneyAccount();
+    private MoneyAccount account;
+
+    @Before
+    public void setUp() {
+        account = new MoneyAccount();
+    }
 
     @Test
     public void addMoneyTest() {
@@ -21,7 +22,7 @@ public class MoneyAccountTest {
         assertTrue(account.haveEnoughFunds(50));
     }
 
-    @Test (expected = Exception.class)
+    @Test(expected = Exception.class)
     public void extractMoreMoneyThanFundsShouldThrowException() throws Exception {
         account.extractMoney(50);
     }

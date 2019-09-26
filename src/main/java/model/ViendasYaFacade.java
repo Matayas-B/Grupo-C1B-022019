@@ -7,6 +7,7 @@ import model.enums.OfficeDays;
 import model.enums.OfficeHours;
 import org.joda.time.LocalDate;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,7 +33,7 @@ public class ViendasYaFacade {
     }
 
     public void addMenuToService(String serviceName, int id, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
-        SupplierUser supplier = FindSupplierWithServiceName(serviceName);
+        SupplierUser supplier = findSupplierWithServiceName(serviceName);
 
         if (supplier == null)
             throw new ServiceNotFoundException();
@@ -49,7 +50,7 @@ public class ViendasYaFacade {
     }
 
     public Purchase purchase(CustomerUser customer, String serviceName, int menuId, int quantity) throws Exception {
-        Service currentService = FindServiceByName(serviceName);
+        Service currentService = findServiceByName(serviceName);
         if (currentService == null)
             throw new ServiceNotFoundException();
 
@@ -60,7 +61,7 @@ public class ViendasYaFacade {
         if (currentMenu.getMinQuantity() > quantity)
             throw new Exception(String.format("You cannot buy less than %s units.", currentMenu.getMinQuantity()));
 
-        List<Purchase> purchasedMenus = GetAllPurchasesForMenu(currentService, currentMenu);
+        List<Purchase> purchasedMenus = getAllPurchasesForMenu(currentService, currentMenu);
         if (purchasedMenus.size() >= currentMenu.getMaxDailySales())
             throw new Exception("Maximun number of sales per day have been reached for this menu.");
 
@@ -79,34 +80,44 @@ public class ViendasYaFacade {
         return newPurchase;
     }
 
-    public void createMenuScore(UserScore userScore, int punctuation) {
+    public void createMenuScore(CustomerUser customer, String serviceName, int menuId, int punctuation) throws Exception {
+        UserScore userScore = customer.findUserScore(serviceName, menuId);
+        if (userScore == null)
+            throw new Exception("User Score does not exists.");
+
         userScore.setPunctuation(punctuation);
         userScore.getMenu().addScore(userScore.getCustomerName(), punctuation);
 
-        if (userScore.getMenu().getScoreAverage() < 2) {
+        if (userScore.getMenu().hasEnoughScores() && userScore.getMenu().getScoreAverage() < 2) {
             Service service = userScore.getService();
-            Menu invalidMenu = userScore.getMenu();
-            service.getMenus().remove(invalidMenu);
-            service.getInvalidMenus().add(invalidMenu);
+            service.markMenuAsInvalid(userScore.getMenu());
 
             if (service.getInvalidMenus().size() == 10) {
-                SupplierUser invalidSupplier = service.getSupplier();
-                suppliers.remove(invalidSupplier);
-                invalidSuppliers.add(invalidSupplier);
+                markSupplierAsInvalid(service.getSupplier());
             }
         }
     }
 
+    public List<Menu> search() {
+        // TODO: Missing search functionality. Customer should be able to filter Menus by name, category or addres.
+        return new ArrayList<Menu>();
+    }
+
     /* Private Methods */
-    private SupplierUser FindSupplierWithServiceName(String serviceName) {
+    private void markSupplierAsInvalid(SupplierUser invalidSupplier) {
+        suppliers.remove(invalidSupplier);
+        invalidSuppliers.add(invalidSupplier);
+    }
+
+    private SupplierUser findSupplierWithServiceName(String serviceName) {
         return suppliers.stream().filter(s -> s.getService().getServiceName().equals(serviceName)).findFirst().orElse(null);
     }
 
-    private Service FindServiceByName(String serviceName) {
+    private Service findServiceByName(String serviceName) {
         return getAllServices().stream().filter(s -> s.getServiceName().equals(serviceName)).findFirst().orElse(null);
     }
 
-    private List<Purchase> GetAllPurchasesForMenu(Service currentService, Menu currentMenu) {
+    private List<Purchase> getAllPurchasesForMenu(Service currentService, Menu currentMenu) {
         List<Purchase> todayPurchases = purchases.stream().filter(p -> p.getPurchasedDate().equals(LocalDate.now())).collect(Collectors.toList());
         return todayPurchases.stream().filter(p -> p.getService().equals(currentService) && p.getPurchasedMenu().equals(currentMenu)).collect(Collectors.toList());
     }

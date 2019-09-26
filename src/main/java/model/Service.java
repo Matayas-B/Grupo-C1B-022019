@@ -13,7 +13,7 @@ public class Service {
     private int serviceId;
     private String serviceName;
     private String icon;
-    private String address;
+    private String address; // TODO: Use Address class instead of string, for Search purposes.
     private String description;
     private String email;
     private String phoneNumber;
@@ -21,6 +21,7 @@ public class Service {
     private List<OfficeHours> officeHours;
     private int deliveryDistanceKm;
     private SupplierUser supplier;
+    private boolean isValidService;
 
     private List<Menu> menus = new ArrayList<>();
     private List<Menu> invalidMenus = new ArrayList<>();
@@ -36,6 +37,7 @@ public class Service {
         this.officeHours = officeHours;
         this.deliveryDistanceKm = deliveryDistance;
         this.supplier = supp;
+        this.isValidService = true;
     }
 
     public void addMenu(int id, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
@@ -126,6 +128,12 @@ public class Service {
 
     public Menu getMenuByMenuId(int menuId) {
         return menus.stream().filter(m -> m.getMenuId() == menuId).findFirst().orElse(null);
+    }
+
+    public void markMenuAsInvalid(Menu invalidMenu) {
+        invalidMenu.markAsInvalid();
+        getMenus().remove(invalidMenu);
+        getInvalidMenus().add(invalidMenu);
     }
 
     public void setMenus(List<Menu> menus) {

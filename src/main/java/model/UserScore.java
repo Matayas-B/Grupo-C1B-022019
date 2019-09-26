@@ -20,6 +20,10 @@ public class UserScore {
         return menu;
     }
 
+    public int getPunctuation() {
+        return punctuation;
+    }
+
     boolean isFinished() {
         return isFinished;
     }

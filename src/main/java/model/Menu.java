@@ -3,6 +3,7 @@ package model;
 import model.enums.Category;
 import model.enums.OfficeHours;
 import org.joda.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
@@ -26,6 +27,10 @@ public class Menu {
 
     List<MenuScore> menuScores = new ArrayList<>();
 
+    public Menu(int id) {
+        this.menuId = id;
+    }
+
     public Menu(int id, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
         this.menuId = id;
         this.name = name;
@@ -47,8 +52,24 @@ public class Menu {
         menuScores.add(new MenuScore(customerName, punctuation));
     }
 
+    boolean hasEnoughScores() {
+        return menuScores.size() >= 20;
+    }
+
     Double getScoreAverage() {
         return menuScores.stream().mapToDouble(MenuScore::getPunctuation).average().getAsDouble();
+    }
+
+    void markAsInvalid() {
+        this.isValidMenu = false;
+    }
+
+    public boolean isValidMenu() {
+        return isValidMenu;
+    }
+
+    public void setValidMenu(boolean validMenu) {
+        isValidMenu = validMenu;
     }
 
     public int getMenuId() {

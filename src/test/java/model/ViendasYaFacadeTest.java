@@ -1,5 +1,6 @@
 package model;
 
+import model.builders.MenuBuilder;
 import model.exception.MenuNotFoundException;
 import model.exception.ServiceNotFoundException;
 import model.enums.Category;
@@ -303,7 +304,6 @@ public class ViendasYaFacadeTest {
                 new ArrayList<>(Arrays.asList(OfficeDays.values())),
                 new ArrayList<>(Arrays.asList(OfficeHours.values())),
                 10);
-
         viendasYa.addMenuToService("Burguer King", 1, "Whopper", "Hamburguesa de la ostia", Category.Hamburguesa, 10, LocalDate.now(), LocalDate.now(), OfficeHours.Afternoon, 15, 50, 10, 50, 10);
 
         customer.getAccount().depositMoney(1000);
@@ -318,7 +318,104 @@ public class ViendasYaFacadeTest {
         assertEquals(purchase.getPurchasedMenu().getName(), "Whopper");
         assertEquals(purchase.getService().getServiceName(), "Burguer King");
         assertEquals(purchase.getCustomer().getName(), "Facundo");
+        assertEquals(purchase.getCustomer().getUserScores().get(0).getCustomerName(), "Facundo");
+        assertEquals(purchase.getCustomer().getUserScores().get(0).getPunctuation(), 0);
+        assertFalse(purchase.getCustomer().getUserScores().get(0).isFinished());
     }
 
-    // TODO: add test for createMenuScore ! ! !
+    @Test(expected = Exception.class)
+    public void CreateMenuScoreIfUserScoreDoesNotExistsShouldThrowException() throws Exception {
+        // Arrange
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        customer.getAccount().depositMoney(1000);
+
+        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        viendasYa.addCustomer(customer);
+        viendasYa.addSupplier(supplier);
+
+        try {
+            viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
+        } catch (Exception ex) {
+            // Assert
+            assertEquals(ex.getMessage(), "User Score does not exists.");
+            throw ex;
+        }
+
+        Assert.fail();
+    }
+
+    @Test
+    public void CreateMenuScoreShouldDeleteMenuIfAverageIsBelow2() throws Exception {
+        // Arrange
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        customer.getAccount().depositMoney(10000);
+
+        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        viendasYa.addCustomer(customer);
+        viendasYa.addSupplier(supplier);
+
+        viendasYa.addService(supplier, "Burguer King", "Test", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+                new ArrayList<>(Arrays.asList(OfficeDays.values())),
+                new ArrayList<>(Arrays.asList(OfficeHours.values())),
+                10);
+        viendasYa.addMenuToService("Burguer King", 1, "Whopper", "Hamburguesa de la ostia", Category.Hamburguesa, 10, LocalDate.now(), LocalDate.now(), OfficeHours.Afternoon, 15, 50, 10, 50, 1000);
+
+        for (int i = 0; i < 19; i++) {
+            viendasYa.purchase(customer, "Burguer King", 1, 10);
+            viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
+        }
+
+        // Act
+        viendasYa.purchase(customer, "Burguer King", 1, 10);
+        viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
+
+        // Assert
+        assertTrue(customer.getUserScores().stream().allMatch(UserScore::isFinished));
+        assertEquals(supplier.getService().getMenus().size(), 0);
+        assertEquals(supplier.getService().getInvalidMenus().size(), 1);
+        assertFalse(supplier.getService().getInvalidMenus().get(0).isValidMenu());
+    }
+
+    @Test
+    public void CreateMenuScoreShouldRemoveSupplierIfItHasMoreThan9InvalidMenus() throws Exception {
+        // Arrange
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        customer.getAccount().depositMoney(10000);
+
+        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        viendasYa.addCustomer(customer);
+        viendasYa.addSupplier(supplier);
+
+        viendasYa.addService(supplier, "Burguer King", "Test", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+                new ArrayList<>(Arrays.asList(OfficeDays.values())),
+                new ArrayList<>(Arrays.asList(OfficeHours.values())),
+                10);
+
+        viendasYa.addMenuToService("Burguer King", 1, "Whopper", "Hamburguesa de la ostia", Category.Hamburguesa, 10, LocalDate.now(), LocalDate.now(), OfficeHours.Afternoon, 15, 50, 10, 50, 1000);
+
+        for (int i = 2; i < 11; i++) {
+            supplier.getService().getInvalidMenus().add(new MenuBuilder(i).build());
+        }
+
+        for (int i = 0; i < 19; i++) {
+            viendasYa.purchase(customer, "Burguer King", 1, 10);
+            viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
+        }
+
+        // Act
+        viendasYa.purchase(customer, "Burguer King", 1, 10);
+        viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
+
+        // Assert
+        assertTrue(customer.getUserScores().stream().allMatch(UserScore::isFinished));
+        assertEquals(supplier.getService().getMenus().size(), 0);
+        assertEquals(supplier.getService().getInvalidMenus().size(), 10);
+        assertFalse(supplier.getService().getInvalidMenus().stream().allMatch(im -> !im.isValidMenu()));
+        assertEquals(viendasYa.suppliers.size(), 0);
+        assertEquals(viendasYa.invalidSuppliers.size(), 1);
+        assertEquals(viendasYa.invalidSuppliers.get(0).getName(), "Matayas");
+    }
 }

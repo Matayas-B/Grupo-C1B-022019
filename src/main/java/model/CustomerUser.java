@@ -1,25 +1,29 @@
 package model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Entity
-
-public class CustomerUser extends User{
+public class CustomerUser extends User {
 
     private int id;
+    private MoneyAccount account = new MoneyAccount();
+    List<UserScore> userScores = new ArrayList<>();
 
-    public MoneyAccount getAccount() {
+    MoneyAccount getAccount() {
         return account;
     }
 
-    private MoneyAccount account = new MoneyAccount();
-
     public CustomerUser(String name, String lastName, String eMail, String phone, String address) {
         super(name, lastName, eMail, phone, address);
+    }
+
+    boolean hasPendingPunctuations() {
+        return userScores.stream().anyMatch(us -> !us.isFinished());
+    }
+
+    void addDefaultScore(Service service, Menu menu) {
+        userScores.add(new UserScore(this.getName(), service, menu));
     }
 }

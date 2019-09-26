@@ -4,6 +4,8 @@ import model.enums.Category;
 import model.enums.OfficeHours;
 import org.joda.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.OptionalDouble;
 
 public class Menu {
 
@@ -20,8 +22,9 @@ public class Menu {
     private int minQuantity;
     private int minQuantityPrice;
     private int maxDailySales;
+    private boolean isValidMenu;
 
-    // TODO: Add List<Score>
+    List<MenuScore> menuScores = new ArrayList<>();
 
     public Menu(int id, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
         this.menuId = id;
@@ -37,6 +40,15 @@ public class Menu {
         this.minQuantity = minQuantity;
         this.minQuantityPrice = minQuantityPrice;
         this.maxDailySales = maxDailySales;
+        this.isValidMenu = true;
+    }
+
+    void addScore(String customerName, int punctuation) {
+        menuScores.add(new MenuScore(customerName, punctuation));
+    }
+
+    Double getScoreAverage() {
+        return menuScores.stream().mapToDouble(MenuScore::getPunctuation).average().getAsDouble();
     }
 
     public int getMenuId() {

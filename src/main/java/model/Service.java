@@ -22,7 +22,8 @@ public class Service {
     private int deliveryDistanceKm;
     private SupplierUser supplier;
 
-    private List<Menu> menus = new ArrayList<Menu>();
+    private List<Menu> menus = new ArrayList<>();
+    private List<Menu> invalidMenus = new ArrayList<>();
 
     public Service(String serviceName, String icon, String address, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance, SupplierUser supp) {
         this.serviceName = serviceName;
@@ -37,7 +38,7 @@ public class Service {
         this.supplier = supp;
     }
 
-    public void addMenu(int id, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales){
+    public void addMenu(int id, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
         menus.add(new Menu(id, name, description, category, deliveryFee, startDate, endDate, deliveryHours, averageDeliveryMinutes, price, minQuantity, minQuantityPrice, maxDailySales));
     }
 
@@ -120,6 +121,8 @@ public class Service {
     public List<Menu> getMenus() {
         return menus;
     }
+
+    public List<Menu> getInvalidMenus() { return invalidMenus; }
 
     public Menu getMenuByMenuId(int menuId) {
         return menus.stream().filter(m -> m.getMenuId() == menuId).findFirst().orElse(null);

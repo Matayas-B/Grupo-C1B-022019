@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class ViendasYaFacade {
 
     public List<SupplierUser> suppliers = new ArrayList<>();
+    public List<SupplierUser> invalidSuppliers = new ArrayList<>();
     public List<CustomerUser> customers = new ArrayList<>();
     public List<Purchase> purchases = new ArrayList<>();
 
@@ -66,14 +67,34 @@ public class ViendasYaFacade {
         if (!customer.getAccount().haveEnoughFunds(currentMenu.getPrice() * quantity))
             throw new Exception("Customer does not have enough funds to purchase that quantity.");
 
+        if (customer.hasPendingPunctuations())
+            throw new Exception("Customer has pending scores to punctuate before purchasing.");
+
         customer.getAccount().extractMoney(currentMenu.getPrice() * quantity);
-
         Purchase newPurchase = new Purchase(customer, currentService, currentMenu, LocalDate.now());
-
         currentService.getSupplier().getAccount().depositMoney(currentMenu.getPrice() * quantity);
+        customer.addDefaultScore(currentService, currentMenu);
 
         purchases.add(newPurchase);
         return newPurchase;
+    }
+
+    public void createMenuScore(UserScore userScore, int punctuation) {
+        userScore.setPunctuation(punctuation);
+        userScore.getMenu().addScore(userScore.getCustomerName(), punctuation);
+
+        if (userScore.getMenu().getScoreAverage() < 2) {
+            Service service = userScore.getService();
+            Menu invalidMenu = userScore.getMenu();
+            service.getMenus().remove(invalidMenu);
+            service.getInvalidMenus().add(invalidMenu);
+
+            if (service.getInvalidMenus().size() == 10) {
+                SupplierUser invalidSupplier = service.getSupplier();
+                suppliers.remove(invalidSupplier);
+                invalidSuppliers.add(invalidSupplier);
+            }
+        }
     }
 
     /* Private Methods */

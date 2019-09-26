@@ -257,6 +257,38 @@ public class ViendasYaFacadeTest {
         Assert.fail();
     }
 
+    @Test(expected = Exception.class)
+    public void PurchasingWithPendingScoresShouldThrowException() throws Exception {
+        // Arrange
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+
+        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        viendasYa.addCustomer(customer);
+        viendasYa.addSupplier(supplier);
+
+        viendasYa.addService(supplier, "Burguer King", "Test", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+                new ArrayList<>(Arrays.asList(OfficeDays.values())),
+                new ArrayList<>(Arrays.asList(OfficeHours.values())),
+                10);
+
+        viendasYa.addMenuToService("Burguer King", 1, "Whopper", "Hamburguesa de la ostia", Category.Hamburguesa, 10, LocalDate.now(), LocalDate.now(), OfficeHours.Afternoon, 15, 50, 10, 50, 100);
+
+        customer.getAccount().depositMoney(1000);
+        Purchase purchase = viendasYa.purchase(customer, "Burguer King", 1, 10);
+
+        try {
+            // Act
+            viendasYa.purchase(customer, "Burguer King", 1, 10);
+        } catch (Exception ex) {
+            // Assert
+            assertEquals(ex.getMessage(), "Customer has pending scores to punctuate before purchasing.");
+            throw ex;
+        }
+
+        Assert.fail();
+    }
+
     @Test
     public void BuyMenuFromServiceShouldCreatePurchase() throws Exception {
         // Arrange
@@ -287,4 +319,6 @@ public class ViendasYaFacadeTest {
         assertEquals(purchase.getService().getServiceName(), "Burguer King");
         assertEquals(purchase.getCustomer().getName(), "Facundo");
     }
+
+    // TODO: add test for createMenuScore ! ! !
 }

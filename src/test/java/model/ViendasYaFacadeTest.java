@@ -28,7 +28,7 @@ public class ViendasYaFacadeTest {
         viendasYa.addSupplier(supplier);
 
         // Act
-        viendasYa.addService(supplier, "Burguer King", "Test", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+        viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
                 new ArrayList<OfficeDays>(Arrays.asList(OfficeDays.values())),
                 new ArrayList<OfficeHours>(Arrays.asList(OfficeHours.values())),
                 10);
@@ -49,7 +49,7 @@ public class ViendasYaFacadeTest {
         viendasYa.addSupplier(supplier);
 
         // Act
-        viendasYa.addService(supplier, "Burguer King", "Test", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+        viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
                 new ArrayList<OfficeDays>(Arrays.asList(OfficeDays.values())),
                 new ArrayList<OfficeHours>(Arrays.asList(OfficeHours.values())),
                 10);
@@ -73,7 +73,7 @@ public class ViendasYaFacadeTest {
         ViendasYaFacade viendasYa = new ViendasYaFacade();
         viendasYa.addSupplier(supplier);
 
-        viendasYa.addService(supplier, "Burguer King", "Test", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+        viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
                 new ArrayList<OfficeDays>(Arrays.asList(OfficeDays.values())),
                 new ArrayList<OfficeHours>(Arrays.asList(OfficeHours.values())),
                 10);
@@ -102,12 +102,12 @@ public class ViendasYaFacadeTest {
         viendasYa.addSupplier(supplier2);
         viendasYa.addSupplier(supplier3);
 
-        viendasYa.addService(supplier1, "Burguer King", "Test", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+        viendasYa.addService(supplier1, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
                 new ArrayList<>(Arrays.asList(OfficeDays.values())),
                 new ArrayList<>(Arrays.asList(OfficeHours.values())),
                 10);
 
-        viendasYa.addService(supplier2, "Mcdonalds", "Test", "Rivadavia 201", "Las mejores hamburguesas, mejores que cualquiera!", "mcdonalds@gmail.com", "011 51515151",
+        viendasYa.addService(supplier2, "Mcdonalds", "Test", "Quilmes", "Rivadavia 201", "Las mejores hamburguesas, mejores que cualquiera!", "mcdonalds@gmail.com", "011 51515151",
                 new ArrayList<>(Arrays.asList(OfficeDays.values())),
                 new ArrayList<>(Arrays.asList(OfficeHours.values())),
                 10);
@@ -152,7 +152,7 @@ public class ViendasYaFacadeTest {
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
-        viendasYa.addService(supplier, "Burguer King", "Test", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+        viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
                 new ArrayList<>(Arrays.asList(OfficeDays.values())),
                 new ArrayList<>(Arrays.asList(OfficeHours.values())),
                 10);
@@ -170,7 +170,7 @@ public class ViendasYaFacadeTest {
     }
 
     @Test(expected = Exception.class)
-    public void PurchasingLessThanTheMinimunQuantityAllowedForMenuShouldThrowException() throws Exception {
+    public void PurchasingLessThanTheMinimumQuantityAllowedForMenuShouldThrowException() throws Exception {
         // Arrange
         CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
         SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
@@ -179,7 +179,7 @@ public class ViendasYaFacadeTest {
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
-        viendasYa.addService(supplier, "Burguer King", "Test", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+        viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
                 new ArrayList<>(Arrays.asList(OfficeDays.values())),
                 new ArrayList<>(Arrays.asList(OfficeHours.values())),
                 10);
@@ -208,7 +208,7 @@ public class ViendasYaFacadeTest {
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
-        viendasYa.addService(supplier, "Burguer King", "Test", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+        viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
                 new ArrayList<>(Arrays.asList(OfficeDays.values())),
                 new ArrayList<>(Arrays.asList(OfficeHours.values())),
                 10);
@@ -237,7 +237,7 @@ public class ViendasYaFacadeTest {
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
-        viendasYa.addService(supplier, "Burguer King", "Test", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+        viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
                 new ArrayList<>(Arrays.asList(OfficeDays.values())),
                 new ArrayList<>(Arrays.asList(OfficeHours.values())),
                 10);
@@ -268,7 +268,7 @@ public class ViendasYaFacadeTest {
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
-        viendasYa.addService(supplier, "Burguer King", "Test", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+        viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
                 new ArrayList<>(Arrays.asList(OfficeDays.values())),
                 new ArrayList<>(Arrays.asList(OfficeHours.values())),
                 10);
@@ -300,7 +300,7 @@ public class ViendasYaFacadeTest {
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
-        viendasYa.addService(supplier, "Burguer King", "Test", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+        viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
                 new ArrayList<>(Arrays.asList(OfficeDays.values())),
                 new ArrayList<>(Arrays.asList(OfficeHours.values())),
                 10);
@@ -356,7 +356,7 @@ public class ViendasYaFacadeTest {
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
-        viendasYa.addService(supplier, "Burguer King", "Test", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+        viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
                 new ArrayList<>(Arrays.asList(OfficeDays.values())),
                 new ArrayList<>(Arrays.asList(OfficeHours.values())),
                 10);
@@ -389,7 +389,7 @@ public class ViendasYaFacadeTest {
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
-        viendasYa.addService(supplier, "Burguer King", "Test", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+        viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
                 new ArrayList<>(Arrays.asList(OfficeDays.values())),
                 new ArrayList<>(Arrays.asList(OfficeHours.values())),
                 10);
@@ -413,7 +413,7 @@ public class ViendasYaFacadeTest {
         assertTrue(customer.getUserScores().stream().allMatch(UserScore::isFinished));
         assertEquals(supplier.getService().getMenus().size(), 0);
         assertEquals(supplier.getService().getInvalidMenus().size(), 10);
-        assertFalse(supplier.getService().getInvalidMenus().stream().allMatch(im -> !im.isValidMenu()));
+        assertFalse(supplier.getService().getInvalidMenus().stream().noneMatch(Menu::isValidMenu));
         assertEquals(viendasYa.suppliers.size(), 0);
         assertEquals(viendasYa.invalidSuppliers.size(), 1);
         assertEquals(viendasYa.invalidSuppliers.get(0).getName(), "Matayas");

@@ -25,7 +25,7 @@ public class SupplierUser extends User {
         super(name, lastName, eMail, phone, address);
     }
 
-    public void addService(String serviceName, String icon, String address, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance) {
+    public void addService(String serviceName, String icon, Address address, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance) {
         service = new Service(serviceName, icon, address, description, email, phoneNumber, officeDays, officeHours, deliveryDistance, this);
     }
 

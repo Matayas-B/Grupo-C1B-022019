@@ -13,7 +13,7 @@ public class Service {
     private int serviceId;
     private String serviceName;
     private String icon;
-    private String address; // TODO: Use Address class instead of string, for Search purposes.
+    private Address address;
     private String description;
     private String email;
     private String phoneNumber;
@@ -26,7 +26,7 @@ public class Service {
     private List<Menu> menus = new ArrayList<>();
     private List<Menu> invalidMenus = new ArrayList<>();
 
-    public Service(String serviceName, String icon, String address, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance, SupplierUser supp) {
+    public Service(String serviceName, String icon, Address address, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance, SupplierUser supp) {
         this.serviceName = serviceName;
         this.icon = icon;
         this.address = address;
@@ -64,11 +64,11 @@ public class Service {
         this.icon = icon;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 

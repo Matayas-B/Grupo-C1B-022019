@@ -5,6 +5,7 @@ import model.exception.ServiceNotFoundException;
 import model.enums.Category;
 import model.enums.OfficeDays;
 import model.enums.OfficeHours;
+import org.hibernate.usertype.UserVersionType;
 import org.joda.time.LocalDate;
 import persistence.UnityOfWork;
 
@@ -15,7 +16,11 @@ import java.util.stream.Collectors;
 
 public class ViendasYaFacade {
 
-    UnityOfWork unityOfWork = new UnityOfWork();
+    private UnityOfWork unityOfWork;
+
+    public ViendasYaFacade(UnityOfWork unityOfWork) {
+        this.unityOfWork = unityOfWork;
+    }
 
     public List<SupplierUser> getSuppliers() {
         return unityOfWork.suppliers;
@@ -33,8 +38,29 @@ public class ViendasYaFacade {
         unityOfWork.customers.add(customer);
     }
 
-    public void addService(SupplierUser supp, String serviceName, String icon, String addressTown, String addressLocation, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance) {
+    public void addService(SupplierUser supp, String serviceName, String icon, String addressTown, String addressLocation, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance) throws Exception {
+        if (unityOfWork.isServiceAlreadyCreated(serviceName))
+            throw new Exception("Service already exists. Please, select another name.");
+        if (supp.hasService())
+            throw new Exception("Supplier already has a service. Please, delete it before creating new one");
+
         supp.addService(serviceName, icon, new Address(addressTown, addressLocation), description, email, phoneNumber, officeDays, officeHours, deliveryDistance);
+    }
+
+    public void addService(SupplierUser supp, Service service) throws Exception {
+        if (unityOfWork.isServiceAlreadyCreated(service.getServiceName()))
+            throw new Exception("Service already exists. Please, select another name.");
+        if (supp.hasService())
+            throw new Exception("Supplier already has a service. Please, delete it before creating new one");
+
+        supp.addService(service.getServiceName(), service.getIcon(), service.getAddress(), service.getDescription(), service.getEmail(), service.getPhoneNumber(), service.getOfficeDays(), service.getOfficeHours(), service.getDeliveryDistance());
+    }
+
+    public void deleteService(SupplierUser supp) throws Exception {
+        if (!supp.hasService())
+            throw new Exception("Supplier does not have any active service.");
+
+        supp.deleteService();
     }
 
     public void addMenuToService(String serviceName, int id, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
@@ -44,6 +70,15 @@ public class ViendasYaFacade {
             throw new ServiceNotFoundException();
 
         supplier.addMenu(id, name, description, category, deliveryFee, startDate, endDate, deliveryHours, averageDeliveryMinutes, price, minQuantity, minQuantityPrice, maxDailySales);
+    }
+
+    public void addMenuToService(String serviceName, Menu menu) {
+        SupplierUser supplier = findSupplierWithServiceName(serviceName);
+
+        if (supplier == null)
+            throw new ServiceNotFoundException();
+
+        supplier.addMenu(menu.getMenuId(), menu.getName(), menu.getDescription(), menu.getCategory(), menu.getDeliveryFee(), menu.getStartDate(), menu.getEndDate(), menu.getDeliveryHours(), menu.getAverageDeliveryMinutes(), menu.getPrice(), menu.getMinQuantity(), menu.getMinQuantityPrice(), menu.getMaxDailySales());
     }
 
     public List<Service> getAllServices() {

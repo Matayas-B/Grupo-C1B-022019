@@ -26,6 +26,12 @@ public class Service {
     private List<Menu> menus = new ArrayList<>();
     private List<Menu> invalidMenus = new ArrayList<>();
 
+    /* Constructor for testing purposes -> ServiceBuilder */
+    public Service(String serviceName, SupplierUser supplier) {
+        this.serviceName = serviceName;
+        this.supplier = supplier;
+    }
+
     public Service(String serviceName, String icon, Address address, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance, SupplierUser supp) {
         this.serviceName = serviceName;
         this.icon = icon;

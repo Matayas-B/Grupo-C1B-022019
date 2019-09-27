@@ -6,7 +6,6 @@ import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.OptionalDouble;
 
 public class Menu {
 
@@ -27,6 +26,7 @@ public class Menu {
 
     List<MenuScore> menuScores = new ArrayList<>();
 
+    /* Constructor for testing purposes -> MenuBuilder */
     public Menu(int id) {
         this.menuId = id;
     }

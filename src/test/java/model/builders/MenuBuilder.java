@@ -31,6 +31,16 @@ public class MenuBuilder {
         this.menuId = menuId;
     }
 
+    public MenuBuilder setMenuName(String menuName) {
+        this.name = menuName;
+        return this;
+    }
+
+    public MenuBuilder setCategory(Category category) {
+        this.category = category;
+        return this;
+    }
+
     public MenuBuilder setMaxDailySales(int maxSales) {
         this.maxDailySales = maxSales;
         return this;

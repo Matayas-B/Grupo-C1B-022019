@@ -21,4 +21,8 @@ public class UnityOfWork {
     public List<Menu> getAllMenus() {
         return suppliers.stream().map(SupplierUser::getService).map(Service::getMenus).flatMap(Collection::stream).collect(Collectors.toList());
     }
+
+    public boolean isServiceAlreadyCreated(String serviceName) {
+        return getAllServices().stream().anyMatch(s -> s.getServiceName().equals(serviceName));
+    }
 }

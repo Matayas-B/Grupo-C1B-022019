@@ -9,7 +9,7 @@ import model.enums.OfficeHours;
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import persistence.UnityOfWork;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,14 +17,69 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-@SpringBootTest
 public class ViendasYaFacadeTest {
 
-    @Test
-    public void AddServiceShouldInitializeServiceForSupplier() {
+    @Test(expected = Exception.class)
+    public void AddServiceToSupplierWhenHeAlreadyHasOneShouldThrowException() throws Exception {
         // Arrange
         SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
-        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
+        viendasYa.addSupplier(supplier);
+
+        try {
+            // Act
+            viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+                    new ArrayList<>(Arrays.asList(OfficeDays.values())),
+                    new ArrayList<>(Arrays.asList(OfficeHours.values())),
+                    10);
+
+            viendasYa.addService(supplier, "Burguer New King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+                    new ArrayList<>(Arrays.asList(OfficeDays.values())),
+                    new ArrayList<>(Arrays.asList(OfficeHours.values())),
+                    10);
+        } catch (Exception ex) {
+            // Assert
+            assertEquals(ex.getMessage(), "Supplier already has a service. Please, delete it before creating new one");
+            throw ex;
+        }
+
+        Assert.fail();
+    }
+
+    @Test(expected = Exception.class)
+    public void AddServiceIfOneAlreadyExistsWithThatNameShouldThrowException() throws Exception {
+        // Arrange
+        SupplierUser supplier1 = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        SupplierUser supplier2 = new SupplierUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
+        viendasYa.addSupplier(supplier1);
+        viendasYa.addSupplier(supplier2);
+
+        try {
+            // Act
+            viendasYa.addService(supplier1, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+                    new ArrayList<>(Arrays.asList(OfficeDays.values())),
+                    new ArrayList<>(Arrays.asList(OfficeHours.values())),
+                    10);
+
+            viendasYa.addService(supplier2, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+                    new ArrayList<>(Arrays.asList(OfficeDays.values())),
+                    new ArrayList<>(Arrays.asList(OfficeHours.values())),
+                    10);
+        } catch (Exception ex) {
+            // Assert
+            assertEquals(ex.getMessage(), "Service already exists. Please, select another name.");
+            throw ex;
+        }
+
+        Assert.fail();
+    }
+
+    @Test
+    public void AddServiceShouldInitializeServiceForSupplier() throws Exception {
+        // Arrange
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addSupplier(supplier);
 
         // Act
@@ -41,11 +96,49 @@ public class ViendasYaFacadeTest {
         assertEquals(supplier.getService().getServiceName(), "Burguer King");
     }
 
-    @Test
-    public void AddMenuToServiceShouldAddItToSupplierService() {
+    @Test(expected = Exception.class)
+    public void DeleteServiceIfSupplierDoesNotHaveAnyShouldThrowException() throws Exception {
         // Arrange
         SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
-        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
+        viendasYa.addSupplier(supplier);
+
+        try {
+            // Act
+            viendasYa.deleteService(supplier);
+        }
+        catch (Exception ex) {
+            // Assert
+            assertEquals(ex.getMessage(), "Supplier does not have any active service.");
+            throw ex;
+        }
+
+        Assert.fail();
+    }
+
+    @Test
+    public void DeleteServiceShouldDeleteServiceForSupplier() throws Exception {
+        // Arrange
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
+        viendasYa.addSupplier(supplier);
+
+        // Act
+        viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
+                new ArrayList<>(Arrays.asList(OfficeDays.values())),
+                new ArrayList<>(Arrays.asList(OfficeHours.values())),
+                10);
+        viendasYa.deleteService(supplier);
+
+        // Assert
+        assertTrue(viendasYa.getAllServices().isEmpty());
+    }
+
+    @Test
+    public void AddMenuToServiceShouldAddItToSupplierService() throws Exception {
+        // Arrange
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addSupplier(supplier);
 
         // Act
@@ -67,10 +160,10 @@ public class ViendasYaFacadeTest {
     }
 
     @Test(expected = ServiceNotFoundException.class)
-    public void AddMenuToUnavailableServiceShouldThrowServiceNotFoundException() {
+    public void AddMenuToUnavailableServiceShouldThrowServiceNotFoundException() throws Exception {
         // Arrange
         SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
-        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addSupplier(supplier);
 
         viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
@@ -91,13 +184,13 @@ public class ViendasYaFacadeTest {
     }
 
     @Test
-    public void GetAllServicesShouldReturnNotNullServicesList() {
+    public void GetAllServicesShouldReturnNotNullServicesList() throws Exception {
         // Arrange
         SupplierUser supplier1 = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
         SupplierUser supplier2 = new SupplierUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
         SupplierUser supplier3 = new SupplierUser("Brian", "Loquillo", "bra@gmail.com", "1161635613", "Canale 3134");
 
-        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addSupplier(supplier1);
         viendasYa.addSupplier(supplier2);
         viendasYa.addSupplier(supplier3);
@@ -126,7 +219,7 @@ public class ViendasYaFacadeTest {
         CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
         SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
 
-        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
@@ -148,7 +241,7 @@ public class ViendasYaFacadeTest {
         CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
         SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
 
-        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
@@ -175,7 +268,7 @@ public class ViendasYaFacadeTest {
         CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
         SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
 
-        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
@@ -204,7 +297,7 @@ public class ViendasYaFacadeTest {
         CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
         SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
 
-        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
@@ -233,7 +326,7 @@ public class ViendasYaFacadeTest {
         CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
         SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
 
-        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
@@ -264,7 +357,7 @@ public class ViendasYaFacadeTest {
         CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
         SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
 
-        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
@@ -296,7 +389,7 @@ public class ViendasYaFacadeTest {
         CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
         SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
 
-        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
@@ -330,7 +423,7 @@ public class ViendasYaFacadeTest {
         SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
         customer.getAccount().depositMoney(1000);
 
-        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
@@ -352,7 +445,7 @@ public class ViendasYaFacadeTest {
         SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
         customer.getAccount().depositMoney(10000);
 
-        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 
@@ -385,7 +478,7 @@ public class ViendasYaFacadeTest {
         SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
         customer.getAccount().depositMoney(10000);
 
-        ViendasYaFacade viendasYa = new ViendasYaFacade();
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
         viendasYa.addSupplier(supplier);
 

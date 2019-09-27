@@ -6,8 +6,8 @@ import model.enums.Category;
 import model.enums.OfficeDays;
 import model.enums.OfficeHours;
 import org.joda.time.LocalDate;
+import persistence.UnityOfWork;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -15,17 +15,22 @@ import java.util.stream.Collectors;
 
 public class ViendasYaFacade {
 
-    public List<SupplierUser> suppliers = new ArrayList<>();
-    public List<SupplierUser> invalidSuppliers = new ArrayList<>();
-    public List<CustomerUser> customers = new ArrayList<>();
-    public List<Purchase> purchases = new ArrayList<>();
+    UnityOfWork unityOfWork = new UnityOfWork();
+
+    public List<SupplierUser> getSuppliers() {
+        return unityOfWork.suppliers;
+    }
+
+    public List<SupplierUser> getInvalidSuppliers() {
+        return unityOfWork.invalidSuppliers;
+    }
 
     public void addSupplier(SupplierUser supplier) {
-        suppliers.add(supplier);
+        unityOfWork.suppliers.add(supplier);
     }
 
     public void addCustomer(CustomerUser customer) {
-        customers.add(customer);
+        unityOfWork.customers.add(customer);
     }
 
     public void addService(SupplierUser supp, String serviceName, String icon, String addressTown, String addressLocation, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance) {
@@ -42,11 +47,11 @@ public class ViendasYaFacade {
     }
 
     public List<Service> getAllServices() {
-        return suppliers.stream().map(SupplierUser::getService).filter(Objects::nonNull).collect(Collectors.toList());
+        return unityOfWork.getAllServices();
     }
 
     public List<Purchase> getAllPurchases() {
-        return purchases;
+        return unityOfWork.purchases;
     }
 
     public Purchase purchase(CustomerUser customer, String serviceName, int menuId, int quantity) throws Exception {
@@ -76,21 +81,21 @@ public class ViendasYaFacade {
         currentService.getSupplier().getAccount().depositMoney(currentMenu.getPrice() * quantity);
         customer.addDefaultScore(currentService, currentMenu);
 
-        purchases.add(newPurchase);
+        unityOfWork.purchases.add(newPurchase);
         return newPurchase;
     }
 
     public void createMenuScore(CustomerUser customer, String serviceName, int menuId, int punctuation) throws Exception {
-        UserScore userScore = customer.findUserScore(serviceName, menuId);
-        if (userScore == null)
+        CustomerScore customerScore = customer.findUserScore(serviceName, menuId);
+        if (customerScore == null)
             throw new Exception("User Score does not exists.");
 
-        userScore.setPunctuation(punctuation);
-        userScore.getMenu().addScore(userScore.getCustomerName(), punctuation);
+        customerScore.setPunctuation(punctuation);
+        customerScore.getMenu().addScore(customerScore.getCustomerName(), punctuation);
 
-        if (userScore.getMenu().hasEnoughScores() && userScore.getMenu().getScoreAverage() < 2) {
-            Service service = userScore.getService();
-            service.markMenuAsInvalid(userScore.getMenu());
+        if (customerScore.getMenu().hasEnoughScores() && customerScore.getMenu().getScoreAverage() < 2) {
+            Service service = customerScore.getService();
+            service.markMenuAsInvalid(customerScore.getMenu());
 
             if (service.getInvalidMenus().size() == 10) {
                 markSupplierAsInvalid(service.getSupplier());
@@ -98,19 +103,14 @@ public class ViendasYaFacade {
         }
     }
 
-    public List<Menu> search() {
-        // TODO: Missing search functionality. Customer should be able to filter Menus by name, category or addres.
-        return new ArrayList<Menu>();
-    }
-
     /* Private Methods */
     private void markSupplierAsInvalid(SupplierUser invalidSupplier) {
-        suppliers.remove(invalidSupplier);
-        invalidSuppliers.add(invalidSupplier);
+        unityOfWork.suppliers.remove(invalidSupplier);
+        unityOfWork.invalidSuppliers.add(invalidSupplier);
     }
 
     private SupplierUser findSupplierWithServiceName(String serviceName) {
-        return suppliers.stream().filter(s -> s.getService().getServiceName().equals(serviceName)).findFirst().orElse(null);
+        return unityOfWork.suppliers.stream().filter(s -> s.getService().getServiceName().equals(serviceName)).findFirst().orElse(null);
     }
 
     private Service findServiceByName(String serviceName) {
@@ -118,7 +118,7 @@ public class ViendasYaFacade {
     }
 
     private List<Purchase> getAllPurchasesForMenu(Service currentService, Menu currentMenu) {
-        List<Purchase> todayPurchases = purchases.stream().filter(p -> p.getPurchasedDate().equals(LocalDate.now())).collect(Collectors.toList());
+        List<Purchase> todayPurchases = unityOfWork.purchases.stream().filter(p -> p.getPurchasedDate().equals(LocalDate.now())).collect(Collectors.toList());
         return todayPurchases.stream().filter(p -> p.getService().equals(currentService) && p.getPurchasedMenu().equals(currentMenu)).collect(Collectors.toList());
     }
 }

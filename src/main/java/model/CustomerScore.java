@@ -1,6 +1,6 @@
 package model;
 
-public class UserScore {
+public class CustomerScore {
 
     private String customerName;
     private Service service;
@@ -28,7 +28,7 @@ public class UserScore {
         return isFinished;
     }
 
-    UserScore(String customerName, Service service, Menu menu) {
+    CustomerScore(String customerName, Service service, Menu menu) {
         this.customerName = customerName;
         this.service = service;
         this.menu = menu;

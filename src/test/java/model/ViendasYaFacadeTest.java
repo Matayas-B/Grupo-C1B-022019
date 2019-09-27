@@ -29,8 +29,8 @@ public class ViendasYaFacadeTest {
 
         // Act
         viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
-                new ArrayList<OfficeDays>(Arrays.asList(OfficeDays.values())),
-                new ArrayList<OfficeHours>(Arrays.asList(OfficeHours.values())),
+                new ArrayList<>(Arrays.asList(OfficeDays.values())),
+                new ArrayList<>(Arrays.asList(OfficeHours.values())),
                 10);
 
         // Assert
@@ -50,8 +50,8 @@ public class ViendasYaFacadeTest {
 
         // Act
         viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
-                new ArrayList<OfficeDays>(Arrays.asList(OfficeDays.values())),
-                new ArrayList<OfficeHours>(Arrays.asList(OfficeHours.values())),
+                new ArrayList<>(Arrays.asList(OfficeDays.values())),
+                new ArrayList<>(Arrays.asList(OfficeHours.values())),
                 10);
 
         viendasYa.addMenuToService("Burguer King", 1, "Whopper", "Hamburguesa de la ostia", Category.Hamburguesa, 10, LocalDate.now(), LocalDate.now(), OfficeHours.Afternoon, 15, 50, 1, 50, 100);
@@ -74,8 +74,8 @@ public class ViendasYaFacadeTest {
         viendasYa.addSupplier(supplier);
 
         viendasYa.addService(supplier, "Burguer King", "Test", "Quilmes", "Rivadavia 101", "Las mejores hamburguesas, lejos!", "burguerking@gmail.com", "011 51515151",
-                new ArrayList<OfficeDays>(Arrays.asList(OfficeDays.values())),
-                new ArrayList<OfficeHours>(Arrays.asList(OfficeHours.values())),
+                new ArrayList<>(Arrays.asList(OfficeDays.values())),
+                new ArrayList<>(Arrays.asList(OfficeHours.values())),
                 10);
 
         try {
@@ -318,9 +318,9 @@ public class ViendasYaFacadeTest {
         assertEquals(purchase.getPurchasedMenu().getName(), "Whopper");
         assertEquals(purchase.getService().getServiceName(), "Burguer King");
         assertEquals(purchase.getCustomer().getName(), "Facundo");
-        assertEquals(purchase.getCustomer().getUserScores().get(0).getCustomerName(), "Facundo");
-        assertEquals(purchase.getCustomer().getUserScores().get(0).getPunctuation(), 0);
-        assertFalse(purchase.getCustomer().getUserScores().get(0).isFinished());
+        assertEquals(purchase.getCustomer().getCustomerScores().get(0).getCustomerName(), "Facundo");
+        assertEquals(purchase.getCustomer().getCustomerScores().get(0).getPunctuation(), 0);
+        assertFalse(purchase.getCustomer().getCustomerScores().get(0).isFinished());
     }
 
     @Test(expected = Exception.class)
@@ -372,7 +372,7 @@ public class ViendasYaFacadeTest {
         viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
 
         // Assert
-        assertTrue(customer.getUserScores().stream().allMatch(UserScore::isFinished));
+        assertTrue(customer.getCustomerScores().stream().allMatch(CustomerScore::isFinished));
         assertEquals(supplier.getService().getMenus().size(), 0);
         assertEquals(supplier.getService().getInvalidMenus().size(), 1);
         assertFalse(supplier.getService().getInvalidMenus().get(0).isValidMenu());
@@ -410,12 +410,12 @@ public class ViendasYaFacadeTest {
         viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
 
         // Assert
-        assertTrue(customer.getUserScores().stream().allMatch(UserScore::isFinished));
+        assertTrue(customer.getCustomerScores().stream().allMatch(CustomerScore::isFinished));
         assertEquals(supplier.getService().getMenus().size(), 0);
         assertEquals(supplier.getService().getInvalidMenus().size(), 10);
         assertFalse(supplier.getService().getInvalidMenus().stream().noneMatch(Menu::isValidMenu));
-        assertEquals(viendasYa.suppliers.size(), 0);
-        assertEquals(viendasYa.invalidSuppliers.size(), 1);
-        assertEquals(viendasYa.invalidSuppliers.get(0).getName(), "Matayas");
+        assertEquals(viendasYa.getSuppliers().size(), 0);
+        assertEquals(viendasYa.getInvalidSuppliers().size(), 1);
+        assertEquals(viendasYa.getInvalidSuppliers().get(0).getName(), "Matayas");
     }
 }

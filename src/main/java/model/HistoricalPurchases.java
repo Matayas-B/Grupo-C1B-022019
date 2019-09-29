@@ -11,6 +11,26 @@ public class HistoricalPurchases {
     private Menu purchasedMenu;
     private int purchaseAmount;
 
+    public LocalDate getPurchasedDate() {
+        return purchasedDate;
+    }
+
+    public PurchaseStatus getPurchaseStatus() {
+        return purchaseStatus;
+    }
+
+    public int getPunctuation() {
+        return punctuation;
+    }
+
+    public Menu getPurchasedMenu() {
+        return purchasedMenu;
+    }
+
+    public int getPurchaseAmount() {
+        return purchaseAmount;
+    }
+
     public HistoricalPurchases(LocalDate purchasedDate, PurchaseStatus purchaseStatus, int punctuation, Menu purchasedMenu, int purchaseAmount) {
         this.purchasedDate = purchasedDate;
         this.purchaseStatus = purchaseStatus;

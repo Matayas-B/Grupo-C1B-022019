@@ -38,4 +38,8 @@ public class CustomerUser extends User {
                 !us.isFinished())
                 .findFirst().orElse(null);
     }
+
+    CustomerScore getCustomerScoreById(int customerScoreId) {
+        return customerScores.stream().filter(cs -> cs.getCustomerScoreId() == customerScoreId).findFirst().orElse(null);
+    }
 }

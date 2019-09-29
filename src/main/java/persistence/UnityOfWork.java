@@ -35,6 +35,14 @@ public class UnityOfWork {
         purchases.set(purchases.indexOf(purchase), purchase);
     }
 
+    public List<Purchase> getPurchasesForSupplier(SupplierUser supplier) {
+        return purchases.stream().filter(p -> p.getService().getSupplier().equals(supplier)).collect(Collectors.toList());
+    }
+
+    public List<Purchase> getPurchasesForCustomer(CustomerUser customer) {
+        return purchases.stream().filter(p -> p.getCustomer().equals(customer)).collect(Collectors.toList());
+    }
+
     public Purchase addPurchase(CustomerUser customer, int customerScoreId, Service service, Menu purchasedMenu, LocalDate dateOfPurchase, int purchaseAmount) {
         int newPurchaseId = purchases.size() + 1;
         Purchase newPurchase = new Purchase(newPurchaseId, customer, customerScoreId, service, purchasedMenu, LocalDate.now(), purchaseAmount);

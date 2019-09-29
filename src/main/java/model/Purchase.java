@@ -14,6 +14,14 @@ public class Purchase {
     private int purchaseAmount;
     private PurchaseStatus purchaseStatus;
 
+    public int getCustomerScoreId() {
+        return customerScoreId;
+    }
+
+    public int getPurchaseAmount() {
+        return purchaseAmount;
+    }
+
     public PurchaseStatus getPurchaseStatus() {
         return purchaseStatus;
     }

@@ -150,7 +150,23 @@ public class ViendasYaFacade {
         }
     }
 
+    public List<HistoricalPurchases> getHistoricalPurchases(SupplierUser supplier) {
+        List<Purchase> supplierPurchases = unityOfWork.getPurchasesForSupplier(supplier);
+        return supplierPurchases.stream().map(sp -> new HistoricalPurchases(sp.getPurchasedDate(), sp.getPurchaseStatus(), getPunctuationForPurchase(sp), sp.getPurchasedMenu(), sp.getPurchaseAmount()))
+                .collect(Collectors.toList());
+    }
+
+    public List<HistoricalPurchases> getHistoricalPurchases(CustomerUser customer) {
+        List<Purchase> customerPurchases = unityOfWork.getPurchasesForCustomer(customer);
+        return customerPurchases.stream().map(cp -> new HistoricalPurchases(cp.getPurchasedDate(), cp.getPurchaseStatus(), getPunctuationForPurchase(cp), cp.getPurchasedMenu(), cp.getPurchaseAmount()))
+                .collect(Collectors.toList());
+    }
+
     /* Private Methods */
+    private int getPunctuationForPurchase(Purchase purchase) {
+        return purchase.getCustomer().getCustomerScoreById(purchase.getCustomerScoreId()).getPunctuation();
+    }
+
     private void markSupplierAsInvalid(SupplierUser invalidSupplier) {
         unityOfWork.suppliers.remove(invalidSupplier);
         unityOfWork.invalidSuppliers.add(invalidSupplier);

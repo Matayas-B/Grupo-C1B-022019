@@ -565,4 +565,71 @@ public class ViendasYaFacadeTest {
         assertEquals(viendasYa.getInvalidSuppliers().size(), 1);
         assertEquals(viendasYa.getInvalidSuppliers().get(0).getName(), "Matayas");
     }
+
+    @Test
+    public void GetHistoricalSupplierPurchasesShouldCreateHistorical() throws Exception {
+        // Arrange
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
+        SupplierUser supplier1 = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        SupplierUser supplier2 = new SupplierUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
+
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
+        viendasYa.addCustomer(customer);
+        viendasYa.addSupplier(supplier1);
+        viendasYa.addSupplier(supplier2);
+
+        viendasYa.addService(supplier1, new ServiceBuilder("Burguer King", supplier1).build());
+        viendasYa.addService(supplier2, new ServiceBuilder("McDonalds", supplier2).build());
+        viendasYa.addMenuToService("Burguer King", new MenuBuilder(1).setMenuName("Whopper").build());
+        viendasYa.addMenuToService("McDonalds", new MenuBuilder(1).setMenuName("Mc Pollo").build());
+
+        customer.getAccount().depositMoney(10000);
+        Purchase purchase1 = viendasYa.purchase(customer, "Burguer King", 1, 10);
+        viendasYa.createMenuScore(customer, "Burguer King", 1, 2);
+        Purchase purchase2 = viendasYa.purchase(customer, "McDonalds", 1, 12);
+        viendasYa.createMenuScore(customer, "McDonalds", 1, 4);
+
+        // Act
+        List<HistoricalPurchases> supplier2Purchases = viendasYa.getHistoricalPurchases(supplier2);
+
+        // Assert
+        assertFalse(supplier2Purchases.isEmpty());
+        assertEquals(supplier2Purchases.size(), 1);
+        assertEquals(supplier2Purchases.get(0).getPurchasedMenu().getName(), "Mc Pollo");
+        assertEquals(supplier2Purchases.get(0).getPurchaseAmount(), 600);
+        assertEquals(supplier2Purchases.get(0).getPunctuation(), 4);
+    }
+
+    @Test
+    public void GetHistoricalCustomerPurchasesShouldCreateHistorical() throws Exception {
+        // Arrange
+        CustomerUser customer1 = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
+        CustomerUser customer2 = new CustomerUser("Juan", "Roque", "jroque@gmail.com", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
+        viendasYa.addCustomer(customer1);
+        viendasYa.addCustomer(customer2);
+        viendasYa.addSupplier(supplier);
+
+        viendasYa.addService(supplier, new ServiceBuilder("Burguer King", supplier).build());
+        viendasYa.addMenuToService("Burguer King", new MenuBuilder(1).setMenuName("Whopper").build());
+        viendasYa.addMenuToService("Burguer King", new MenuBuilder(2).setMenuName("BK Stacker").build());
+
+        customer1.getAccount().depositMoney(1000);
+        customer2.getAccount().depositMoney(1000);
+        Purchase purchase1 = viendasYa.purchase(customer1, "Burguer King", 2, 11);
+        Purchase purchase2 = viendasYa.purchase(customer2, "Burguer King", 1, 10);
+
+        // Act
+        viendasYa.createMenuScore(customer1, "Burguer King", 2, 5);
+        List<HistoricalPurchases> customer1Purchases = viendasYa.getHistoricalPurchases(customer1);
+
+        // Assert
+        assertFalse(customer1Purchases.isEmpty());
+        assertEquals(customer1Purchases.size(), 1);
+        assertEquals(customer1Purchases.get(0).getPurchasedMenu().getName(), "BK Stacker");
+        assertEquals(customer1Purchases.get(0).getPurchaseAmount(), 550);
+        assertEquals(customer1Purchases.get(0).getPunctuation(), 5);
+    }
 }

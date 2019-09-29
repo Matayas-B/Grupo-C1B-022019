@@ -1,6 +1,8 @@
 package model;
 
 import model.builders.MenuBuilder;
+import model.builders.ServiceBuilder;
+import model.enums.PurchaseStatus;
 import model.exception.MenuNotFoundException;
 import model.exception.ServiceNotFoundException;
 import model.enums.Category;
@@ -406,14 +408,66 @@ public class ViendasYaFacadeTest {
 
         // Assert
         assertFalse(viendasYa.getAllPurchases().isEmpty());
+        assertEquals(viendasYa.getAllPurchases().get(0).getPurchaseId(), 1);
+        assertEquals(viendasYa.getAllPurchases().get(0).getPurchaseStatus(), PurchaseStatus.InProgress);
         assertTrue(customer.getAccount().haveEnoughFunds(500));
         assertTrue(supplier.getAccount().haveEnoughFunds(500));
         assertEquals(purchase.getPurchasedMenu().getName(), "Whopper");
         assertEquals(purchase.getService().getServiceName(), "Burguer King");
         assertEquals(purchase.getCustomer().getName(), "Facundo");
+        assertEquals(purchase.getCustomer().getCustomerScores().get(0).getCustomerScoreId(), 1);
         assertEquals(purchase.getCustomer().getCustomerScores().get(0).getCustomerName(), "Facundo");
         assertEquals(purchase.getCustomer().getCustomerScores().get(0).getPunctuation(), 0);
         assertFalse(purchase.getCustomer().getCustomerScores().get(0).isFinished());
+    }
+
+    @Test
+    public void StartDeliveryForPurchaseShouldChangePurchaseStatusToInDelivery() throws Exception {
+        // Arrange
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
+        viendasYa.addCustomer(customer);
+        viendasYa.addSupplier(supplier);
+
+        viendasYa.addService(supplier, new ServiceBuilder("Burguer King", supplier).build());
+        viendasYa.addMenuToService("Burguer King", new MenuBuilder(1).setMenuName("Whopper").build());
+
+        customer.getAccount().depositMoney(1000);
+        Purchase purchase = viendasYa.purchase(customer, "Burguer King", 1, 10);
+
+        // Act
+        viendasYa.startDeliveryForPurchase(purchase.getPurchaseId());
+
+        // Assert
+        assertFalse(viendasYa.getAllPurchases().isEmpty());
+        assertEquals(viendasYa.getAllPurchases().get(0).getPurchaseStatus(), PurchaseStatus.InDelivery);
+    }
+
+    @Test
+    public void FinishDeliveryForPurchaseShouldChangePurchaseStatusToFinished() throws Exception {
+        // Arrange
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+
+        ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
+        viendasYa.addCustomer(customer);
+        viendasYa.addSupplier(supplier);
+
+        viendasYa.addService(supplier, new ServiceBuilder("Burguer King", supplier).build());
+        viendasYa.addMenuToService("Burguer King", new MenuBuilder(1).setMenuName("Whopper").build());
+
+        customer.getAccount().depositMoney(1000);
+        Purchase purchase = viendasYa.purchase(customer, "Burguer King", 1, 10);
+
+        // Act
+        viendasYa.startDeliveryForPurchase(purchase.getPurchaseId());
+        viendasYa.finishDeliveryForPurchase(purchase.getPurchaseId());
+
+        // Assert
+        assertFalse(viendasYa.getAllPurchases().isEmpty());
+        assertEquals(viendasYa.getAllPurchases().get(0).getPurchaseStatus(), PurchaseStatus.Finished);
     }
 
     @Test(expected = Exception.class)

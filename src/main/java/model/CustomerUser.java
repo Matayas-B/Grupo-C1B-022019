@@ -25,8 +25,11 @@ public class CustomerUser extends User {
         return customerScores.stream().anyMatch(us -> !us.isFinished());
     }
 
-    void addDefaultScore(Service service, Menu menu) {
-        customerScores.add(new CustomerScore(this.getName(), service, menu));
+    CustomerScore addDefaultScore(Service service, Menu menu) {
+        int nextCustomerScoreId = customerScores.size() + 1;
+        CustomerScore customerScore = new CustomerScore(nextCustomerScoreId, this.getName(), service, menu);
+        customerScores.add(customerScore);
+        return customerScore;
     }
 
     CustomerScore findUserScore(String serviceName, int menuId) {

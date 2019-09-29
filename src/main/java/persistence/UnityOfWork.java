@@ -1,6 +1,7 @@
 package persistence;
 
 import model.*;
+import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,5 +25,20 @@ public class UnityOfWork {
 
     public boolean isServiceAlreadyCreated(String serviceName) {
         return getAllServices().stream().anyMatch(s -> s.getServiceName().equals(serviceName));
+    }
+
+    public Purchase getPurchaseById(int purchaseId) {
+        return purchases.stream().filter(p -> p.getPurchaseId() == purchaseId).findFirst().orElse(null);
+    }
+
+    public void savePurchase(Purchase purchase) {
+        purchases.set(purchases.indexOf(purchase), purchase);
+    }
+
+    public Purchase addPurchase(CustomerUser customer, int customerScoreId, Service service, Menu purchasedMenu, LocalDate dateOfPurchase, int purchaseAmount) {
+        int newPurchaseId = purchases.size() + 1;
+        Purchase newPurchase = new Purchase(newPurchaseId, customer, customerScoreId, service, purchasedMenu, LocalDate.now(), purchaseAmount);
+        purchases.add(newPurchase);
+        return newPurchase;
     }
 }

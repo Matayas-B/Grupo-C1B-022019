@@ -1,5 +1,6 @@
 package model;
 
+import model.enums.PurchaseStatus;
 import model.exception.MenuNotFoundException;
 import model.exception.ServiceNotFoundException;
 import model.enums.Category;
@@ -111,13 +112,24 @@ public class ViendasYaFacade {
         if (customer.hasPendingPunctuations())
             throw new Exception("Customer has pending scores to punctuate before purchasing.");
 
-        customer.getAccount().extractMoney(currentMenu.getPrice() * quantity);
-        Purchase newPurchase = new Purchase(customer, currentService, currentMenu, LocalDate.now());
-        currentService.getSupplier().getAccount().depositMoney(currentMenu.getPrice() * quantity);
-        customer.addDefaultScore(currentService, currentMenu);
+        int purchasedAmount = currentMenu.getPrice() * quantity;
+        customer.getAccount().extractMoney(purchasedAmount);
+        currentService.getSupplier().getAccount().depositMoney(purchasedAmount);
+        CustomerScore customerScore = customer.addDefaultScore(currentService, currentMenu);
 
-        unityOfWork.purchases.add(newPurchase);
-        return newPurchase;
+        return unityOfWork.addPurchase(customer, customerScore.getCustomerScoreId(), currentService, currentMenu, LocalDate.now(), purchasedAmount);
+    }
+
+    public void startDeliveryForPurchase(int purchaseId) {
+        Purchase purchase = unityOfWork.getPurchaseById(purchaseId);
+        purchase.startDelivery();
+        unityOfWork.savePurchase(purchase);
+    }
+
+    public void finishDeliveryForPurchase(int purchaseId) {
+        Purchase purchase = unityOfWork.getPurchaseById(purchaseId);
+        purchase.finishDelivery();
+        unityOfWork.savePurchase(purchase);
     }
 
     public void createMenuScore(CustomerUser customer, String serviceName, int menuId, int punctuation) throws Exception {

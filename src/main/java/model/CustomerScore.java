@@ -2,11 +2,16 @@ package model;
 
 public class CustomerScore {
 
+    private int customerScoreId;
     private String customerName;
     private Service service;
     private Menu menu;
     private int punctuation;
     private boolean isFinished;
+
+    public int getCustomerScoreId() {
+        return customerScoreId;
+    }
 
     public String getCustomerName() {
         return customerName;
@@ -28,7 +33,8 @@ public class CustomerScore {
         return isFinished;
     }
 
-    CustomerScore(String customerName, Service service, Menu menu) {
+    CustomerScore(int customerScoreId, String customerName, Service service, Menu menu) {
+        this.customerScoreId = customerScoreId;
         this.customerName = customerName;
         this.service = service;
         this.menu = menu;

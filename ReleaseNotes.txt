@@ -1,0 +1,3 @@
+Version 1.1
+
+1. Added all domain logic for ViendasYa application backend. Unittest covered for all this logic.

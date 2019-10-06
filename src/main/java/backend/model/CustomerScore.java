@@ -2,6 +2,7 @@ package backend.model;
 
 import javax.persistence.*;
 
+@Entity
 public class CustomerScore {
 
     @Id
@@ -10,9 +11,11 @@ public class CustomerScore {
     private int customerScoreId;
     private String customerName;
 
+    @Transient
     @JoinColumn(name = "SERVICE_ID")
     @OneToOne(cascade = CascadeType.ALL)
     private Service service;
+    @Transient
     private Menu menu;
 
     private int punctuation;

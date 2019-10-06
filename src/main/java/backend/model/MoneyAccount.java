@@ -3,7 +3,6 @@ package backend.model;
 import javax.persistence.*;
 
 @Entity
-
 public class MoneyAccount {
 
     @Id
@@ -16,12 +15,20 @@ public class MoneyAccount {
         funds = 0;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public int getFunds() {
+        return funds;
+    }
+
     public boolean haveEnoughFunds(int price) {
         return funds >= price;
     }
 
     public void depositMoney(int money) {
-        funds = funds + money;
+        funds += money;
     }
 
     public void extractMoney(int money) throws Exception {

@@ -9,7 +9,4 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 @Repository
-public interface ICustomerRepository extends CrudRepository<CustomerUser, Long> {
-
-   List<CustomerUser> findByName(String name);
-}
+public interface ICustomerRepository extends CrudRepository<CustomerUser, Long> { }

@@ -5,26 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@DiscriminatorValue(value = "customer")
 public class CustomerUser extends User {
 
-    @JoinColumn(name="MONEY_ACCOUNT_ID", unique = true)
-    @OneToOne(cascade = CascadeType.ALL)
-    private MoneyAccount account = new MoneyAccount();
-
- //   @JoinColumn(name = "CUSTOMERSCORE_ID")
-   // @OneToMany(cascade = CascadeType.ALL)
-    @Transient
-    List<CustomerScore> customerScores = new ArrayList<>();
+    @JoinColumn(name = "CUSTOMER_SCORE_ID")
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<CustomerScore> customerScores = new ArrayList<>();
 
     public List<CustomerScore> getCustomerScores() {
         return customerScores;
     }
 
-    MoneyAccount getAccount() {
-        return account;
+    public MoneyAccount getAccount() {
+        return super.getAccount();
     }
 
-    public CustomerUser(){
+    public CustomerUser() {
         super();
     }
 

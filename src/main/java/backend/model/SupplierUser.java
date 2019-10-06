@@ -5,20 +5,22 @@ import backend.model.enums.OfficeDays;
 import backend.model.enums.OfficeHours;
 import org.joda.time.LocalDate;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@DiscriminatorValue(value = "supplier")
 public class SupplierUser extends User {
 
-    private int id;
+    @Transient
     private Service service;
-    private MoneyAccount account = new MoneyAccount();
 
     public Service getService() {
         return service;
     }
 
     public MoneyAccount getAccount() {
-        return account;
+        return super.getAccount();
     }
 
     public SupplierUser(String name, String lastName, String eMail, String phone, String address) {

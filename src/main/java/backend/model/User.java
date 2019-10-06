@@ -1,15 +1,11 @@
 package backend.model;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.io.Serializable;
+import javax.persistence.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "USER_TYPE", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue(value = "user")
 public abstract class User {
 
     @Id
@@ -17,18 +13,33 @@ public abstract class User {
     private Long id;
     private String name;
     private String lastName;
-    private String eMail;
+    private String email;
     private String phone;
     private String address;
+    @Column(name = "USER_TYPE", insertable = false, updatable = false)
+    private String userType;
 
-    public User(){}
+    @JoinColumn(name="MONEY_ACCOUNT_ID", unique = true)
+    @OneToOne(cascade = CascadeType.ALL)
+    private MoneyAccount account;
 
-    public User(String name, String lastName, String eMail, String phone, String address) {
+    public User() { }
+
+    public User(String name, String lastName, String email, String phone, String address) {
         this.name = name;
         this.lastName = lastName;
-        this.eMail = eMail;
+        this.email = email;
         this.phone = phone;
         this.address = address;
+        this.account = new MoneyAccount();
+    }
+
+    public MoneyAccount getAccount() {
+        return account;
+    }
+
+    public String getUserType() {
+        return userType;
     }
 
     public String getName() {
@@ -39,8 +50,8 @@ public abstract class User {
         return lastName;
     }
 
-    public String geteMail() {
-        return eMail;
+    public String getEmail() {
+        return email;
     }
 
     public String getPhone() {
@@ -65,7 +76,7 @@ public abstract class User {
 
     public void setLastName(String lastName) {this.lastName = lastName;}
 
-    public void seteMail(String eMail) {this.eMail = eMail;}
+    public void setEmail(String email) {this.email = email;}
 
     public void setPhone(String phone) {this.phone = phone;}
 

@@ -1,5 +1,7 @@
 package backend.model;
 
+import backend.model.exception.InsufficientFundsException;
+
 import javax.persistence.*;
 
 @Entity
@@ -31,10 +33,9 @@ public class MoneyAccount {
         funds += money;
     }
 
-    public void extractMoney(int money) throws Exception {
+    public void extractMoney(int money) throws InsufficientFundsException {
         if (money > funds)
-            throw new Exception("You do not have enough money on your account.");
-
+            throw new InsufficientFundsException();
         funds -= money;
     }
 }

@@ -5,18 +5,13 @@ import backend.repository.ICustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.StreamSupport;
-
 @Service
 public class CustomerService {
 
     @Autowired
     private ICustomerRepository customerRepository;
 
-    public CustomerUser createCustomer(CustomerUser customer) throws Exception {
-        if (userExists(customer.getEmail()))
-            throw new Exception();
-
+    public CustomerUser createCustomer(CustomerUser customer) {
         CustomerUser newCustomer = new CustomerUser(customer.getName(), customer.getLastName(), customer.getEmail(), customer.getPhone(), customer.getAddress());
         return customerRepository.save(newCustomer);
     }
@@ -25,10 +20,7 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public void deleteCustomer(long id) throws Exception {
-        if (!customerRepository.existsById(id))
-            throw new Exception();
-
+    public void deleteCustomer(long id) {
         customerRepository.deleteById(id);
     }
 
@@ -37,11 +29,5 @@ public class CustomerService {
         customer.getAccount().depositMoney(money);
         customerRepository.save(customer);
         return customer.getAccount().getFunds();
-    }
-
-    /* Private Methods */
-    private boolean userExists(String emailAccount) {
-        Iterable<CustomerUser> customers = customerRepository.findAll();
-        return StreamSupport.stream(customers.spliterator(), false).anyMatch(c -> c.getEmail().equals(emailAccount));
     }
 }

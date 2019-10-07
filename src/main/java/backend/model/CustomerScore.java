@@ -16,7 +16,7 @@ public class CustomerScore {
     @OneToOne(cascade = CascadeType.ALL)
     private Service service;
     @Transient
-    private Menu menu;
+    private Menu menu; // Missing
 
     private int punctuation;
     private boolean isFinished;

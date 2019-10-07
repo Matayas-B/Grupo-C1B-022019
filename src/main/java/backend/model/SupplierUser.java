@@ -3,6 +3,7 @@ package backend.model;
 import backend.model.enums.Category;
 import backend.model.enums.OfficeDays;
 import backend.model.enums.OfficeHours;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;
@@ -12,7 +13,9 @@ import java.util.List;
 @DiscriminatorValue(value = "supplier")
 public class SupplierUser extends User {
 
-    @Transient
+    @JoinColumn(name = "SERVICE_ID")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("supplier")
     private Service service;
 
     public Service getService() {
@@ -21,6 +24,10 @@ public class SupplierUser extends User {
 
     public MoneyAccount getAccount() {
         return super.getAccount();
+    }
+
+    public SupplierUser() {
+        super();
     }
 
     public SupplierUser(String name, String lastName, String eMail, String phone, String address) {

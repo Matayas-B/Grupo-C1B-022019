@@ -15,6 +15,8 @@ public class ViendasYaFacade {
 
     private UnityOfWork unityOfWork;
 
+    public ViendasYaFacade() { }
+
     public ViendasYaFacade(UnityOfWork unityOfWork) {
         this.unityOfWork = unityOfWork;
     }
@@ -51,13 +53,6 @@ public class ViendasYaFacade {
             throw new Exception("Supplier already has a service. Please, delete it before creating new one");
 
         supp.addService(service.getServiceName(), service.getIcon(), service.getAddress(), service.getDescription(), service.getEmail(), service.getPhoneNumber(), service.getOfficeDays(), service.getOfficeHours(), service.getDeliveryDistance());
-    }
-
-    public void deleteService(SupplierUser supp) throws Exception {
-        if (!supp.hasService())
-            throw new Exception("Supplier does not have any active service.");
-
-        supp.deleteService();
     }
 
     public void addMenuToService(String serviceName, int id, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
@@ -179,5 +174,23 @@ public class ViendasYaFacade {
     private List<Purchase> getAllPurchasesForMenu(Service currentService, Menu currentMenu) {
         List<Purchase> todayPurchases = unityOfWork.purchases.stream().filter(p -> p.getPurchasedDate().equals(LocalDate.now())).collect(Collectors.toList());
         return todayPurchases.stream().filter(p -> p.getService().equals(currentService) && p.getPurchasedMenu().equals(currentMenu)).collect(Collectors.toList());
+    }
+
+    /**
+     * METHODS FOR SERVICES
+     */
+
+    public void addServiceToSupplier(SupplierUser supp, String serviceName, String icon, String addressTown, String addressLocation, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance) throws Exception {
+        if (supp.hasService())
+            throw new Exception("Supplier already has a service. Please, delete it before creating new one");
+
+        supp.addService(serviceName, icon, new Address(addressTown, addressLocation), description, email, phoneNumber, officeDays, officeHours, deliveryDistance);
+    }
+
+    public void deleteService(SupplierUser supp) throws ServiceNotFoundException {
+        if (!supp.hasService())
+            throw new ServiceNotFoundException();
+
+        supp.deleteService();
     }
 }

@@ -1,8 +1,8 @@
 package backend.repository;
 
-import backend.model.CustomerUser;
+import backend.model.SupplierUser;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ICustomerRepository extends CrudRepository<CustomerUser, Long> { }
+public interface ISupplierRepository extends CrudRepository<SupplierUser, Long> { }

@@ -3,29 +3,56 @@ package backend.model;
 import backend.model.enums.Category;
 import backend.model.enums.OfficeDays;
 import backend.model.enums.OfficeHours;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.xml.internal.ws.developer.StreamingAttachment;
 import org.joda.time.LocalDate;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+@Entity
 public class Service {
 
-    private int serviceId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "SERVICE_ID")
+    private Long serviceId;
+
+    @Column(unique = true)
     private String serviceName;
     private String icon;
+    @JoinColumn(name = "ADDRESS_ID")
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
     private String description;
     private String email;
     private String phoneNumber;
-    private List<OfficeDays> officeDays;
-    private List<OfficeHours> officeHours;
     private int deliveryDistanceKm;
-    private SupplierUser supplier;
     private boolean isValidService;
+    @ElementCollection(targetClass = OfficeDays.class)
+    @CollectionTable(name = "OFFICE_DAYS", joinColumns = @JoinColumn(name = "serviceId"))
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private List<OfficeDays> officeDays;
+    @ElementCollection(targetClass = OfficeHours.class)
+    @CollectionTable(name = "OFFICE_HOURS", joinColumns = @JoinColumn(name = "serviceId"))
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private List<OfficeHours> officeHours;
 
-    private List<Menu> menus = new ArrayList<>();
-    private List<Menu> invalidMenus = new ArrayList<>();
+    @JoinColumn(name = "ID")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("service")
+    private SupplierUser supplier;
+
+    @Transient
+    private List<Menu> menus = new ArrayList<>(); // Missing
+    @Transient
+    private List<Menu> invalidMenus = new ArrayList<>(); // Missing
+
+    public Service() { }
 
     /* Constructor for testing purposes -> ServiceBuilder */
     public Service(String serviceName, SupplierUser supplier) {
@@ -53,6 +80,18 @@ public class Service {
 
     public SupplierUser getSupplier() {
         return supplier;
+    }
+
+    public Long getServiceId() {
+        return serviceId;
+    }
+
+    public int getDeliveryDistanceKm() {
+        return deliveryDistanceKm;
+    }
+
+    public boolean isValidService() {
+        return isValidService;
     }
 
     public String getServiceName() {

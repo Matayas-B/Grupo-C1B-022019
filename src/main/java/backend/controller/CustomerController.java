@@ -31,9 +31,9 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/customer", method = RequestMethod.DELETE)
-    public void deleteCustomer(long id) {
+    public void deleteCustomer(long customerId) {
         try {
-            customerService.deleteCustomer(id);
+            customerService.deleteCustomer(customerId);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User does not exist", ex);
         }

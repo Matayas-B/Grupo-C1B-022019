@@ -109,9 +109,9 @@ public class ViendasYaFacadeTest {
             // Act
             viendasYa.deleteService(supplier);
         }
-        catch (Exception ex) {
+        catch (ServiceNotFoundException ex) {
             // Assert
-            assertEquals(ex.getMessage(), "Supplier does not have any active service.");
+            assertEquals(ex.getMessage(), "Service does not longer exists.");
             throw ex;
         }
 

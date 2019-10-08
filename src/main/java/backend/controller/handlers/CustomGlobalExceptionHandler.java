@@ -1,38 +1,33 @@
 package backend.controller.handlers;
 
-import org.joda.time.DateTime;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.HttpHeaders;
+import backend.model.exception.InsufficientFundsException;
+import backend.model.exception.MenuNotFoundException;
+import backend.model.exception.ServiceNotFoundException;
+import backend.model.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers,
-                                                                  HttpStatus status,
-                                                                  WebRequest request) {
+public class CustomGlobalExceptionHandler {
+    @ExceptionHandler(value = UserNotFoundException.class)
+    public ResponseEntity<Object> exception(UserNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
 
-        Map<String, String> errors = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .collect(Collectors.toMap(FieldError::getField, DefaultMessageSourceResolvable::getDefaultMessage));
+    @ExceptionHandler(value = ServiceNotFoundException.class)
+    public ResponseEntity<Object> exception(ServiceNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
 
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("status", status.value());
-        body.put("errors", errors);
+    @ExceptionHandler(value = MenuNotFoundException.class)
+    public ResponseEntity<Object> exception(MenuNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
 
-        return new ResponseEntity<>(body, headers, status);
+    @ExceptionHandler(value = InsufficientFundsException.class)
+    public ResponseEntity<Object> exception(InsufficientFundsException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

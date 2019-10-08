@@ -3,9 +3,6 @@ package backend.controller;
 import backend.controller.requests.NewServiceRequest;
 import backend.model.Service;
 import backend.model.SupplierUser;
-import backend.model.exception.InsufficientFundsException;
-import backend.model.exception.ServiceNotFoundException;
-import backend.model.exception.UserNotFoundException;
 import backend.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +25,7 @@ public class SupplierController {
         try {
             return supplierService.createSupplier(supplier);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, ex.getMessage(), ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         }
     }
 
@@ -42,7 +39,7 @@ public class SupplierController {
         try {
             supplierService.deleteSupplier(id);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User does not exist", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         }
     }
 
@@ -50,19 +47,17 @@ public class SupplierController {
     public int extractMoney(long supplierId, int money) {
         try {
             return supplierService.extractMoney(supplierId, money);
-        } catch (UserNotFoundException | InsufficientFundsException ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User does not exist", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         }
     }
 
     @RequestMapping(value = "/supplier/addService", method = RequestMethod.POST)
-    public void addService(@RequestBody NewServiceRequest newServiceRequest) {
+    public void addService(@Valid @RequestBody NewServiceRequest newServiceRequest) {
         try {
             supplierService.addService(newServiceRequest);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Service already exists", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         }
     }
 
@@ -70,10 +65,8 @@ public class SupplierController {
     public Service getSupplierService(long supplierId) {
         try {
             return supplierService.getSupplierService(supplierId);
-        } catch (ServiceNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User does not exist", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         }
     }
 
@@ -81,10 +74,8 @@ public class SupplierController {
     public void deleteService(long supplierId) {
         try {
             supplierService.deleteService(supplierId);
-        } catch (ServiceNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User does not exist", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         }
     }
 }

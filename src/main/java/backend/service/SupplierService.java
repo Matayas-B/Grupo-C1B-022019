@@ -6,6 +6,7 @@ import backend.model.ViendasYaFacade;
 import backend.model.exception.InsufficientFundsException;
 import backend.model.exception.ServiceNotFoundException;
 import backend.model.exception.UserNotFoundException;
+import backend.repository.IServiceRepository;
 import backend.repository.ISupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ public class SupplierService {
 
     @Autowired
     private ISupplierRepository supplierRepository;
+    @Autowired
+    private IServiceRepository serviceRepository;
     private ViendasYaFacade viendasYaFacade = new ViendasYaFacade();
 
     public SupplierUser createSupplier(SupplierUser supplier) {
@@ -53,7 +56,10 @@ public class SupplierService {
 
     public void deleteService(long supplierId) throws ServiceNotFoundException, UserNotFoundException {
         SupplierUser supplier = supplierRepository.findById(supplierId).orElseThrow(() -> new UserNotFoundException(supplierId));
-        viendasYaFacade.deleteService(supplier);
+        if (!supplier.hasService())
+            throw new ServiceNotFoundException();
+
+        serviceRepository.delete(supplier.getService());
         supplierRepository.save(supplier);
     }
 }

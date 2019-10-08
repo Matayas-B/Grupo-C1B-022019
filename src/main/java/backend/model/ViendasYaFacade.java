@@ -176,6 +176,13 @@ public class ViendasYaFacade {
         return todayPurchases.stream().filter(p -> p.getService().equals(currentService) && p.getPurchasedMenu().equals(currentMenu)).collect(Collectors.toList());
     }
 
+    public void deleteService(SupplierUser supp) throws ServiceNotFoundException {
+        if (!supp.hasService())
+            throw new ServiceNotFoundException();
+
+        supp.deleteService();
+    }
+
     /**
      * METHODS FOR SERVICES
      */
@@ -185,12 +192,5 @@ public class ViendasYaFacade {
             throw new Exception("Supplier already has a service. Please, delete it before creating new one");
 
         supp.addService(serviceName, icon, new Address(addressTown, addressLocation), description, email, phoneNumber, officeDays, officeHours, deliveryDistance);
-    }
-
-    public void deleteService(SupplierUser supp) throws ServiceNotFoundException {
-        if (!supp.hasService())
-            throw new ServiceNotFoundException();
-
-        supp.deleteService();
     }
 }

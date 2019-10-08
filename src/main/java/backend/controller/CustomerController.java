@@ -1,7 +1,6 @@
 package backend.controller;
 
 import backend.model.CustomerUser;
-import backend.model.exception.UserNotFoundException;
 import backend.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,7 @@ public class CustomerController {
         try {
             return customerService.createCustomer(customer);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, ex.getMessage(), ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         }
     }
 
@@ -38,7 +37,7 @@ public class CustomerController {
         try {
             customerService.deleteCustomer(customerId);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User does not exist", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         }
     }
 
@@ -46,10 +45,8 @@ public class CustomerController {
     public int depositMoney(long customerId, int money) {
         try {
             return customerService.depositMoney(customerId, money);
-        } catch (UserNotFoundException ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User does not exist", ex);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         }
     }
 }

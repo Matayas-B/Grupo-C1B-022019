@@ -1,6 +1,7 @@
 package backend.service;
 
 import backend.model.CustomerUser;
+import backend.model.exception.UserNotFoundException;
 import backend.repository.ICustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class CustomerService {
     }
 
     public int depositMoney(long customerId, int money) {
-        CustomerUser customer = customerRepository.findById(customerId).get();
+        CustomerUser customer = customerRepository.findById(customerId).orElseThrow(() -> new UserNotFoundException(customerId));
         customer.getAccount().depositMoney(money);
         customerRepository.save(customer);
         return customer.getAccount().getFunds();

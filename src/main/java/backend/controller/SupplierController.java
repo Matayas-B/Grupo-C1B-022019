@@ -5,6 +5,7 @@ import backend.model.Service;
 import backend.model.SupplierUser;
 import backend.model.exception.InsufficientFundsException;
 import backend.model.exception.ServiceNotFoundException;
+import backend.model.exception.UserNotFoundException;
 import backend.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
+
 @RestController
 public class SupplierController {
 
@@ -21,11 +24,11 @@ public class SupplierController {
     private SupplierService supplierService = new SupplierService();
 
     @RequestMapping(value = "/supplier", method = RequestMethod.POST)
-    public SupplierUser createSupplier(@RequestBody SupplierUser supplier) {
+    public SupplierUser createSupplier(@Valid @RequestBody SupplierUser supplier) {
         try {
             return supplierService.createSupplier(supplier);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "An user with that email alreay exists", ex);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ex.getMessage(), ex);
         }
     }
 
@@ -47,7 +50,7 @@ public class SupplierController {
     public int extractMoney(long supplierId, int money) {
         try {
             return supplierService.extractMoney(supplierId, money);
-        } catch (InsufficientFundsException ex) {
+        } catch (UserNotFoundException | InsufficientFundsException ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User does not exist", ex);

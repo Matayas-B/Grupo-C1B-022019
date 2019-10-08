@@ -1,6 +1,7 @@
 package backend.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -11,12 +12,17 @@ public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotEmpty(message = "Please, provide a name.")
     private String name;
+    @NotEmpty(message = "Please, provide a last name.")
     private String lastName;
+    @NotEmpty(message = "Please, provide an email.")
     @Column(unique = true)
     private String email;
+    @NotEmpty(message = "Please, enter your password.")
     private String password;
     private String phone;
+    @NotEmpty(message = "Please, provide an address.")
     private String address;
     @Column(name = "USER_TYPE", insertable = false, updatable = false)
     private String userType;

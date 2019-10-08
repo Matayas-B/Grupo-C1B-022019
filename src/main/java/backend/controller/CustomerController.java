@@ -1,6 +1,7 @@
 package backend.controller;
 
 import backend.model.CustomerUser;
+import backend.model.exception.UserNotFoundException;
 import backend.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
+
 @RestController
 public class CustomerController {
 
@@ -17,11 +20,11 @@ public class CustomerController {
     private CustomerService customerService = new CustomerService();
 
     @RequestMapping(value = "/customer", method = RequestMethod.POST)
-    public CustomerUser createCustomer(@RequestBody CustomerUser customer) {
+    public CustomerUser createCustomer(@Valid @RequestBody CustomerUser customer) {
         try {
             return customerService.createCustomer(customer);
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "An user with that email alreay exists", ex);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, ex.getMessage(), ex);
         }
     }
 
@@ -43,6 +46,8 @@ public class CustomerController {
     public int depositMoney(long customerId, int money) {
         try {
             return customerService.depositMoney(customerId, money);
+        } catch (UserNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User does not exist", ex);
         }

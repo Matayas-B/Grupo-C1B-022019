@@ -30,8 +30,8 @@ public class SupplierUser extends User {
         super();
     }
 
-    public SupplierUser(String name, String lastName, String eMail, String phone, String address) {
-        super(name, lastName, eMail, phone, address);
+    public SupplierUser(String name, String lastName, String email, String password, String phone, String address) {
+        super(name, lastName, email, password, phone, address);
     }
 
     public boolean hasService() {

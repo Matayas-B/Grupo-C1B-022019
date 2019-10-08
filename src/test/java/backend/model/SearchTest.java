@@ -16,7 +16,7 @@ public class SearchTest {
     @Test
     public void SearchByMenuNameShouldBringAllMenusWithThatName() throws Exception {
         // Arrange
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
 
         UnityOfWork unityOfWork = new UnityOfWork();
         ViendasYaFacade viendasYa = new ViendasYaFacade(unityOfWork);
@@ -39,7 +39,7 @@ public class SearchTest {
     @Test
     public void SearchByCategoryShouldBringAllMenusWithThatCategory() throws Exception {
         // Arrange
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
 
         UnityOfWork unityOfWork = new UnityOfWork();
         ViendasYaFacade viendasYa = new ViendasYaFacade(unityOfWork);
@@ -62,8 +62,8 @@ public class SearchTest {
     @Test
     public void SearchByTownShouldBringAllMenusWhichServiceBelongsToThatTown() throws Exception {
         // Arrange
-        SupplierUser supplier1 = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
-        SupplierUser supplier2 = new SupplierUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
+        SupplierUser supplier1 = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
+        SupplierUser supplier2 = new SupplierUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
 
         UnityOfWork unityOfWork = new UnityOfWork();
         ViendasYaFacade viendasYa = new ViendasYaFacade(unityOfWork);
@@ -88,9 +88,9 @@ public class SearchTest {
     @Test
     public void SearchWithAllParametersShouldBringMenusAccordingToCriteria() throws Exception {
         // Arrange
-        SupplierUser supplier1 = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
-        SupplierUser supplier2 = new SupplierUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier3 = new SupplierUser("Brian", "Loquillo", "bra@gmail.com", "1161635613", "Canale 3134");
+        SupplierUser supplier1 = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
+        SupplierUser supplier2 = new SupplierUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        SupplierUser supplier3 = new SupplierUser("Brian", "Loquillo", "bra@gmail.com", "bra123", "1161635613", "Canale 3134");
 
         UnityOfWork unityOfWork = new UnityOfWork();
         ViendasYaFacade viendasYa = new ViendasYaFacade(unityOfWork);

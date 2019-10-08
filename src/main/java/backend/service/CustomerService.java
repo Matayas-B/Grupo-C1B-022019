@@ -12,7 +12,7 @@ public class CustomerService {
     private ICustomerRepository customerRepository;
 
     public CustomerUser createCustomer(CustomerUser customer) {
-        CustomerUser newCustomer = new CustomerUser(customer.getName(), customer.getLastName(), customer.getEmail(), customer.getPhone(), customer.getAddress());
+        CustomerUser newCustomer = new CustomerUser(customer.getName(), customer.getLastName(), customer.getEmail(), customer.getPassword(), customer.getPhone(), customer.getAddress());
         return customerRepository.save(newCustomer);
     }
 

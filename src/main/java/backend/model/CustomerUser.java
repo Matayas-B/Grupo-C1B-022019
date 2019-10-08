@@ -24,8 +24,8 @@ public class CustomerUser extends User {
         super();
     }
 
-    public CustomerUser(String name, String lastName, String eMail, String phone, String address) {
-        super(name, lastName, eMail, phone, address);
+    public CustomerUser(String name, String lastName, String email, String password, String phone, String address) {
+        super(name, lastName, email, password, phone, address);
     }
 
     boolean hasPendingPunctuations() {

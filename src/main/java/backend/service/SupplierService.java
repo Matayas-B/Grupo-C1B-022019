@@ -17,7 +17,7 @@ public class SupplierService {
     private ViendasYaFacade viendasYaFacade = new ViendasYaFacade();
 
     public SupplierUser createSupplier(SupplierUser supplier) {
-        SupplierUser newSupplier = new SupplierUser(supplier.getName(), supplier.getLastName(), supplier.getEmail(), supplier.getPhone(), supplier.getAddress());
+        SupplierUser newSupplier = new SupplierUser(supplier.getName(), supplier.getLastName(), supplier.getEmail(), supplier.getPassword(), supplier.getPhone(), supplier.getAddress());
         return supplierRepository.save(newSupplier);
     }
 

@@ -24,7 +24,7 @@ public class ViendasYaFacadeTest {
     @Test(expected = Exception.class)
     public void AddServiceToSupplierWhenHeAlreadyHasOneShouldThrowException() throws Exception {
         // Arrange
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addSupplier(supplier);
 
@@ -51,8 +51,8 @@ public class ViendasYaFacadeTest {
     @Test(expected = Exception.class)
     public void AddServiceIfOneAlreadyExistsWithThatNameShouldThrowException() throws Exception {
         // Arrange
-        SupplierUser supplier1 = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
-        SupplierUser supplier2 = new SupplierUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
+        SupplierUser supplier1 = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
+        SupplierUser supplier2 = new SupplierUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addSupplier(supplier1);
         viendasYa.addSupplier(supplier2);
@@ -80,7 +80,7 @@ public class ViendasYaFacadeTest {
     @Test
     public void AddServiceShouldInitializeServiceForSupplier() throws Exception {
         // Arrange
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addSupplier(supplier);
 
@@ -101,7 +101,7 @@ public class ViendasYaFacadeTest {
     @Test(expected = Exception.class)
     public void DeleteServiceIfSupplierDoesNotHaveAnyShouldThrowException() throws Exception {
         // Arrange
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addSupplier(supplier);
 
@@ -121,7 +121,7 @@ public class ViendasYaFacadeTest {
     @Test
     public void DeleteServiceShouldDeleteServiceForSupplier() throws Exception {
         // Arrange
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addSupplier(supplier);
 
@@ -139,7 +139,7 @@ public class ViendasYaFacadeTest {
     @Test
     public void AddMenuToServiceShouldAddItToSupplierService() throws Exception {
         // Arrange
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addSupplier(supplier);
 
@@ -164,7 +164,7 @@ public class ViendasYaFacadeTest {
     @Test(expected = ServiceNotFoundException.class)
     public void AddMenuToUnavailableServiceShouldThrowServiceNotFoundException() throws Exception {
         // Arrange
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addSupplier(supplier);
 
@@ -188,9 +188,9 @@ public class ViendasYaFacadeTest {
     @Test
     public void GetAllServicesShouldReturnNotNullServicesList() throws Exception {
         // Arrange
-        SupplierUser supplier1 = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
-        SupplierUser supplier2 = new SupplierUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier3 = new SupplierUser("Brian", "Loquillo", "bra@gmail.com", "1161635613", "Canale 3134");
+        SupplierUser supplier1 = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
+        SupplierUser supplier2 = new SupplierUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        SupplierUser supplier3 = new SupplierUser("Brian", "Loquillo", "bra@gmail.com", "loqui123", "1161635613", "Canale 3134");
 
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addSupplier(supplier1);
@@ -218,8 +218,8 @@ public class ViendasYaFacadeTest {
     @Test(expected = ServiceNotFoundException.class)
     public void PurchasingMenuFromUnavailableServiceShouldThrowServiceNotFoundException() throws Exception {
         // Arrange
-        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
 
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
@@ -240,8 +240,8 @@ public class ViendasYaFacadeTest {
     @Test(expected = MenuNotFoundException.class)
     public void PurchasingNonExistingMenuShouldThrowMenuNotFoundException() throws Exception {
         // Arrange
-        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
 
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
@@ -267,8 +267,8 @@ public class ViendasYaFacadeTest {
     @Test(expected = Exception.class)
     public void PurchasingLessThanTheMinimumQuantityAllowedForMenuShouldThrowException() throws Exception {
         // Arrange
-        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
 
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
@@ -296,8 +296,8 @@ public class ViendasYaFacadeTest {
     @Test(expected = Exception.class)
     public void PurchasingMoreThanTheMaximumNumberOfSalesAllowedForMenuShouldThrowException() throws Exception {
         // Arrange
-        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
 
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
@@ -325,8 +325,8 @@ public class ViendasYaFacadeTest {
     @Test(expected = Exception.class)
     public void PurchasingWithLessFundsThatTheRequiredShouldThrowException() throws Exception {
         // Arrange
-        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
 
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
@@ -356,8 +356,8 @@ public class ViendasYaFacadeTest {
     @Test(expected = Exception.class)
     public void PurchasingWithPendingScoresShouldThrowException() throws Exception {
         // Arrange
-        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
 
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
@@ -388,8 +388,8 @@ public class ViendasYaFacadeTest {
     @Test
     public void BuyMenuFromServiceShouldCreatePurchase() throws Exception {
         // Arrange
-        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
 
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
@@ -424,8 +424,8 @@ public class ViendasYaFacadeTest {
     @Test
     public void StartDeliveryForPurchaseShouldChangePurchaseStatusToInDelivery() throws Exception {
         // Arrange
-        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
 
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
@@ -448,8 +448,8 @@ public class ViendasYaFacadeTest {
     @Test
     public void FinishDeliveryForPurchaseShouldChangePurchaseStatusToFinished() throws Exception {
         // Arrange
-        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
 
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
@@ -473,8 +473,8 @@ public class ViendasYaFacadeTest {
     @Test(expected = Exception.class)
     public void CreateMenuScoreIfUserScoreDoesNotExistsShouldThrowException() throws Exception {
         // Arrange
-        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
         customer.getAccount().depositMoney(1000);
 
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
@@ -495,8 +495,8 @@ public class ViendasYaFacadeTest {
     @Test
     public void CreateMenuScoreShouldDeleteMenuIfAverageIsBelow2() throws Exception {
         // Arrange
-        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
         customer.getAccount().depositMoney(10000);
 
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
@@ -528,8 +528,8 @@ public class ViendasYaFacadeTest {
     @Test
     public void CreateMenuScoreShouldRemoveSupplierIfItHasMoreThan9InvalidMenus() throws Exception {
         // Arrange
-        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
         customer.getAccount().depositMoney(10000);
 
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
@@ -569,9 +569,9 @@ public class ViendasYaFacadeTest {
     @Test
     public void GetHistoricalSupplierPurchasesShouldCreateHistorical() throws Exception {
         // Arrange
-        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier1 = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
-        SupplierUser supplier2 = new SupplierUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
+        CustomerUser customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        SupplierUser supplier1 = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
+        SupplierUser supplier2 = new SupplierUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
 
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer);
@@ -603,9 +603,9 @@ public class ViendasYaFacadeTest {
     @Test
     public void GetHistoricalCustomerPurchasesShouldCreateHistorical() throws Exception {
         // Arrange
-        CustomerUser customer1 = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        CustomerUser customer2 = new CustomerUser("Juan", "Roque", "jroque@gmail.com", "1161635613", "Canale 3134");
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "1111111111", "Yrigoyen 313");
+        CustomerUser customer1 = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        CustomerUser customer2 = new CustomerUser("Juan", "Roque", "jroque@gmail.com", "jroque123", "1161635613", "Canale 3134");
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
 
         ViendasYaFacade viendasYa = new ViendasYaFacade(new UnityOfWork());
         viendasYa.addCustomer(customer1);

@@ -30,8 +30,8 @@ public class CustomerServiceTest {
     @Test
     public void createCustomerShouldSaveCustomerToTheDB() throws Exception {
         // Arrange
-        customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "1161635613", "Canale 3134");
-        CustomerUser customerToSave = new CustomerUser("Matayas", "Beca", "hbeca@gmail.com", "1161635613", "Canale 3134");
+        customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        CustomerUser customerToSave = new CustomerUser("Matayas", "Beca", "hbeca@gmail.com", "matayas123", "1161635613", "Canale 3134");
         Mockito.when(customerRepository.save(any(CustomerUser.class))).thenReturn(customerToSave);
         Mockito.when(customerRepository.findAll()).thenReturn(Collections.singletonList(customer));
 

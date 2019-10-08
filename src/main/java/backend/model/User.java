@@ -15,6 +15,7 @@ public abstract class User {
     private String lastName;
     @Column(unique = true)
     private String email;
+    private String password;
     private String phone;
     private String address;
     @Column(name = "USER_TYPE", insertable = false, updatable = false)
@@ -26,10 +27,11 @@ public abstract class User {
 
     public User() { }
 
-    public User(String name, String lastName, String email, String phone, String address) {
+    public User(String name, String lastName, String email, String password, String phone, String address) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
         this.phone = phone;
         this.address = address;
         this.account = new MoneyAccount();
@@ -53,6 +55,10 @@ public abstract class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getPhone() {

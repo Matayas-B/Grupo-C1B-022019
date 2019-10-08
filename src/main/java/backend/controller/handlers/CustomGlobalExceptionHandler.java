@@ -1,9 +1,6 @@
 package backend.controller.handlers;
 
-import backend.model.exception.InsufficientFundsException;
-import backend.model.exception.MenuNotFoundException;
-import backend.model.exception.ServiceNotFoundException;
-import backend.model.exception.UserNotFoundException;
+import backend.model.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,6 +21,11 @@ public class CustomGlobalExceptionHandler {
     @ExceptionHandler(value = MenuNotFoundException.class)
     public ResponseEntity<Object> exception(MenuNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = ExistingServiceException.class)
+    public ResponseEntity<Object> exception(ExistingServiceException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = InsufficientFundsException.class)

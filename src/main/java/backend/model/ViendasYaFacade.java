@@ -1,5 +1,6 @@
 package backend.model;
 
+import backend.model.exception.ExistingServiceException;
 import backend.model.exception.MenuNotFoundException;
 import backend.model.exception.ServiceNotFoundException;
 import backend.model.enums.Category;
@@ -189,7 +190,7 @@ public class ViendasYaFacade {
 
     public void addServiceToSupplier(SupplierUser supp, String serviceName, String icon, String addressTown, String addressLocation, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance) throws Exception {
         if (supp.hasService())
-            throw new Exception("Supplier already has a service. Please, delete it before creating new one");
+            throw new ExistingServiceException();
 
         supp.addService(serviceName, icon, new Address(addressTown, addressLocation), description, email, phoneNumber, officeDays, officeHours, deliveryDistance);
     }

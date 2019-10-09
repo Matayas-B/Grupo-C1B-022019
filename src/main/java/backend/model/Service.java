@@ -41,7 +41,7 @@ public class Service {
     private List<OfficeHours> officeHours;
 
     @JoinColumn(name = "ID")
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnoreProperties("service")
     private SupplierUser supplier;
 
@@ -78,6 +78,10 @@ public class Service {
 
     public SupplierUser getSupplier() {
         return supplier;
+    }
+
+    public void setSupplier(SupplierUser supplier) {
+        this.supplier = supplier;
     }
 
     public Long getServiceId() {

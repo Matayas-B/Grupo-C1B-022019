@@ -1,6 +1,7 @@
 package backend.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
@@ -16,8 +17,8 @@ public abstract class User {
     private String name;
     @NotEmpty(message = "Please, provide a last name.")
     private String lastName;
-    @NotEmpty(message = "Please, provide an email.")
     @Column(unique = true)
+    @Email(message = "Please, provide an email.")
     private String email;
     @NotEmpty(message = "Please, enter your password.")
     private String password;

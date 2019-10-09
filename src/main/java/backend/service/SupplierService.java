@@ -56,10 +56,10 @@ public class SupplierService {
 
     public void deleteService(long supplierId) throws ServiceNotFoundException, UserNotFoundException {
         SupplierUser supplier = supplierRepository.findById(supplierId).orElseThrow(() -> new UserNotFoundException(supplierId));
-        if (!supplier.hasService())
-            throw new ServiceNotFoundException();
-
-        serviceRepository.delete(supplier.getService());
+        backend.model.Service service = serviceRepository.findById(supplier.getService().getServiceId()).orElseThrow(ServiceNotFoundException::new);
+        service.setSupplier(null);
+        supplier.setService(null);
+        serviceRepository.delete(service);
         supplierRepository.save(supplier);
     }
 }

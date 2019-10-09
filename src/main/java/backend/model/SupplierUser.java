@@ -14,12 +14,20 @@ import java.util.List;
 public class SupplierUser extends User {
 
     @JoinColumn(name = "SERVICE_ID")
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "supplier",
+              cascade = CascadeType.ALL,
+              orphanRemoval = true,
+              fetch = FetchType.LAZY
+    )
     @JsonIgnoreProperties("supplier")
     private Service service;
 
     public Service getService() {
         return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
     }
 
     public MoneyAccount getAccount() {

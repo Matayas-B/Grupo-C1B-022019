@@ -3,6 +3,7 @@ package backend.model;
 import backend.model.enums.Category;
 import backend.model.enums.OfficeDays;
 import backend.model.enums.OfficeHours;
+import backend.model.exception.MenuNotFoundException;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.joda.time.LocalDate;
 
@@ -41,14 +42,14 @@ public class Service {
     private List<OfficeHours> officeHours;
 
     @JoinColumn(name = "ID")
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("service")
     private SupplierUser supplier;
 
-    @Transient
-    private List<Menu> menus = new ArrayList<>(); // Missing
-    @Transient
-    private List<Menu> invalidMenus = new ArrayList<>(); // Missing
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Menu> menus = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Menu> invalidMenus = new ArrayList<>();
 
     public Service() { }
 
@@ -74,6 +75,15 @@ public class Service {
 
     public void addMenu(int id, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
         menus.add(new Menu(id, name, description, category, deliveryFee, startDate, endDate, deliveryHours, averageDeliveryMinutes, price, minQuantity, minQuantityPrice, maxDailySales));
+    }
+
+    public void addMenu(String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
+        menus.add(new Menu(name, description, category, deliveryFee, startDate, endDate, deliveryHours, averageDeliveryMinutes, price, minQuantity, minQuantityPrice, maxDailySales));
+    }
+
+    public void deleteMenu(long menuId) {
+        Menu menuToDelete = menus.stream().filter(m -> m.getMenuId() == menuId).findFirst().orElseThrow(MenuNotFoundException::new);
+        menus.remove(menuToDelete);
     }
 
     public SupplierUser getSupplier() {

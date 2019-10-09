@@ -2,7 +2,7 @@ package backend.model.enums;
 
 public enum Category {
     Pizza,
-    Cervveza,
+    Cerveza,
     Hamburguesa,
     Sushi,
     Empanadas,

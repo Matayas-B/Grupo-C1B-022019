@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class CustomGlobalExceptionHandler {
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<Object> exception(Exception exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(value = UserNotFoundException.class)
     public ResponseEntity<Object> exception(UserNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);

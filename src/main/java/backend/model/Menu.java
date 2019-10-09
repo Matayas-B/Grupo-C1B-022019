@@ -4,18 +4,27 @@ import backend.model.enums.Category;
 import backend.model.enums.OfficeHours;
 import org.joda.time.LocalDate;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Menu {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MENU_ID")
     private int menuId;
+
+    @Column(unique = true)
     private String name;
     private String description;
+    @Enumerated(EnumType.STRING)
     private Category category;
     private int deliveryFee;
     private LocalDate startDate;
     private LocalDate endDate;
+    @Enumerated(EnumType.STRING)
     private OfficeHours deliveryHours;
     private int averageDeliveryMinutes;
     private int price;
@@ -24,13 +33,17 @@ public class Menu {
     private int maxDailySales;
     private boolean isValidMenu;
 
-    List<MenuScore> menuScores = new ArrayList<>();
+
+    @JoinColumn(name = "MENU_SCORE_ID")
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<MenuScore> menuScores = new ArrayList<>();
 
     /* Constructor for testing purposes -> MenuBuilder */
     public Menu(int id) {
         this.menuId = id;
     }
 
+    // Deprecated
     public Menu(int id, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
         this.menuId = id;
         this.name = name;
@@ -46,6 +59,37 @@ public class Menu {
         this.minQuantityPrice = minQuantityPrice;
         this.maxDailySales = maxDailySales;
         this.isValidMenu = true;
+    }
+
+    public Menu() {
+    }
+
+    public Menu(String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.deliveryFee = deliveryFee;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.deliveryHours = deliveryHours;
+        this.averageDeliveryMinutes = averageDeliveryMinutes;
+        this.price = price;
+        this.minQuantity = minQuantity;
+        this.minQuantityPrice = minQuantityPrice;
+        this.maxDailySales = maxDailySales;
+        this.isValidMenu = true;
+    }
+
+    public void setMenuId(int menuId) {
+        this.menuId = menuId;
+    }
+
+    public void setMenuScores(List<MenuScore> menuScores) {
+        this.menuScores = menuScores;
+    }
+
+    public List<MenuScore> getMenuScores() {
+        return menuScores;
     }
 
     void addScore(String customerName, int punctuation) {

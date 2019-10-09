@@ -20,11 +20,7 @@ public class CustomerController {
 
     @RequestMapping(value = "/customer", method = RequestMethod.POST)
     public CustomerUser createCustomer(@Valid @RequestBody CustomerUser customer) {
-        try {
-            return customerService.createCustomer(customer);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
-        }
+        return customerService.createCustomer(customer);
     }
 
     @RequestMapping(value = "/customer", method = RequestMethod.GET)
@@ -34,19 +30,11 @@ public class CustomerController {
 
     @RequestMapping(value = "/customer", method = RequestMethod.DELETE)
     public void deleteCustomer(long customerId) {
-        try {
-            customerService.deleteCustomer(customerId);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
-        }
+        customerService.deleteCustomer(customerId);
     }
 
     @RequestMapping(value = "/customer/depositMoney", method = RequestMethod.GET)
     public int depositMoney(long customerId, int money) {
-        try {
-            return customerService.depositMoney(customerId, money);
-        } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
-        }
+        return customerService.depositMoney(customerId, money);
     }
 }

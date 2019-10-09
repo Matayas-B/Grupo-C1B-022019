@@ -111,7 +111,7 @@ public class ViendasYaFacadeTest {
         }
         catch (ServiceNotFoundException ex) {
             // Assert
-            assertEquals(ex.getMessage(), "Service does not longer exists.");
+            assertEquals(ex.getMessage(), "Service does not exists.");
             throw ex;
         }
 
@@ -178,7 +178,7 @@ public class ViendasYaFacadeTest {
             viendasYa.addMenuToService("McDonalds", 1, "Whopper", "Hamburguesa de la ostia", Category.Hamburguesa, 10, LocalDate.now(), LocalDate.now(), OfficeHours.Afternoon, 15, 50, 1, 50, 100);
         } catch (ServiceNotFoundException ex) {
             // Assert
-            assertEquals(ex.getMessage(), "Service does not longer exists.");
+            assertEquals(ex.getMessage(), "Service does not exists.");
             throw ex;
         }
 
@@ -230,7 +230,7 @@ public class ViendasYaFacadeTest {
             viendasYa.purchase(customer, "Burguer King", 1, 1);
         } catch (ServiceNotFoundException ex) {
             // Assert
-            assertEquals(ex.getMessage(), "Service does not longer exists.");
+            assertEquals(ex.getMessage(), "Service does not exists.");
             throw ex;
         }
 
@@ -257,7 +257,7 @@ public class ViendasYaFacadeTest {
             viendasYa.purchase(customer, "Burguer King", 1, 1);
         } catch (MenuNotFoundException ex) {
             // Assert
-            assertEquals(ex.getMessage(), "Menu does not longer exists.");
+            assertEquals(ex.getMessage(), "Menu does not exists.");
             throw ex;
         }
 

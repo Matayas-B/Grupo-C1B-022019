@@ -48,6 +48,18 @@ public abstract class User {
         return account;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public void setAccount(MoneyAccount account) {
+        this.account = account;
+    }
+
     public String getUserType() {
         return userType;
     }

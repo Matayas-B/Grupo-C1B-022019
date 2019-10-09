@@ -4,6 +4,7 @@ import backend.model.enums.Category;
 import backend.model.enums.OfficeDays;
 import backend.model.enums.OfficeHours;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;

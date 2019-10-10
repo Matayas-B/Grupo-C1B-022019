@@ -74,4 +74,48 @@ public class NewServiceRequest {
     public int getDeliveryDistance() {
         return deliveryDistance;
     }
+
+    public void setSupplierId(long supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public void setAddressTown(String addressTown) {
+        this.addressTown = addressTown;
+    }
+
+    public void setAddressLocation(String addressLocation) {
+        this.addressLocation = addressLocation;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setOfficeDays(List<OfficeDays> officeDays) {
+        this.officeDays = officeDays;
+    }
+
+    public void setOfficeHours(List<OfficeHours> officeHours) {
+        this.officeHours = officeHours;
+    }
+
+    public void setDeliveryDistance(int deliveryDistance) {
+        this.deliveryDistance = deliveryDistance;
+    }
 }

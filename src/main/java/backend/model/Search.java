@@ -1,12 +1,10 @@
 package backend.model;
 
 import backend.model.enums.Category;
-import backend.repository.UnityOfWork;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public class Search {
 
@@ -20,7 +18,7 @@ public class Search {
 
         if (!menuName.isEmpty())
             allMenus = allMenus.stream().filter(m -> m.getName().contains(menuName)).collect(Collectors.toList());
-        if (menuCategory != Category.ALL)
+        if (menuCategory != Category.All)
             allMenus = allMenus.stream().filter(m -> m.getCategory().equals(menuCategory)).collect(Collectors.toList());
 
         return allMenus;

@@ -88,4 +88,56 @@ public class NewMenuRequest {
     public int getMaxDailySales() {
         return maxDailySales;
     }
+
+    public void setServiceId(long serviceId) {
+        this.serviceId = serviceId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void setDeliveryFee(int deliveryFee) {
+        this.deliveryFee = deliveryFee;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setDeliveryHours(OfficeHours deliveryHours) {
+        this.deliveryHours = deliveryHours;
+    }
+
+    public void setAverageDeliveryMinutes(int averageDeliveryMinutes) {
+        this.averageDeliveryMinutes = averageDeliveryMinutes;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setMinQuantity(int minQuantity) {
+        this.minQuantity = minQuantity;
+    }
+
+    public void setMinQuantityPrice(int minQuantityPrice) {
+        this.minQuantityPrice = minQuantityPrice;
+    }
+
+    public void setMaxDailySales(int maxDailySales) {
+        this.maxDailySales = maxDailySales;
+    }
 }

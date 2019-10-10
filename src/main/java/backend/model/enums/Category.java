@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 
 public enum Category {
     @JsonEnumDefaultValue
-    ALL,
+    All,
     Pizza,
     Cerveza,
     Hamburguesa,

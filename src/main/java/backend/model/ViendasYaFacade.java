@@ -194,4 +194,24 @@ public class ViendasYaFacade {
 
         supp.addService(serviceName, icon, new Address(addressTown, addressLocation), description, email, phoneNumber, officeDays, officeHours, deliveryDistance);
     }
+
+    public Purchase purchaseMenu(CustomerUser customer, Service service, Menu menu, int quantity) throws Exception {
+        if (menu.getMinQuantity() > quantity)
+            throw new Exception(String.format("You cannot buy less than %s units.", menu.getMinQuantity()));
+
+        if (!customer.getAccount().haveEnoughFunds(menu.getPrice() * quantity))
+            throw new Exception("Customer does not have enough funds to purchase that quantity.");
+
+        if (customer.hasPendingPunctuations())
+            throw new Exception("Customer has pending scores to punctuate before purchasing.");
+
+        int purchasedAmount = menu.getPrice() * quantity;
+        customer.getAccount().extractMoney(purchasedAmount);
+        service.getSupplier().getAccount().depositMoney(purchasedAmount);
+
+        // TODO: Missing this part
+        CustomerScore customerScore = customer.addDefaultScore(service, menu);
+
+        return new Purchase(customer, customerScore.getCustomerScoreId(), service, menu, LocalDate.now(), purchasedAmount);
+    }
 }

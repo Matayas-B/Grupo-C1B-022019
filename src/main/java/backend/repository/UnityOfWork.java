@@ -44,8 +44,7 @@ public class UnityOfWork {
     }
 
     public Purchase addPurchase(CustomerUser customer, int customerScoreId, Service service, Menu purchasedMenu, LocalDate dateOfPurchase, int purchaseAmount) {
-        int newPurchaseId = purchases.size() + 1;
-        Purchase newPurchase = new Purchase(newPurchaseId, customer, customerScoreId, service, purchasedMenu, LocalDate.now(), purchaseAmount);
+        Purchase newPurchase = new Purchase(customer, customerScoreId, service, purchasedMenu, LocalDate.now(), purchaseAmount);
         purchases.add(newPurchase);
         return newPurchase;
     }

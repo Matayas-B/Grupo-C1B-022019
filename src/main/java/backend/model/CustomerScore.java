@@ -14,7 +14,7 @@ public class CustomerScore {
     @Transient
     @JoinColumn(name = "SERVICE_ID")
     @OneToOne(cascade = CascadeType.ALL)
-    private Service service;
+    private Service service; // Missing
     @Transient
     private Menu menu; // Missing
 

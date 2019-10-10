@@ -2,13 +2,11 @@ package backend.controller;
 
 import backend.controller.requests.NewUserRequest;
 import backend.model.CustomerUser;
+import backend.model.Purchase;
 import backend.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
@@ -37,5 +35,10 @@ public class CustomerController {
     @RequestMapping(value = "/customer/depositMoney", method = RequestMethod.GET)
     public int depositMoney(long customerId, int money) {
         return customerService.depositMoney(customerId, money);
+    }
+
+    @PostMapping(value = "/customer/purchase")
+    public Purchase purchaseMenu(long customerId, long serviceId, long menuId, int quantity) throws Exception {
+        return customerService.purchaseMenu(customerId, serviceId, menuId, quantity);
     }
 }

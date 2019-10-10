@@ -3,16 +3,30 @@ package backend.model;
 import backend.model.enums.PurchaseStatus;
 import org.joda.time.LocalDate;
 
+import javax.persistence.*;
+
+@Entity
 public class Purchase {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "PURCHASE_ID")
     private int purchaseId;
-    private CustomerUser customer;
     private int customerScoreId;
-    private Service service;
-    private Menu purchasedMenu;
     private LocalDate purchasedDate;
     private int purchaseAmount;
+    @Enumerated(EnumType.STRING)
     private PurchaseStatus purchaseStatus;
+
+    @JoinColumn(name = "ID")
+    @OneToOne(cascade = CascadeType.ALL)
+    private CustomerUser customer;
+    @JoinColumn(name = "SERVICE_ID")
+    @OneToOne(cascade = CascadeType.ALL)
+    private Service service;
+    @JoinColumn(name = "MENU_ID")
+    @OneToOne(cascade = CascadeType.ALL)
+    private Menu purchasedMenu;
 
     public int getCustomerScoreId() {
         return customerScoreId;
@@ -46,6 +60,38 @@ public class Purchase {
         return purchasedDate;
     }
 
+    public void setPurchaseId(int purchaseId) {
+        this.purchaseId = purchaseId;
+    }
+
+    public void setCustomer(CustomerUser customer) {
+        this.customer = customer;
+    }
+
+    public void setCustomerScoreId(int customerScoreId) {
+        this.customerScoreId = customerScoreId;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public void setPurchasedMenu(Menu purchasedMenu) {
+        this.purchasedMenu = purchasedMenu;
+    }
+
+    public void setPurchasedDate(LocalDate purchasedDate) {
+        this.purchasedDate = purchasedDate;
+    }
+
+    public void setPurchaseAmount(int purchaseAmount) {
+        this.purchaseAmount = purchaseAmount;
+    }
+
+    public void setPurchaseStatus(PurchaseStatus purchaseStatus) {
+        this.purchaseStatus = purchaseStatus;
+    }
+
     public void startDelivery() {
         this.purchaseStatus = PurchaseStatus.InDelivery;
     }
@@ -54,8 +100,9 @@ public class Purchase {
         this.purchaseStatus = PurchaseStatus.Finished;
     }
 
-    public Purchase(int purchaseId, CustomerUser customer, int customerScoreId, Service service, Menu purchasedMenu, LocalDate dateOfPurchase, int purchaseAmount) {
-        this.purchaseId = purchaseId;
+    public Purchase() {}
+
+    public Purchase(CustomerUser customer, int customerScoreId, Service service, Menu purchasedMenu, LocalDate dateOfPurchase, int purchaseAmount) {
         this.customer = customer;
         this.customerScoreId = customerScoreId;
         this.service = service;

@@ -184,8 +184,8 @@ public class Service {
 
     public List<Menu> getInvalidMenus() { return invalidMenus; }
 
-    public Menu getMenuByMenuId(int menuId) {
-        return menus.stream().filter(m -> m.getMenuId() == menuId).findFirst().orElse(null);
+    public Menu getMenuByMenuId(long menuId) {
+        return menus.stream().filter(m -> m.getMenuId() == menuId).findFirst().orElseThrow(MenuNotFoundException::new);
     }
 
     public void markMenuAsInvalid(Menu invalidMenu) {

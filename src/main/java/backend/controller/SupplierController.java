@@ -1,6 +1,7 @@
 package backend.controller;
 
 import backend.controller.requests.NewServiceRequest;
+import backend.controller.requests.NewUserRequest;
 import backend.model.Service;
 import backend.model.SupplierUser;
 import backend.service.SupplierService;
@@ -19,7 +20,7 @@ public class SupplierController {
     private SupplierService supplierService = new SupplierService();
 
     @RequestMapping(value = "/supplier", method = RequestMethod.POST)
-    public SupplierUser createSupplier(@Valid @RequestBody SupplierUser supplier) {
+    public SupplierUser createSupplier(@Valid @RequestBody NewUserRequest supplier) {
         return supplierService.createSupplier(supplier);
     }
 

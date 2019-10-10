@@ -1,5 +1,6 @@
 package backend.service;
 
+import backend.controller.requests.NewUserRequest;
 import backend.model.CustomerUser;
 import backend.model.exception.UserNotFoundException;
 import backend.repository.ICustomerRepository;
@@ -12,7 +13,7 @@ public class CustomerService {
     @Autowired
     private ICustomerRepository customerRepository;
 
-    public CustomerUser createCustomer(CustomerUser customer) {
+    public CustomerUser createCustomer(NewUserRequest customer) {
         CustomerUser newCustomer = new CustomerUser(customer.getName(), customer.getLastName(), customer.getEmail(), customer.getPassword(), customer.getPhone(), customer.getAddress());
         return customerRepository.save(newCustomer);
     }

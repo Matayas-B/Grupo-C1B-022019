@@ -13,17 +13,12 @@ public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty(message = "Please, provide a name.")
     private String name;
-    @NotEmpty(message = "Please, provide a last name.")
     private String lastName;
     @Column(unique = true)
-    @Email(message = "Please, provide an email.")
     private String email;
-    @NotEmpty(message = "Please, enter your password.")
     private String password;
     private String phone;
-    @NotEmpty(message = "Please, provide an address.")
     private String address;
     @Column(name = "USER_TYPE", insertable = false, updatable = false)
     private String userType;

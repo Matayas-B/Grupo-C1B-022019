@@ -1,5 +1,6 @@
 package backend.controller;
 
+import backend.controller.requests.NewUserRequest;
 import backend.model.CustomerUser;
 import backend.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class CustomerController {
     private CustomerService customerService = new CustomerService();
 
     @RequestMapping(value = "/customer", method = RequestMethod.POST)
-    public CustomerUser createCustomer(@Valid @RequestBody CustomerUser customer) {
+    public CustomerUser createCustomer(@Valid @RequestBody NewUserRequest customer) {
         return customerService.createCustomer(customer);
     }
 

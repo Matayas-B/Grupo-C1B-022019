@@ -6,9 +6,8 @@ import backend.model.Service;
 import backend.model.exception.ServiceNotFoundException;
 import backend.repository.IServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@org.springframework.stereotype.Service
 public class ServiceService {
 
     @Autowired

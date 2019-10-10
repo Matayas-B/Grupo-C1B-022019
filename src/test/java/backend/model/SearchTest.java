@@ -29,7 +29,8 @@ public class SearchTest {
         viendasYa.addMenuToService("Burguer King", new MenuBuilder(3).setMenuName("BK Stacker").build());
 
         // Act
-        List<Menu> menusFilteredByName = Search.search(unityOfWork,"Whopper", null, "");
+        Search search = new Search();
+        List<Menu> menusFilteredByName = search.search(unityOfWork.getAllServices(), unityOfWork.getAllMenus(),"Whopper", null, "");
 
         // Assert
         assertFalse(menusFilteredByName.isEmpty());
@@ -52,7 +53,8 @@ public class SearchTest {
         viendasYa.addMenuToService("Burguer King", new MenuBuilder(3).setCategory(Category.Green).build());
 
         // Act
-        List<Menu> menusFilteredByCategory = Search.search(unityOfWork,"", Category.Hamburguesa, "");
+        Search search = new Search();
+        List<Menu> menusFilteredByCategory = search.search(unityOfWork.getAllServices(), unityOfWork.getAllMenus(),"", Category.Hamburguesa, "");
 
         // Assert
         assertFalse(menusFilteredByCategory.isEmpty());
@@ -78,7 +80,8 @@ public class SearchTest {
         viendasYa.addMenuToService("McDonalds", new MenuBuilder(3).build());
 
         // Act
-        List<Menu> menusFilteredByCategory = Search.search(unityOfWork,"", null, "Bernal");
+        Search search = new Search();
+        List<Menu> menusFilteredByCategory = search.search(unityOfWork.getAllServices(), unityOfWork.getAllMenus(),"", null, "Bernal");
 
         // Assert
         assertFalse(menusFilteredByCategory.isEmpty());
@@ -107,7 +110,8 @@ public class SearchTest {
         viendasYa.addMenuToService("Mostaza", new MenuBuilder(3).setMenuName("Mostaza Whopper").setCategory(Category.Hamburguesa).build());
 
         // Act
-        List<Menu> menusFilteredByCategory = Search.search(unityOfWork,"Whopper", Category.Hamburguesa, "Bernal");
+        Search search = new Search();
+        List<Menu> menusFilteredByCategory = search.search(unityOfWork.getAllServices(), unityOfWork.getAllMenus(),"Whopper", Category.Hamburguesa, "Bernal");
 
         // Assert
         assertFalse(menusFilteredByCategory.isEmpty());

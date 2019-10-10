@@ -1,6 +1,7 @@
 package backend.service;
 
 import backend.controller.requests.NewServiceRequest;
+import backend.controller.requests.NewUserRequest;
 import backend.model.SupplierUser;
 import backend.model.ViendasYaFacade;
 import backend.model.exception.InsufficientFundsException;
@@ -20,7 +21,7 @@ public class SupplierService {
     private IServiceRepository serviceRepository;
     private ViendasYaFacade viendasYaFacade = new ViendasYaFacade();
 
-    public SupplierUser createSupplier(SupplierUser supplier) {
+    public SupplierUser createSupplier(NewUserRequest supplier) {
         SupplierUser newSupplier = new SupplierUser(supplier.getName(), supplier.getLastName(), supplier.getEmail(), supplier.getPassword(), supplier.getPhone(), supplier.getAddress());
         return supplierRepository.save(newSupplier);
     }

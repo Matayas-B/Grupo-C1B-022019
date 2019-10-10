@@ -30,7 +30,7 @@ public class SearchTest {
 
         // Act
         Search search = new Search();
-        List<Menu> menusFilteredByName = search.search(unityOfWork.getAllServices(), unityOfWork.getAllMenus(),"Whopper", null, "");
+        List<Menu> menusFilteredByName = search.search(unityOfWork.getAllServices(), unityOfWork.getAllMenus(),"Whopper", Category.ALL, "");
 
         // Assert
         assertFalse(menusFilteredByName.isEmpty());
@@ -81,7 +81,7 @@ public class SearchTest {
 
         // Act
         Search search = new Search();
-        List<Menu> menusFilteredByCategory = search.search(unityOfWork.getAllServices(), unityOfWork.getAllMenus(),"", null, "Bernal");
+        List<Menu> menusFilteredByCategory = search.search(unityOfWork.getAllServices(), unityOfWork.getAllMenus(),"", Category.ALL, "Bernal");
 
         // Assert
         assertFalse(menusFilteredByCategory.isEmpty());

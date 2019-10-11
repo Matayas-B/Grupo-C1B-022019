@@ -43,8 +43,8 @@ public class UnityOfWork {
         return purchases.stream().filter(p -> p.getCustomer().equals(customer)).collect(Collectors.toList());
     }
 
-    public Purchase addPurchase(CustomerUser customer, int customerScoreId, Service service, Menu purchasedMenu, LocalDate dateOfPurchase, int purchaseAmount) {
-        Purchase newPurchase = new Purchase(customer, customerScoreId, service, purchasedMenu, LocalDate.now(), purchaseAmount);
+    public Purchase addPurchase(CustomerUser customer, CustomerScore customerScore, Service service, Menu purchasedMenu, LocalDate dateOfPurchase, int purchaseAmount) {
+        Purchase newPurchase = new Purchase(customer, customerScore, service, purchasedMenu, LocalDate.now(), purchaseAmount);
         purchases.add(newPurchase);
         return newPurchase;
     }

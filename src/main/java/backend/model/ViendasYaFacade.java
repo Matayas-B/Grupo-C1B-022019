@@ -107,10 +107,31 @@ public class ViendasYaFacade {
         int purchasedAmount = currentMenu.getPrice() * quantity;
         customer.getAccount().extractMoney(purchasedAmount);
         currentService.getSupplier().getAccount().depositMoney(purchasedAmount);
-        CustomerScore customerScore = customer.addDefaultScore(currentService, currentMenu);
+        CustomerScore customerScore = customer.addDefaultScore(1, 1);
 
-        return unityOfWork.addPurchase(customer, customerScore.getCustomerScoreId(), currentService, currentMenu, LocalDate.now(), purchasedAmount);
+        return unityOfWork.addPurchase(customer, customerScore, currentService, currentMenu, LocalDate.now(), purchasedAmount);
     }
+
+    public void createMenuScore(CustomerUser customer, String serviceName, int menuId, int punctuation) throws Exception {
+        CustomerScore customerScore = customer.findUserScore(serviceName, menuId);
+        if (customerScore == null)
+            throw new Exception("User Score does not exists.");
+
+        customerScore.setPunctuation(punctuation);
+        Menu menu = unityOfWork.getAllMenus().stream().filter(m -> m.getMenuId() == menuId).findFirst().get();
+        menu.addScore(customerScore.getCustomerEmail(), punctuation);
+
+        if (menu.hasEnoughScores() && menu.getScoreAverage() < 2) {
+            Service service = unityOfWork.getAllServices().stream().filter(s -> s.getServiceName().equals(serviceName)).findFirst().get();
+            service.markMenuAsInvalid(menu);
+
+            if (service.getInvalidMenus().size() == 10) {
+                markSupplierAsInvalid(service.getSupplier());
+            }
+        }
+    }
+
+    // TODO: Actions that are still missing
 
     public void startDeliveryForPurchase(int purchaseId) {
         Purchase purchase = unityOfWork.getPurchaseById(purchaseId);
@@ -122,24 +143,6 @@ public class ViendasYaFacade {
         Purchase purchase = unityOfWork.getPurchaseById(purchaseId);
         purchase.finishDelivery();
         unityOfWork.savePurchase(purchase);
-    }
-
-    public void createMenuScore(CustomerUser customer, String serviceName, int menuId, int punctuation) throws Exception {
-        CustomerScore customerScore = customer.findUserScore(serviceName, menuId);
-        if (customerScore == null)
-            throw new Exception("User Score does not exists.");
-
-        customerScore.setPunctuation(punctuation);
-        customerScore.getMenu().addScore(customerScore.getCustomerName(), punctuation);
-
-        if (customerScore.getMenu().hasEnoughScores() && customerScore.getMenu().getScoreAverage() < 2) {
-            Service service = customerScore.getService();
-            service.markMenuAsInvalid(customerScore.getMenu());
-
-            if (service.getInvalidMenus().size() == 10) {
-                markSupplierAsInvalid(service.getSupplier());
-            }
-        }
     }
 
     public List<HistoricalPurchases> getHistoricalPurchases(SupplierUser supplier) {
@@ -156,7 +159,7 @@ public class ViendasYaFacade {
 
     /* Private Methods */
     private int getPunctuationForPurchase(Purchase purchase) {
-        return purchase.getCustomer().getCustomerScoreById(purchase.getCustomerScoreId()).getPunctuation();
+        return purchase.getCustomer().getCustomerScoreById(purchase.getCustomerScore().getCustomerScoreId()).getPunctuation();
     }
 
     private void markSupplierAsInvalid(SupplierUser invalidSupplier) {
@@ -195,7 +198,7 @@ public class ViendasYaFacade {
         supp.addService(serviceName, icon, new Address(addressTown, addressLocation), description, email, phoneNumber, officeDays, officeHours, deliveryDistance);
     }
 
-    public Purchase purchaseMenu(CustomerUser customer, Service service, Menu menu, int quantity) throws Exception {
+    public Purchase purchaseMenu(CustomerUser customer, Service service, Menu menu, int quantity, CustomerScore customerScore) throws Exception {
         if (menu.getMinQuantity() > quantity)
             throw new Exception(String.format("You cannot buy less than %s units.", menu.getMinQuantity()));
 
@@ -208,10 +211,26 @@ public class ViendasYaFacade {
         int purchasedAmount = menu.getPrice() * quantity;
         customer.getAccount().extractMoney(purchasedAmount);
         service.getSupplier().getAccount().depositMoney(purchasedAmount);
+        customer.getCustomerScores().add(customerScore);
 
-        // TODO: persist CustomerScore ! ! !
-        CustomerScore customerScore = customer.addDefaultScore(service, menu);
+        return new Purchase(customer, customerScore, service, menu, LocalDate.now(), purchasedAmount);
+    }
 
-        return new Purchase(customer, customerScore.getCustomerScoreId(), service, menu, LocalDate.now(), purchasedAmount);
+    public MenuScore createMenuScore(CustomerUser customer, Service service, Menu menu, int punctuation) throws Exception {
+        CustomerScore customerScore = customer.findUserScore(service.getServiceId(), menu.getMenuId());
+        if (customerScore == null)
+            throw new Exception("User Score does not exists.");
+
+        customerScore.setPunctuation(punctuation);
+        MenuScore menuScore = menu.addScore(customerScore.getCustomerEmail(), punctuation);
+
+        if (menu.hasEnoughScores() && menu.getScoreAverage() < 2) {
+            service.markMenuAsInvalid(menu);
+            if (service.getInvalidMenus().size() == 10) {
+                markSupplierAsInvalid(service.getSupplier());
+            }
+        }
+
+        return menuScore;
     }
 }

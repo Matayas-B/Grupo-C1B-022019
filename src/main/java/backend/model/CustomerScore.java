@@ -6,18 +6,13 @@ import javax.persistence.*;
 public class CustomerScore {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "CUSTOMER_SCORE_ID")
     private int customerScoreId;
-    private String customerName;
 
-    @Transient
-    //@JoinColumn(name = "SERVICE_ID")
-    //@OneToOne(cascade = CascadeType.ALL)
-    private Service service; // Missing
-    @Transient
-    private Menu menu; // Missing
-
+    private String customerEmail;
+    private long serviceId;
+    private long menuId;
     private int punctuation;
     private boolean isFinished;
 
@@ -25,33 +20,52 @@ public class CustomerScore {
         return customerScoreId;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getCustomerEmail() {
+        return customerEmail;
     }
 
-    public Service getService() {
-        return service;
+    public Long getServiceId() {
+        return serviceId;
     }
 
-    public Menu getMenu() {
-        return menu;
+    public Long getMenuId() {
+        return menuId;
     }
 
     public int getPunctuation() {
         return punctuation;
     }
 
-    boolean isFinished() {
+    public boolean isFinished() {
         return isFinished;
+    }
+
+    public void setCustomerScoreId(int customerScoreId) {
+        this.customerScoreId = customerScoreId;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    public void setServiceId(long serviceId) {
+        this.serviceId = serviceId;
+    }
+
+    public void setMenuId(long menuId) {
+        this.menuId = menuId;
+    }
+
+    public void setFinished(boolean finished) {
+        isFinished = finished;
     }
 
     public CustomerScore() {}
 
-    public CustomerScore(int customerScoreId, String customerName, Service service, Menu menu) {
-        this.customerScoreId = customerScoreId;
-        this.customerName = customerName;
-        this.service = service;
-        this.menu = menu;
+    public CustomerScore(String customerEmail, long serviceId, long menuId) {
+        this.customerEmail = customerEmail;
+        this.serviceId = serviceId;
+        this.menuId = menuId;
         this.punctuation = 0;
         this.isFinished = false;
     }

@@ -34,7 +34,7 @@ public class Menu {
     private boolean isValidMenu;
 
     @JoinColumn(name = "MENU_SCORE_ID")
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MenuScore> menuScores = new ArrayList<>();
 
     /* Constructor for testing purposes -> MenuBuilder */
@@ -91,8 +91,10 @@ public class Menu {
         return menuScores;
     }
 
-    void addScore(String customerName, int punctuation) {
-        menuScores.add(new MenuScore(customerName, punctuation));
+    MenuScore addScore(String customerEmail, int punctuation) {
+        MenuScore menuScore = new MenuScore(customerEmail, punctuation);
+        menuScores.add(menuScore);
+        return menuScore;
     }
 
     boolean hasEnoughScores() {

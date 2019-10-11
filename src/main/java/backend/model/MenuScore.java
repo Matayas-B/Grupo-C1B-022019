@@ -1,7 +1,5 @@
 package backend.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import javax.persistence.*;
 
 @Entity
@@ -11,15 +9,15 @@ public class MenuScore {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MENU_SCORE_ID")
     private long menuScoreId;
-    private String customerName;
+    private String customerEmail;
     private int punctuation;
 
     public void setMenuScoreId(long menuScoreId) {
         this.menuScoreId = menuScoreId;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
     }
 
     public void setPunctuation(int punctuation) {
@@ -30,8 +28,8 @@ public class MenuScore {
         return menuScoreId;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getCustomerEmail() {
+        return customerEmail;
     }
 
     public int getPunctuation() {
@@ -40,8 +38,8 @@ public class MenuScore {
 
     public MenuScore() {}
 
-    public MenuScore(String customerName, int punctuation) {
-        this.customerName = customerName;
+    public MenuScore(String customerEmail, int punctuation) {
+        this.customerEmail = customerEmail;
         this.punctuation = punctuation;
     }
 }

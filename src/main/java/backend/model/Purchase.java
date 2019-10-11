@@ -12,12 +12,14 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PURCHASE_ID")
     private int purchaseId;
-    private int customerScoreId;
     private LocalDate purchasedDate;
     private int purchaseAmount;
     @Enumerated(EnumType.STRING)
     private PurchaseStatus purchaseStatus;
 
+    @JoinColumn(name = "CUSTOMER_SCORE_ID")
+    @OneToOne
+    private CustomerScore customerScore;
     @JoinColumn(name = "ID")
     @OneToOne
     private CustomerUser customer;
@@ -28,8 +30,8 @@ public class Purchase {
     @OneToOne
     private Menu purchasedMenu;
 
-    public int getCustomerScoreId() {
-        return customerScoreId;
+    public CustomerScore getCustomerScore() {
+        return customerScore;
     }
 
     public int getPurchaseAmount() {
@@ -68,8 +70,8 @@ public class Purchase {
         this.customer = customer;
     }
 
-    public void setCustomerScoreId(int customerScoreId) {
-        this.customerScoreId = customerScoreId;
+    public void setCustomerScore(CustomerScore customerScore) {
+        this.customerScore = customerScore;
     }
 
     public void setService(Service service) {
@@ -102,9 +104,9 @@ public class Purchase {
 
     public Purchase() {}
 
-    public Purchase(CustomerUser customer, int customerScoreId, Service service, Menu purchasedMenu, LocalDate dateOfPurchase, int purchaseAmount) {
+    public Purchase(CustomerUser customer, CustomerScore customerScore, Service service, Menu purchasedMenu, LocalDate dateOfPurchase, int purchaseAmount) {
         this.customer = customer;
-        this.customerScoreId = customerScoreId;
+        this.customerScore = customerScore;
         this.service = service;
         this.purchasedMenu = purchasedMenu;
         this.purchasedDate = dateOfPurchase;

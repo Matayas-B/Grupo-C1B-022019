@@ -415,7 +415,7 @@ public class ViendasYaFacadeTest {
         assertEquals(purchase.getService().getServiceName(), "Burguer King");
         assertEquals(purchase.getCustomer().getName(), "Facundo");
         assertEquals(purchase.getCustomer().getCustomerScores().get(0).getCustomerScoreId(), 1);
-        assertEquals(purchase.getCustomer().getCustomerScores().get(0).getCustomerName(), "Facundo");
+        assertEquals(purchase.getCustomer().getCustomerScores().get(0).getCustomerEmail(), "Facundo");
         assertEquals(purchase.getCustomer().getCustomerScores().get(0).getPunctuation(), 0);
         assertFalse(purchase.getCustomer().getCustomerScores().get(0).isFinished());
     }

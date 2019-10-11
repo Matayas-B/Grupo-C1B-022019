@@ -1,14 +1,13 @@
 package backend.service;
 
+import backend.controller.requests.NewScorePunctuationRequest;
 import backend.controller.requests.NewUserRequest;
 import backend.controller.requests.PurchaseRequest;
-import backend.model.CustomerUser;
-import backend.model.Menu;
-import backend.model.Purchase;
-import backend.model.ViendasYaFacade;
+import backend.model.*;
 import backend.model.exception.ServiceNotFoundException;
 import backend.model.exception.UserNotFoundException;
 import backend.repository.ICustomerRepository;
+import backend.repository.ICustomerScoreRepository;
 import backend.repository.IPurchaseRepository;
 import backend.repository.IServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +26,10 @@ public class CustomerService {
     IServiceRepository serviceRepository;
     @Autowired
     IPurchaseRepository purchaseRepository;
+    @Autowired
+    ICustomerScoreRepository customerScoreRepository;
 
-    ViendasYaFacade viendasYaFacade = new ViendasYaFacade();
+    private ViendasYaFacade viendasYaFacade = new ViendasYaFacade();
 
     public CustomerUser createCustomer(NewUserRequest customer) {
         CustomerUser newCustomer = new CustomerUser(customer.getName(), customer.getLastName(), customer.getEmail(), customer.getPassword(), customer.getPhone(), customer.getAddress());
@@ -37,6 +38,10 @@ public class CustomerService {
 
     public Iterable<CustomerUser> getAllCustomers() {
         return customerRepository.findAll();
+    }
+
+    public CustomerUser getCustomerById(long customerId) {
+        return customerRepository.findById(customerId).orElseThrow(() -> new UserNotFoundException(customerId));
     }
 
     public void deleteCustomer(long id) {
@@ -50,6 +55,10 @@ public class CustomerService {
         return customer.getAccount().getFunds();
     }
 
+    public Iterable<Purchase> getAllPurchases() {
+        return purchaseRepository.findAll();
+    }
+
     public Purchase purchaseMenu(PurchaseRequest purchaseRequest) throws Exception {
         CustomerUser customer = customerRepository.findById(purchaseRequest.getCustomerId()).orElseThrow(() -> new UserNotFoundException(purchaseRequest.getCustomerId()));
         backend.model.Service service = serviceRepository.findById(purchaseRequest.getServiceId()).orElseThrow(ServiceNotFoundException::new);
@@ -59,7 +68,9 @@ public class CustomerService {
         if (purchasedMenus.size() >= menu.getMaxDailySales())
             throw new Exception("Maximun number of sales per day have been reached for this menu.");
 
-        Purchase purchase = viendasYaFacade.purchaseMenu(customer, service, menu, purchaseRequest.getQuantity());
+        CustomerScore customerScore = new CustomerScore(customer.getEmail(), service.getServiceId(), menu.getMenuId());
+        Purchase purchase = viendasYaFacade.purchaseMenu(customer, service, menu, purchaseRequest.getQuantity(), customerScore);
+        customerScoreRepository.save(customerScore);
         customerRepository.save(customer);
         serviceRepository.save(service);
         purchaseRepository.save(purchase);
@@ -67,7 +78,20 @@ public class CustomerService {
         return purchase;
     }
 
-    public Iterable<Purchase> getAllPurchases() {
-        return purchaseRepository.findAll();
+    public MenuScore createScoreForMenu(NewScorePunctuationRequest newScorePunctuationRequest) throws Exception {
+        CustomerUser customer = getCustomerById(newScorePunctuationRequest.getCustomerId());
+        backend.model.Service service = getServiceById(newScorePunctuationRequest.getServiceId());
+        Menu menu = service.getMenuByMenuId(newScorePunctuationRequest.getMenuId());
+
+        MenuScore menuScore = viendasYaFacade.createMenuScore(customer, service, menu, newScorePunctuationRequest.getPunctuation());
+        customerRepository.save(customer);
+        serviceRepository.save(service);
+
+        return menuScore;
+    }
+
+    /* Private Methods */
+    private backend.model.Service getServiceById(long serviceId) throws ServiceNotFoundException {
+        return serviceRepository.findById(serviceId).orElseThrow(ServiceNotFoundException::new);
     }
 }

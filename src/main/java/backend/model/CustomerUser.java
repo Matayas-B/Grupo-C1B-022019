@@ -1,5 +1,7 @@
 package backend.model;
 
+import backend.model.exception.MenuNotFoundException;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,18 +34,25 @@ public class CustomerUser extends User {
         return customerScores.stream().anyMatch(us -> !us.isFinished());
     }
 
-    CustomerScore addDefaultScore(Service service, Menu menu) {
-        int nextCustomerScoreId = customerScores.size() + 1;
-        CustomerScore customerScore = new CustomerScore(nextCustomerScoreId, this.getName(), service, menu);
+    public CustomerScore addDefaultScore(long serviceId, long menuId) {
+        CustomerScore customerScore = new CustomerScore(this.getEmail(), serviceId, menuId);
         customerScores.add(customerScore);
         return customerScore;
     }
 
-    CustomerScore findUserScore(String serviceName, int menuId) {
-        return customerScores.stream().filter(us -> us.getService().getServiceName().equals(serviceName) &&
-                us.getMenu().getMenuId() == menuId &&
+    // Delete it ! ! ! Just for ViendasYaFacade unittesting
+    CustomerScore findUserScore(String serviceName, long menuId) {
+        return customerScores.stream().filter(us -> us.getServiceId().equals(serviceName) &&
+                us.getMenuId().equals(menuId) &&
                 !us.isFinished())
-                .findFirst().orElse(null);
+                .findFirst().orElseThrow(MenuNotFoundException::new);
+    }
+    
+    CustomerScore findUserScore(long serviceId, long menuId) {
+        return customerScores.stream().filter(us -> us.getServiceId() == serviceId &&
+                us.getMenuId() == menuId &&
+                !us.isFinished())
+                .findFirst().orElseThrow(MenuNotFoundException::new);
     }
 
     CustomerScore getCustomerScoreById(int customerScoreId) {

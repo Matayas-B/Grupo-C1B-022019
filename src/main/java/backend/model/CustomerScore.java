@@ -12,8 +12,8 @@ public class CustomerScore {
     private String customerName;
 
     @Transient
-    @JoinColumn(name = "SERVICE_ID")
-    @OneToOne(cascade = CascadeType.ALL)
+    //@JoinColumn(name = "SERVICE_ID")
+    //@OneToOne(cascade = CascadeType.ALL)
     private Service service; // Missing
     @Transient
     private Menu menu; // Missing
@@ -45,7 +45,9 @@ public class CustomerScore {
         return isFinished;
     }
 
-    CustomerScore(int customerScoreId, String customerName, Service service, Menu menu) {
+    public CustomerScore() {}
+
+    public CustomerScore(int customerScoreId, String customerName, Service service, Menu menu) {
         this.customerScoreId = customerScoreId;
         this.customerName = customerName;
         this.service = service;

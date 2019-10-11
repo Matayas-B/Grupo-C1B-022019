@@ -408,7 +408,6 @@ public class ViendasYaFacadeTest {
 
         // Assert
         assertFalse(viendasYa.getAllPurchases().isEmpty());
-        assertEquals(viendasYa.getAllPurchases().get(0).getPurchaseId(), 1);
         assertEquals(viendasYa.getAllPurchases().get(0).getPurchaseStatus(), PurchaseStatus.InProgress);
         assertTrue(customer.getAccount().haveEnoughFunds(500));
         assertTrue(supplier.getAccount().haveEnoughFunds(500));

@@ -209,7 +209,7 @@ public class ViendasYaFacade {
         customer.getAccount().extractMoney(purchasedAmount);
         service.getSupplier().getAccount().depositMoney(purchasedAmount);
 
-        // TODO: Missing this part
+        // TODO: persist CustomerScore ! ! !
         CustomerScore customerScore = customer.addDefaultScore(service, menu);
 
         return new Purchase(customer, customerScore.getCustomerScoreId(), service, menu, LocalDate.now(), purchasedAmount);

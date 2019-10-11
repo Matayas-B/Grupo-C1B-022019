@@ -1,6 +1,7 @@
 package backend.controller;
 
 import backend.controller.requests.NewUserRequest;
+import backend.controller.requests.PurchaseRequest;
 import backend.model.CustomerUser;
 import backend.model.Purchase;
 import backend.service.CustomerService;
@@ -38,7 +39,12 @@ public class CustomerController {
     }
 
     @PostMapping(value = "/customer/purchase")
-    public Purchase purchaseMenu(long customerId, long serviceId, long menuId, int quantity) throws Exception {
-        return customerService.purchaseMenu(customerId, serviceId, menuId, quantity);
+    public Purchase purchaseMenu(@RequestBody PurchaseRequest purchaseRequest) throws Exception {
+        return customerService.purchaseMenu(purchaseRequest);
+    }
+
+    @GetMapping(value = "/customer/purchase")
+    public Iterable<Purchase> getAllPurchases() {
+        return customerService.getAllPurchases();
     }
 }

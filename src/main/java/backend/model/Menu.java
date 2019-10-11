@@ -33,7 +33,6 @@ public class Menu {
     private int maxDailySales;
     private boolean isValidMenu;
 
-
     @JoinColumn(name = "MENU_SCORE_ID")
     @OneToMany(cascade = CascadeType.ALL)
     private List<MenuScore> menuScores = new ArrayList<>();

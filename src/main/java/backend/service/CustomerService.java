@@ -1,6 +1,7 @@
 package backend.service;
 
 import backend.controller.requests.NewUserRequest;
+import backend.controller.requests.PurchaseRequest;
 import backend.model.CustomerUser;
 import backend.model.Menu;
 import backend.model.Purchase;
@@ -49,20 +50,24 @@ public class CustomerService {
         return customer.getAccount().getFunds();
     }
 
-    public Purchase purchaseMenu(long customerId, long serviceId, long menuId, int quantity) throws Exception {
-        CustomerUser customer = customerRepository.findById(customerId).orElseThrow(() -> new UserNotFoundException(customerId));
-        backend.model.Service service = serviceRepository.findById(serviceId).orElseThrow(ServiceNotFoundException::new);
-        Menu menu = service.getMenuByMenuId(menuId);
+    public Purchase purchaseMenu(PurchaseRequest purchaseRequest) throws Exception {
+        CustomerUser customer = customerRepository.findById(purchaseRequest.getCustomerId()).orElseThrow(() -> new UserNotFoundException(purchaseRequest.getCustomerId()));
+        backend.model.Service service = serviceRepository.findById(purchaseRequest.getServiceId()).orElseThrow(ServiceNotFoundException::new);
+        Menu menu = service.getMenuByMenuId(purchaseRequest.getMenuId());
 
         List<Purchase> purchasedMenus = StreamSupport.stream(purchaseRepository.findAll().spliterator(), false).filter(p -> p.getPurchasedMenu() == menu).collect(Collectors.toList());
         if (purchasedMenus.size() >= menu.getMaxDailySales())
             throw new Exception("Maximun number of sales per day have been reached for this menu.");
 
-        Purchase purchase = viendasYaFacade.purchaseMenu(customer, service, menu, quantity);
-        purchaseRepository.save(purchase);
+        Purchase purchase = viendasYaFacade.purchaseMenu(customer, service, menu, purchaseRequest.getQuantity());
         customerRepository.save(customer);
         serviceRepository.save(service);
+        purchaseRepository.save(purchase);
 
         return purchase;
+    }
+
+    public Iterable<Purchase> getAllPurchases() {
+        return purchaseRepository.findAll();
     }
 }

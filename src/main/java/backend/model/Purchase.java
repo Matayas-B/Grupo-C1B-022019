@@ -19,13 +19,13 @@ public class Purchase {
     private PurchaseStatus purchaseStatus;
 
     @JoinColumn(name = "ID")
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private CustomerUser customer;
     @JoinColumn(name = "SERVICE_ID")
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Service service;
     @JoinColumn(name = "MENU_ID")
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Menu purchasedMenu;
 
     public int getCustomerScoreId() {

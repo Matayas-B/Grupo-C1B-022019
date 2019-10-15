@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class CustomerScore {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CUSTOMER_SCORE_ID")
     private int customerScoreId;
 

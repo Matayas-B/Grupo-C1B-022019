@@ -10,8 +10,7 @@ import java.util.List;
 @DiscriminatorValue(value = "customer")
 public class CustomerUser extends User {
 
-    @JoinColumn(name = "CUSTOMER_SCORE_ID")
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CustomerScore> customerScores = new ArrayList<>();
 
     public List<CustomerScore> getCustomerScores() {

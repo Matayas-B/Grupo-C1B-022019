@@ -39,7 +39,7 @@ public class CustomerUser extends User {
         return customerScore;
     }
 
-    // Delete it ! ! ! Just for ViendasYaFacade unittesting
+    // TODO: Delete it ! ! ! Just for ViendasYaFacade unittesting
     CustomerScore findUserScore(String serviceName, long menuId) {
         return customerScores.stream().filter(us -> us.getServiceId().equals(serviceName) &&
                 us.getMenuId().equals(menuId) &&
@@ -54,7 +54,7 @@ public class CustomerUser extends User {
                 .findFirst().orElseThrow(MenuNotFoundException::new);
     }
 
-    CustomerScore getCustomerScoreById(int customerScoreId) {
+    CustomerScore getCustomerScoreById(long customerScoreId) {
         return customerScores.stream().filter(cs -> cs.getCustomerScoreId() == customerScoreId).findFirst().orElse(null);
     }
 }

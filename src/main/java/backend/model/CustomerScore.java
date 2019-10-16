@@ -8,7 +8,7 @@ public class CustomerScore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CUSTOMER_SCORE_ID")
-    private int customerScoreId;
+    private Long customerScoreId;
 
     private String customerEmail;
     private long serviceId;
@@ -16,7 +16,7 @@ public class CustomerScore {
     private int punctuation;
     private boolean isFinished;
 
-    public int getCustomerScoreId() {
+    public Long getCustomerScoreId() {
         return customerScoreId;
     }
 
@@ -40,7 +40,7 @@ public class CustomerScore {
         return isFinished;
     }
 
-    public void setCustomerScoreId(int customerScoreId) {
+    public void setCustomerScoreId(Long customerScoreId) {
         this.customerScoreId = customerScoreId;
     }
 

@@ -6,6 +6,7 @@ import org.joda.time.LocalDate;
 public class HistoricalPurchases {
 
     private LocalDate purchasedDate;
+    private long purchaseId;
     private PurchaseStatus purchaseStatus;
     private int punctuation;
     private Menu purchasedMenu;
@@ -31,8 +32,37 @@ public class HistoricalPurchases {
         return purchaseAmount;
     }
 
-    public HistoricalPurchases(LocalDate purchasedDate, PurchaseStatus purchaseStatus, int punctuation, Menu purchasedMenu, int purchaseAmount) {
+    public void setPurchasedDate(LocalDate purchasedDate) {
         this.purchasedDate = purchasedDate;
+    }
+
+    public void setPurchaseStatus(PurchaseStatus purchaseStatus) {
+        this.purchaseStatus = purchaseStatus;
+    }
+
+    public long getPurchaseId() {
+        return purchaseId;
+    }
+
+    public void setPurchaseId(long purchaseId) {
+        this.purchaseId = purchaseId;
+    }
+
+    public void setPunctuation(int punctuation) {
+        this.punctuation = punctuation;
+    }
+
+    public void setPurchasedMenu(Menu purchasedMenu) {
+        this.purchasedMenu = purchasedMenu;
+    }
+
+    public void setPurchaseAmount(int purchaseAmount) {
+        this.purchaseAmount = purchaseAmount;
+    }
+
+    HistoricalPurchases(LocalDate purchasedDate, long purchaseId, PurchaseStatus purchaseStatus, int punctuation, Menu purchasedMenu, int purchaseAmount) {
+        this.purchasedDate = purchasedDate;
+        this.purchaseId = purchaseId;
         this.purchaseStatus = purchaseStatus;
         this.punctuation = punctuation;
         this.purchasedMenu = purchasedMenu;

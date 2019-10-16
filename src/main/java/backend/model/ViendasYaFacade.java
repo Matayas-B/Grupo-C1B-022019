@@ -16,7 +16,8 @@ public class ViendasYaFacade {
 
     private UnityOfWork unityOfWork;
 
-    public ViendasYaFacade() { }
+    public ViendasYaFacade() {
+    }
 
     public ViendasYaFacade(UnityOfWork unityOfWork) {
         this.unityOfWork = unityOfWork;
@@ -131,42 +132,7 @@ public class ViendasYaFacade {
         }
     }
 
-    // TODO: Actions that are still missing
-
-    public void startDeliveryForPurchase(int purchaseId) {
-        Purchase purchase = unityOfWork.getPurchaseById(purchaseId);
-        purchase.startDelivery();
-        unityOfWork.savePurchase(purchase);
-    }
-
-    public void finishDeliveryForPurchase(int purchaseId) {
-        Purchase purchase = unityOfWork.getPurchaseById(purchaseId);
-        purchase.finishDelivery();
-        unityOfWork.savePurchase(purchase);
-    }
-
-    public List<HistoricalPurchases> getHistoricalPurchases(SupplierUser supplier) {
-        List<Purchase> supplierPurchases = unityOfWork.getPurchasesForSupplier(supplier);
-        return supplierPurchases.stream().map(sp -> new HistoricalPurchases(sp.getPurchasedDate(), sp.getPurchaseStatus(), getPunctuationForPurchase(sp), sp.getPurchasedMenu(), sp.getPurchaseAmount()))
-                .collect(Collectors.toList());
-    }
-
-    public List<HistoricalPurchases> getHistoricalPurchases(CustomerUser customer) {
-        List<Purchase> customerPurchases = unityOfWork.getPurchasesForCustomer(customer);
-        return customerPurchases.stream().map(cp -> new HistoricalPurchases(cp.getPurchasedDate(), cp.getPurchaseStatus(), getPunctuationForPurchase(cp), cp.getPurchasedMenu(), cp.getPurchaseAmount()))
-                .collect(Collectors.toList());
-    }
-
     /* Private Methods */
-    private int getPunctuationForPurchase(Purchase purchase) {
-        return purchase.getCustomer().getCustomerScoreById(purchase.getCustomerScore().getCustomerScoreId()).getPunctuation();
-    }
-
-    private void markSupplierAsInvalid(SupplierUser invalidSupplier) {
-        unityOfWork.suppliers.remove(invalidSupplier);
-        unityOfWork.invalidSuppliers.add(invalidSupplier);
-    }
-
     private SupplierUser findSupplierWithServiceName(String serviceName) {
         return unityOfWork.suppliers.stream().filter(s -> s.getService().getServiceName().equals(serviceName)).findFirst().orElse(null);
     }
@@ -222,15 +188,42 @@ public class ViendasYaFacade {
             throw new Exception("User Score does not exists.");
 
         customerScore.setPunctuation(punctuation);
-        MenuScore menuScore = menu.addScore(customerScore.getCustomerEmail(), punctuation);
+        return menu.addScore(customerScore.getCustomerEmail(), punctuation);
+    }
 
+    public void checkMenuAndServiceValidity(Service service, Menu menu) {
         if (menu.hasEnoughScores() && menu.getScoreAverage() < 2) {
             service.markMenuAsInvalid(menu);
             if (service.getInvalidMenus().size() == 10) {
                 markSupplierAsInvalid(service.getSupplier());
             }
         }
+    }
 
-        return menuScore;
+    public void startDeliveryForPurchase(Purchase purchase) {
+        purchase.startDelivery();
+    }
+
+    public void finishDeliveryForPurchase(Purchase purchase) {
+        purchase.finishDelivery();
+    }
+
+    public List<HistoricalPurchases> getSupplierHistoricalPurchases(List<Purchase> supplierPurchases) {
+        return supplierPurchases.stream().map(sp -> new HistoricalPurchases(sp.getPurchasedDate(), sp.getPurchaseId(), sp.getPurchaseStatus(), getPunctuationForPurchase(sp), sp.getPurchasedMenu(), sp.getPurchaseAmount()))
+                .collect(Collectors.toList());
+    }
+
+    public List<HistoricalPurchases> getCustomerHistoricalPurchases(List<Purchase> customerPurchases) {
+        return customerPurchases.stream().map(cp -> new HistoricalPurchases(cp.getPurchasedDate(), cp.getPurchaseId(), cp.getPurchaseStatus(), getPunctuationForPurchase(cp), cp.getPurchasedMenu(), cp.getPurchaseAmount()))
+                .collect(Collectors.toList());
+    }
+
+    /* Private Methods */
+    private int getPunctuationForPurchase(Purchase purchase) {
+        return purchase.getCustomer().getCustomerScoreById(purchase.getCustomerScore().getCustomerScoreId()).getPunctuation();
+    }
+
+    private void markSupplierAsInvalid(SupplierUser invalidSupplier) {
+        invalidSupplier.setValidSupplier(false);
     }
 }

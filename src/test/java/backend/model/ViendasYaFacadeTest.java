@@ -417,7 +417,7 @@ public class ViendasYaFacadeTest {
         assertEquals(purchase.getPurchasedMenu().getName(), "Whopper");
         assertEquals(purchase.getService().getServiceName(), "Burguer King");
         assertEquals(purchase.getCustomer().getName(), "Facundo");
-        assertEquals(purchase.getCustomer().getCustomerScores().get(0).getCustomerScoreId(), 1);
+        assertEquals(purchase.getCustomer().getCustomerScores().get(0).getCustomerScoreId(), java.util.Optional.of(1));
         assertEquals(purchase.getCustomer().getCustomerScores().get(0).getCustomerEmail(), "Facundo");
         assertEquals(purchase.getCustomer().getCustomerScores().get(0).getPunctuation(), 0);
         assertFalse(purchase.getCustomer().getCustomerScores().get(0).isFinished());
@@ -440,7 +440,7 @@ public class ViendasYaFacadeTest {
         Purchase purchase = viendasYa.purchase(customer, "Burguer King", 1, 10);
 
         // Act
-        viendasYa.startDeliveryForPurchase(purchase.getPurchaseId());
+        viendasYa.startDeliveryForPurchase(purchase);
 
         // Assert
         assertFalse(viendasYa.getAllPurchases().isEmpty());
@@ -464,8 +464,8 @@ public class ViendasYaFacadeTest {
         Purchase purchase = viendasYa.purchase(customer, "Burguer King", 1, 10);
 
         // Act
-        viendasYa.startDeliveryForPurchase(purchase.getPurchaseId());
-        viendasYa.finishDeliveryForPurchase(purchase.getPurchaseId());
+        viendasYa.startDeliveryForPurchase(purchase);
+        viendasYa.finishDeliveryForPurchase(purchase);
 
         // Assert
         assertFalse(viendasYa.getAllPurchases().isEmpty());
@@ -596,7 +596,7 @@ public class ViendasYaFacadeTest {
         viendasYa.createMenuScore(customer, "McDonalds", 1, 4);
 
         // Act
-        List<HistoricalPurchases> supplier2Purchases = viendasYa.getHistoricalPurchases(supplier2);
+        List<HistoricalPurchases> supplier2Purchases = viendasYa.getSupplierHistoricalPurchases(new ArrayList<>());
 
         // Assert
         assertFalse(supplier2Purchases.isEmpty());
@@ -630,7 +630,7 @@ public class ViendasYaFacadeTest {
 
         // Act
         viendasYa.createMenuScore(customer1, "Burguer King", 2, 5);
-        List<HistoricalPurchases> customer1Purchases = viendasYa.getHistoricalPurchases(customer1);
+        List<HistoricalPurchases> customer1Purchases = viendasYa.getCustomerHistoricalPurchases(new ArrayList<>());
 
         // Assert
         assertFalse(customer1Purchases.isEmpty());

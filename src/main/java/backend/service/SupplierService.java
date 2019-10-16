@@ -2,15 +2,23 @@ package backend.service;
 
 import backend.controller.requests.NewServiceRequest;
 import backend.controller.requests.NewUserRequest;
+import backend.model.HistoricalPurchases;
+import backend.model.Purchase;
 import backend.model.SupplierUser;
 import backend.model.ViendasYaFacade;
 import backend.model.exception.InsufficientFundsException;
+import backend.model.exception.PurchaseNotFoundException;
 import backend.model.exception.ServiceNotFoundException;
 import backend.model.exception.UserNotFoundException;
+import backend.repository.IPurchaseRepository;
 import backend.repository.IServiceRepository;
 import backend.repository.ISupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class SupplierService {
@@ -19,6 +27,9 @@ public class SupplierService {
     private ISupplierRepository supplierRepository;
     @Autowired
     private IServiceRepository serviceRepository;
+    @Autowired
+    private IPurchaseRepository purchaseRepository;
+
     private ViendasYaFacade viendasYaFacade = new ViendasYaFacade();
 
     public SupplierUser createSupplier(NewUserRequest supplier) {
@@ -62,5 +73,22 @@ public class SupplierService {
         supplier.setService(null);
         serviceRepository.delete(service);
         supplierRepository.save(supplier);
+    }
+
+    public Iterable<HistoricalPurchases> getSupplierPurchases(long supplierId) {
+        List<Purchase> supplierPurchases = StreamSupport.stream(purchaseRepository.findAll().spliterator(), false).filter(p -> p.getService().getSupplier().getId() == supplierId).collect(Collectors.toList());
+        return viendasYaFacade.getSupplierHistoricalPurchases(supplierPurchases);
+    }
+
+    public void startPurchaseDelivery(long purchaseId) {
+        Purchase purchase = purchaseRepository.findById(purchaseId).orElseThrow(PurchaseNotFoundException::new);
+        viendasYaFacade.startDeliveryForPurchase(purchase);
+        purchaseRepository.save(purchase);
+    }
+
+    public void finishPurchaseDelivery(long purchaseId) {
+        Purchase purchase = purchaseRepository.findById(purchaseId).orElseThrow(PurchaseNotFoundException::new);
+        viendasYaFacade.finishDeliveryForPurchase(purchase);
+        purchaseRepository.save(purchase);
     }
 }

@@ -6,10 +6,7 @@ import backend.controller.requests.PurchaseRequest;
 import backend.model.*;
 import backend.model.exception.ServiceNotFoundException;
 import backend.model.exception.UserNotFoundException;
-import backend.repository.ICustomerRepository;
-import backend.repository.ICustomerScoreRepository;
-import backend.repository.IPurchaseRepository;
-import backend.repository.IServiceRepository;
+import backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +20,11 @@ public class CustomerService {
     @Autowired
     private ICustomerRepository customerRepository;
     @Autowired
-    IServiceRepository serviceRepository;
+    private IServiceRepository serviceRepository;
     @Autowired
-    IPurchaseRepository purchaseRepository;
+    private IPurchaseRepository purchaseRepository;
     @Autowired
-    ICustomerScoreRepository customerScoreRepository;
+    private ICustomerScoreRepository customerScoreRepository;
 
     private ViendasYaFacade viendasYaFacade = new ViendasYaFacade();
 
@@ -55,8 +52,9 @@ public class CustomerService {
         return customer.getAccount().getFunds();
     }
 
-    public Iterable<Purchase> getAllPurchases() {
-        return purchaseRepository.findAll();
+    public Iterable<HistoricalPurchases> getCustomerPurchases(long customerId) {
+        List<Purchase> customerPurchases = StreamSupport.stream(purchaseRepository.findAll().spliterator(), false).filter(p -> p.getCustomer().getId() == customerId).collect(Collectors.toList());
+        return viendasYaFacade.getCustomerHistoricalPurchases(customerPurchases);
     }
 
     public Purchase purchaseMenu(PurchaseRequest purchaseRequest) throws Exception {
@@ -84,8 +82,9 @@ public class CustomerService {
         Menu menu = service.getMenuByMenuId(newScorePunctuationRequest.getMenuId());
 
         MenuScore menuScore = viendasYaFacade.createMenuScore(customer, service, menu, newScorePunctuationRequest.getPunctuation());
-        customerRepository.save(customer);
+        viendasYaFacade.checkMenuAndServiceValidity(service, menu);
         serviceRepository.save(service);
+        customerRepository.save(customer);
 
         return menuScore;
     }

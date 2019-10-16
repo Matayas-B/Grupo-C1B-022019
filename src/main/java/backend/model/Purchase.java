@@ -11,7 +11,7 @@ public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PURCHASE_ID")
-    private int purchaseId;
+    private Long purchaseId;
     private LocalDate purchasedDate;
     private int purchaseAmount;
     @Enumerated(EnumType.STRING)
@@ -42,7 +42,7 @@ public class Purchase {
         return purchaseStatus;
     }
 
-    public int getPurchaseId() {
+    public Long getPurchaseId() {
         return purchaseId;
     }
 
@@ -62,7 +62,7 @@ public class Purchase {
         return purchasedDate;
     }
 
-    public void setPurchaseId(int purchaseId) {
+    public void setPurchaseId(Long purchaseId) {
         this.purchaseId = purchaseId;
     }
 

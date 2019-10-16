@@ -21,8 +21,8 @@ public class ServiceController {
     }
 
     @GetMapping(value = "/service/getMenus")
-    public Iterable<Menu> getAllMenus(long serviceId) {
-        return serviceService.getAllMenus(serviceId);
+    public Iterable<Menu> getAllMenusForService(long serviceId) {
+        return serviceService.getAllMenusForService(serviceId);
     }
 
     @PostMapping(value = "/service/addMenu")
@@ -31,7 +31,7 @@ public class ServiceController {
     }
 
     @GetMapping(value = "/service/deleteMenu")
-    public void getAllMenus(long serviceId, long menuId) {
+    public void deleteMenuFromService(long serviceId, long menuId) {
         serviceService.deleteMenuFromService(serviceId, menuId);
     }
 }

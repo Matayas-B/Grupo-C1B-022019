@@ -22,6 +22,7 @@ public class SupplierUser extends User {
     )
     @JsonIgnoreProperties("supplier")
     private Service service;
+    private boolean isValidSupplier;
 
     public Service getService() {
         return service;
@@ -35,12 +36,21 @@ public class SupplierUser extends User {
         return super.getAccount();
     }
 
+    public boolean isValidSupplier() {
+        return isValidSupplier;
+    }
+
+    public void setValidSupplier(boolean validSupplier) {
+        isValidSupplier = validSupplier;
+    }
+
     public SupplierUser() {
         super();
     }
 
     public SupplierUser(String name, String lastName, String email, String password, String phone, String address) {
         super(name, lastName, email, password, phone, address);
+        this.isValidSupplier = true;
     }
 
     public boolean hasService() {

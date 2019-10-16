@@ -2,14 +2,13 @@ package backend.controller;
 
 import backend.controller.requests.NewServiceRequest;
 import backend.controller.requests.NewUserRequest;
+import backend.model.HistoricalPurchases;
+import backend.model.Purchase;
 import backend.model.Service;
 import backend.model.SupplierUser;
 import backend.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -52,5 +51,20 @@ public class SupplierController {
     @RequestMapping(value = "/supplier/deleteService", method = RequestMethod.GET)
     public void deleteService(long supplierId) {
         supplierService.deleteService(supplierId);
+    }
+
+    @GetMapping(value = "/supplier/purchase")
+    public Iterable<HistoricalPurchases> getSupplierPurchases(long supplierId) {
+        return supplierService.getSupplierPurchases(supplierId);
+    }
+
+    @GetMapping(value = "supplier/startDelivery")
+    public void startPurchaseDelivery(long purchaseId) {
+        supplierService.startPurchaseDelivery(purchaseId);
+    }
+
+    @GetMapping(value = "supplier/finishDelivery")
+    public void finishPurchaseDelivery(long purchaseId) {
+        supplierService.finishPurchaseDelivery(purchaseId);
     }
 }

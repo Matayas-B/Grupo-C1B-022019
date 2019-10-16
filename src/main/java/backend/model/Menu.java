@@ -33,7 +33,7 @@ public class Menu {
     private int maxDailySales;
     private boolean isValidMenu;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<MenuScore> menuScores = new ArrayList<>();
 
     /* Constructor for testing purposes -> MenuBuilder */

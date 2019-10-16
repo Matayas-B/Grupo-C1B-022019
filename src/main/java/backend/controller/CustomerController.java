@@ -4,6 +4,7 @@ import backend.controller.requests.NewScorePunctuationRequest;
 import backend.controller.requests.NewUserRequest;
 import backend.controller.requests.PurchaseRequest;
 import backend.model.CustomerUser;
+import backend.model.HistoricalPurchases;
 import backend.model.MenuScore;
 import backend.model.Purchase;
 import backend.service.CustomerService;
@@ -44,8 +45,8 @@ public class CustomerController {
     }
 
     @GetMapping(value = "/customer/purchase")
-    public Iterable<Purchase> getAllPurchases() {
-        return customerService.getAllPurchases();
+    public Iterable<HistoricalPurchases> getCustomerPurchases(long customerId) {
+        return customerService.getCustomerPurchases(customerId);
     }
 
     @PostMapping(value = "/customer/purchase")

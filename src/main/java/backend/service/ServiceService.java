@@ -17,7 +17,7 @@ public class ServiceService {
         return serviceRepository.findAll();
     }
 
-    public Iterable<Menu> getAllMenus(long serviceId) {
+    public Iterable<Menu> getAllMenusForService(long serviceId) {
         backend.model.Service service = serviceRepository.findById(serviceId).orElseThrow(ServiceNotFoundException::new);
         return service.getMenus();
     }

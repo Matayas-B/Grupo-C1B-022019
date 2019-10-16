@@ -1,10 +1,13 @@
 package backend.model;
 
+import backend.controller.helpers.LocalDateSerializer;
 import backend.model.enums.PurchaseStatus;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.joda.time.LocalDate;
 
 public class HistoricalPurchases {
 
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate purchasedDate;
     private long purchaseId;
     private PurchaseStatus purchaseStatus;

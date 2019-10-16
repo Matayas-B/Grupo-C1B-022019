@@ -1,7 +1,9 @@
 package backend.model;
 
+import backend.controller.helpers.LocalDateSerializer;
 import backend.model.enums.Category;
 import backend.model.enums.OfficeHours;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.joda.time.LocalDate;
 
 import javax.persistence.*;
@@ -23,7 +25,9 @@ public class Menu {
     @Enumerated(EnumType.STRING)
     private Category category;
     private int deliveryFee;
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate startDate;
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate endDate;
     @Enumerated(EnumType.STRING)
     private OfficeHours deliveryHours;

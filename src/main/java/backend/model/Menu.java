@@ -16,6 +16,7 @@ public class Menu {
     @Column(name = "MENU_ID")
     private int menuId;
 
+    private long serviceId;
     @Column(unique = true)
     private String name;
     private String description;
@@ -62,7 +63,8 @@ public class Menu {
     public Menu() {
     }
 
-    public Menu(String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
+    public Menu(long serviceId, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
+        this.serviceId = serviceId;
         this.name = name;
         this.description = description;
         this.category = category;
@@ -80,6 +82,14 @@ public class Menu {
 
     public void setMenuId(int menuId) {
         this.menuId = menuId;
+    }
+
+    public long getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(long serviceId) {
+        this.serviceId = serviceId;
     }
 
     public void setMenuScores(List<MenuScore> menuScores) {

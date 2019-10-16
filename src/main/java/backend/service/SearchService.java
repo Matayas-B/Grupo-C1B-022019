@@ -23,7 +23,6 @@ public class SearchService {
     private Search search = new Search();
 
     public Iterable<Menu> searchMenusByCriteria(SearchRequest searchRequest) {
-        // TODO: add serviceId to Menu, to perform a Purchase
         List<backend.model.Service> services = StreamSupport.stream(serviceRepository.findAll().spliterator(), false).collect(Collectors.toList());
         List<Menu> menus = StreamSupport.stream(menuRepository.findAll().spliterator(), false).collect(Collectors.toList());
         return search.search(services, menus, searchRequest.getMenuName(), searchRequest.getMenuCategory(), searchRequest.getServiceTown());

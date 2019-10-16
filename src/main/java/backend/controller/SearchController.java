@@ -16,7 +16,7 @@ public class SearchController {
     private SearchService searchService = new SearchService();
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public Iterable<Menu> searchMenusByCriteria(@RequestBody SearchRequest searchRequest) {
-        return searchService.searchMenusByCriteria(searchRequest);
+    public Iterable<Menu> searchValidMenusByCriteria(@RequestBody SearchRequest searchRequest) {
+        return searchService.searchValidMenusByCriteria(searchRequest);
     }
 }

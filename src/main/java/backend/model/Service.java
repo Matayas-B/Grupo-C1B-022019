@@ -178,7 +178,7 @@ public class Service {
         this.deliveryDistanceKm = deliveryDistance;
     }
 
-    public List<Menu> getMenus() {
+    public List<Menu> getValidMenus() {
         return menus;
     }
 
@@ -190,8 +190,12 @@ public class Service {
 
     public void markMenuAsInvalid(Menu invalidMenu) {
         invalidMenu.markAsInvalid();
-        getMenus().remove(invalidMenu);
+        getValidMenus().remove(invalidMenu);
         getInvalidMenus().add(invalidMenu);
+    }
+
+    public void markServiceAsInvalid() {
+        isValidService = false;
     }
 
     public void setMenus(List<Menu> menus) {

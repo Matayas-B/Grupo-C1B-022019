@@ -20,7 +20,7 @@ public class UnityOfWork {
     }
 
     public List<Menu> getAllMenus() {
-        return suppliers.stream().map(SupplierUser::getService).map(Service::getMenus).flatMap(Collection::stream).collect(Collectors.toList());
+        return suppliers.stream().map(SupplierUser::getService).map(Service::getValidMenus).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     public boolean isServiceAlreadyCreated(String serviceName) {

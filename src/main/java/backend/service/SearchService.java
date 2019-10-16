@@ -22,9 +22,9 @@ public class SearchService {
 
     private Search search = new Search();
 
-    public Iterable<Menu> searchMenusByCriteria(SearchRequest searchRequest) {
-        List<backend.model.Service> services = StreamSupport.stream(serviceRepository.findAll().spliterator(), false).collect(Collectors.toList());
-        List<Menu> menus = StreamSupport.stream(menuRepository.findAll().spliterator(), false).collect(Collectors.toList());
+    public Iterable<Menu> searchValidMenusByCriteria(SearchRequest searchRequest) {
+        List<backend.model.Service> services = StreamSupport.stream(serviceRepository.findAll().spliterator(), false).filter(backend.model.Service::isValidService).collect(Collectors.toList());
+        List<Menu> menus = StreamSupport.stream(menuRepository.findAll().spliterator(), false).filter(Menu::isValidMenu).collect(Collectors.toList());
         return search.search(services, menus, searchRequest.getMenuName(), searchRequest.getMenuCategory(), searchRequest.getServiceTown());
     }
 }

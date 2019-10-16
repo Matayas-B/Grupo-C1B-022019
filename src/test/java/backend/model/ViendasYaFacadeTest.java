@@ -14,7 +14,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import backend.repository.UnityOfWork;
 
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -158,8 +157,8 @@ public class ViendasYaFacadeTest {
         assertEquals(viendasYa.getAllServices().size(), 1);
         assertEquals(viendasYa.getAllServices().get(0).getServiceName(), "Burguer King");
         assertEquals(viendasYa.getAllServices().get(0).getSupplier().getName(), "Matayas");
-        assertEquals(viendasYa.getAllServices().get(0).getMenus().size(), 1);
-        assertEquals(viendasYa.getAllServices().get(0).getMenus().get(0).getName(), "Whopper");
+        assertEquals(viendasYa.getAllServices().get(0).getValidMenus().size(), 1);
+        assertEquals(viendasYa.getAllServices().get(0).getValidMenus().get(0).getName(), "Whopper");
         assertEquals(supplier.getService().getServiceName(), "Burguer King");
     }
 
@@ -526,7 +525,7 @@ public class ViendasYaFacadeTest {
 
         // Assert
         assertTrue(customer.getCustomerScores().stream().allMatch(CustomerScore::isFinished));
-        assertEquals(supplier.getService().getMenus().size(), 0);
+        assertEquals(supplier.getService().getValidMenus().size(), 0);
         assertEquals(supplier.getService().getInvalidMenus().size(), 1);
         assertFalse(supplier.getService().getInvalidMenus().get(0).isValidMenu());
     }
@@ -565,7 +564,7 @@ public class ViendasYaFacadeTest {
 
         // Assert
         assertTrue(customer.getCustomerScores().stream().allMatch(CustomerScore::isFinished));
-        assertEquals(supplier.getService().getMenus().size(), 0);
+        assertEquals(supplier.getService().getValidMenus().size(), 0);
         assertEquals(supplier.getService().getInvalidMenus().size(), 10);
         assertFalse(supplier.getService().getInvalidMenus().stream().noneMatch(Menu::isValidMenu));
         assertEquals(viendasYa.getSuppliers().size(), 0);

@@ -25,6 +25,6 @@ public class Search {
     }
 
     private List<Menu> getMenusByServiceTown(List<Service> services, String serviceTown) {
-        return services.stream().filter(s -> s.getAddress().getTown().equals(serviceTown)).map(Service::getMenus).flatMap(Collection::stream).collect(Collectors.toList());
+        return services.stream().filter(s -> s.getAddress().getTown().equals(serviceTown)).map(Service::getValidMenus).flatMap(Collection::stream).collect(Collectors.toList());
     }
 }

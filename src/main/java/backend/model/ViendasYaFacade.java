@@ -174,8 +174,11 @@ public class ViendasYaFacade {
 
     public void checkMenuAndServiceValidity(Service service, Menu menu) {
         if (menu.hasEnoughScores() && menu.getScoreAverage() < 2) {
+            // TODO: send email when menu not valid.
             service.markMenuAsInvalid(menu);
             if (service.getInvalidMenus().size() == 10) {
+                // TODO: send email when supplier not valid anymore.
+                service.markServiceAsInvalid();
                 markSupplierAsInvalid(service.getSupplier());
             }
         }

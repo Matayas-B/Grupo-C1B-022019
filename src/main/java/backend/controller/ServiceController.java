@@ -16,13 +16,13 @@ public class ServiceController {
     ServiceService serviceService = new ServiceService();
 
     @GetMapping(value = "/service")
-    public Iterable<Service> getAllServices() {
-        return serviceService.getAllServices();
+    public Iterable<Service> getAllValidServices() {
+        return serviceService.getAllValidServices();
     }
 
     @GetMapping(value = "/service/getMenus")
-    public Iterable<Menu> getAllMenusForService(long serviceId) {
-        return serviceService.getAllMenusForService(serviceId);
+    public Iterable<Menu> getAllValidMenusForService(long serviceId) {
+        return serviceService.getAllValidMenusForService(serviceId);
     }
 
     @PostMapping(value = "/service/addMenu")

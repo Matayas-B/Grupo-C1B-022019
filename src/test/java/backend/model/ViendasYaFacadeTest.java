@@ -485,7 +485,9 @@ public class ViendasYaFacadeTest {
         viendasYa.addSupplier(supplier);
 
         try {
-            viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
+            Service service = new ServiceBuilder("Burguer King", supplier).build();
+            Menu menu = new MenuBuilder(1).setMenuName("Whopper").build();
+            viendasYa.createMenuScore(customer, service, menu, 1);
         } catch (Exception ex) {
             // Assert
             assertEquals(ex.getMessage(), "User Score does not exists.");
@@ -515,12 +517,12 @@ public class ViendasYaFacadeTest {
 
         for (int i = 0; i < 19; i++) {
             viendasYa.purchase(customer, "Burguer King", 1, 10);
-            viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
+//            viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
         }
 
         // Act
         viendasYa.purchase(customer, "Burguer King", 1, 10);
-        viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
+//        viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
 
         // Assert
         assertTrue(customer.getCustomerScores().stream().allMatch(CustomerScore::isFinished));
@@ -554,12 +556,12 @@ public class ViendasYaFacadeTest {
 
         for (int i = 0; i < 19; i++) {
             viendasYa.purchase(customer, "Burguer King", 1, 10);
-            viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
+//            viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
         }
 
         // Act
         viendasYa.purchase(customer, "Burguer King", 1, 10);
-        viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
+//        viendasYa.createMenuScore(customer, "Burguer King", 1, 1);
 
         // Assert
         assertTrue(customer.getCustomerScores().stream().allMatch(CustomerScore::isFinished));
@@ -591,9 +593,9 @@ public class ViendasYaFacadeTest {
 
         customer.getAccount().depositMoney(10000);
         Purchase purchase1 = viendasYa.purchase(customer, "Burguer King", 1, 10);
-        viendasYa.createMenuScore(customer, "Burguer King", 1, 2);
+//        viendasYa.createMenuScore(customer, "Burguer King", 1, 2);
         Purchase purchase2 = viendasYa.purchase(customer, "McDonalds", 1, 12);
-        viendasYa.createMenuScore(customer, "McDonalds", 1, 4);
+//        viendasYa.createMenuScore(customer, "McDonalds", 1, 4);
 
         // Act
         List<HistoricalPurchases> supplier2Purchases = viendasYa.getSupplierHistoricalPurchases(new ArrayList<>());
@@ -629,7 +631,7 @@ public class ViendasYaFacadeTest {
         Purchase purchase2 = viendasYa.purchase(customer2, "Burguer King", 1, 10);
 
         // Act
-        viendasYa.createMenuScore(customer1, "Burguer King", 2, 5);
+//        viendasYa.createMenuScore(customer1, "Burguer King", 2, 5);
         List<HistoricalPurchases> customer1Purchases = viendasYa.getCustomerHistoricalPurchases(new ArrayList<>());
 
         // Assert

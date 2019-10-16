@@ -113,25 +113,6 @@ public class ViendasYaFacade {
         return unityOfWork.addPurchase(customer, customerScore, currentService, currentMenu, LocalDate.now(), purchasedAmount);
     }
 
-    public void createMenuScore(CustomerUser customer, String serviceName, int menuId, int punctuation) throws Exception {
-        CustomerScore customerScore = customer.findUserScore(serviceName, menuId);
-        if (customerScore == null)
-            throw new Exception("User Score does not exists.");
-
-        customerScore.setPunctuation(punctuation);
-        Menu menu = unityOfWork.getAllMenus().stream().filter(m -> m.getMenuId() == menuId).findFirst().get();
-        menu.addScore(customerScore.getCustomerEmail(), punctuation);
-
-        if (menu.hasEnoughScores() && menu.getScoreAverage() < 2) {
-            Service service = unityOfWork.getAllServices().stream().filter(s -> s.getServiceName().equals(serviceName)).findFirst().get();
-            service.markMenuAsInvalid(menu);
-
-            if (service.getInvalidMenus().size() == 10) {
-                markSupplierAsInvalid(service.getSupplier());
-            }
-        }
-    }
-
     /* Private Methods */
     private SupplierUser findSupplierWithServiceName(String serviceName) {
         return unityOfWork.suppliers.stream().filter(s -> s.getService().getServiceName().equals(serviceName)).findFirst().orElse(null);

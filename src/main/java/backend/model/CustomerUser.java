@@ -39,14 +39,6 @@ public class CustomerUser extends User {
         return customerScore;
     }
 
-    // TODO: Delete it ! ! ! Just for ViendasYaFacade unittesting
-    CustomerScore findUserScore(String serviceName, long menuId) {
-        return customerScores.stream().filter(us -> us.getServiceId().equals(serviceName) &&
-                us.getMenuId().equals(menuId) &&
-                !us.isFinished())
-                .findFirst().orElseThrow(MenuNotFoundException::new);
-    }
-    
     CustomerScore findUserScore(long serviceId, long menuId) {
         return customerScores.stream().filter(us -> us.getServiceId() == serviceId &&
                 us.getMenuId() == menuId &&

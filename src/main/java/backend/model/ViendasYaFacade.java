@@ -61,8 +61,6 @@ public class ViendasYaFacade {
 
         if (supplier == null)
             throw new ServiceNotFoundException();
-
-        supplier.addMenu(id, name, description, category, deliveryFee, startDate, endDate, deliveryHours, averageDeliveryMinutes, price, minQuantity, minQuantityPrice, maxDailySales);
     }
 
     public void addMenuToService(String serviceName, Menu menu) {
@@ -70,8 +68,6 @@ public class ViendasYaFacade {
 
         if (supplier == null)
             throw new ServiceNotFoundException();
-
-        supplier.addMenu(menu.getMenuId(), menu.getName(), menu.getDescription(), menu.getCategory(), menu.getDeliveryFee(), menu.getStartDate(), menu.getEndDate(), menu.getDeliveryHours(), menu.getAverageDeliveryMinutes(), menu.getPrice(), menu.getMinQuantity(), menu.getMinQuantityPrice(), menu.getMaxDailySales());
     }
 
     public List<Service> getAllServices() {

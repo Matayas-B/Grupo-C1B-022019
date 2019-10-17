@@ -6,6 +6,7 @@ import backend.model.enums.Category;
 import org.junit.Test;
 import backend.repository.UnityOfWork;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -16,21 +17,24 @@ public class SearchTest {
     @Test
     public void SearchByMenuNameShouldBringAllMenusWithThatName() throws Exception {
         // Arrange
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
+        Service service1 = new ServiceBuilder("Burguer King", null).build();
+        Menu menu1 = new MenuBuilder(1).setMenuName("Whopper").setCategory(Category.Hamburguesa).build();
+        Menu menu2 = new MenuBuilder(3).setMenuName("BK Stacker").setCategory(Category.Hamburguesa).build();
+        Menu menu3 = new MenuBuilder(2).setMenuName("BK Salad").setCategory(Category.Green).build();
+        service1.getValidMenus().add(menu1);
+        service1.getValidMenus().add(menu2);
+        service1.getValidMenus().add(menu3);
 
-        UnityOfWork unityOfWork = new UnityOfWork();
-        ViendasYaFacade viendasYa = new ViendasYaFacade(unityOfWork);
-        viendasYa.addSupplier(supplier);
-
-        viendasYa.addService(supplier, new ServiceBuilder("Burguer King", supplier).build());
-
-        viendasYa.addMenuToService("Burguer King", new MenuBuilder(1).setMenuName("Whopper").build());
-        viendasYa.addMenuToService("Burguer King", new MenuBuilder(2).setMenuName("Whopper XL").build());
-        viendasYa.addMenuToService("Burguer King", new MenuBuilder(3).setMenuName("BK Stacker").build());
+        List<Service> services = new ArrayList<>();
+        services.add(service1);
+        List<Menu> menus = new ArrayList<>();
+        menus.add(menu1);
+        menus.add(menu2);
+        menus.add(menu3);
 
         // Act
         Search search = new Search();
-        List<Menu> menusFilteredByName = search.search(unityOfWork.getAllServices(), unityOfWork.getAllMenus(),"Whopper", Category.All, "");
+        List<Menu> menusFilteredByName = search.search(services, menus,"BK", Category.All, "");
 
         // Assert
         assertFalse(menusFilteredByName.isEmpty());
@@ -40,21 +44,24 @@ public class SearchTest {
     @Test
     public void SearchByCategoryShouldBringAllMenusWithThatCategory() throws Exception {
         // Arrange
-        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
+        Service service1 = new ServiceBuilder("Burguer King", null).build();
+        Menu menu1 = new MenuBuilder(1).setMenuName("Whopper").setCategory(Category.Hamburguesa).build();
+        Menu menu2 = new MenuBuilder(3).setMenuName("BK Stacker").setCategory(Category.Hamburguesa).build();
+        Menu menu3 = new MenuBuilder(2).setMenuName("BK Salad").setCategory(Category.Green).build();
+        service1.getValidMenus().add(menu1);
+        service1.getValidMenus().add(menu2);
+        service1.getValidMenus().add(menu3);
 
-        UnityOfWork unityOfWork = new UnityOfWork();
-        ViendasYaFacade viendasYa = new ViendasYaFacade(unityOfWork);
-        viendasYa.addSupplier(supplier);
-
-        viendasYa.addService(supplier, new ServiceBuilder("Burguer King", supplier).build());
-
-        viendasYa.addMenuToService("Burguer King", new MenuBuilder(1).setCategory(Category.Hamburguesa).build());
-        viendasYa.addMenuToService("Burguer King", new MenuBuilder(2).setCategory(Category.Hamburguesa).build());
-        viendasYa.addMenuToService("Burguer King", new MenuBuilder(3).setCategory(Category.Green).build());
+        List<Service> services = new ArrayList<>();
+        services.add(service1);
+        List<Menu> menus = new ArrayList<>();
+        menus.add(menu1);
+        menus.add(menu2);
+        menus.add(menu3);
 
         // Act
         Search search = new Search();
-        List<Menu> menusFilteredByCategory = search.search(unityOfWork.getAllServices(), unityOfWork.getAllMenus(),"", Category.Hamburguesa, "");
+        List<Menu> menusFilteredByCategory = search.search(services, menus,"", Category.Hamburguesa, "");
 
         // Assert
         assertFalse(menusFilteredByCategory.isEmpty());
@@ -64,54 +71,57 @@ public class SearchTest {
     @Test
     public void SearchByTownShouldBringAllMenusWhichServiceBelongsToThatTown() throws Exception {
         // Arrange
-        SupplierUser supplier1 = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
-        SupplierUser supplier2 = new SupplierUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
+        Service service1 = new ServiceBuilder("Burguer King", null).build();
+        Service service2 = new ServiceBuilder("McDonalds", null).setAddressTown("Bernal").build();
+        Menu menu1 = new MenuBuilder(1).setMenuName("Whopper").setCategory(Category.Hamburguesa).build();
+        Menu menu2 = new MenuBuilder(3).setMenuName("BK Stacker").setCategory(Category.Hamburguesa).build();
+        Menu menu3 = new MenuBuilder(2).setMenuName("Mc Pollo").setCategory(Category.Hamburguesa).build();
+        service1.getValidMenus().add(menu1);
+        service1.getValidMenus().add(menu2);
+        service2.getValidMenus().add(menu3);
 
-        UnityOfWork unityOfWork = new UnityOfWork();
-        ViendasYaFacade viendasYa = new ViendasYaFacade(unityOfWork);
-        viendasYa.addSupplier(supplier1);
-        viendasYa.addSupplier(supplier2);
-
-        viendasYa.addService(supplier1, new ServiceBuilder("Burguer King", supplier1).setAddressTown("Bernal").build());
-        viendasYa.addService(supplier2, new ServiceBuilder("McDonalds", supplier2).setAddressTown("Bernal").build());
-
-        viendasYa.addMenuToService("Burguer King", new MenuBuilder(1).build());
-        viendasYa.addMenuToService("Burguer King", new MenuBuilder(2).build());
-        viendasYa.addMenuToService("McDonalds", new MenuBuilder(3).build());
+        List<Service> services = new ArrayList<>();
+        services.add(service1);
+        services.add(service2);
+        List<Menu> menus = new ArrayList<>();
+        menus.add(menu1);
+        menus.add(menu2);
+        menus.add(menu3);
 
         // Act
         Search search = new Search();
-        List<Menu> menusFilteredByCategory = search.search(unityOfWork.getAllServices(), unityOfWork.getAllMenus(),"", Category.All, "Bernal");
+        List<Menu> menusFilteredByCategory = search.search(services, menus,"", Category.All, "Bernal");
 
         // Assert
         assertFalse(menusFilteredByCategory.isEmpty());
-        assertEquals(menusFilteredByCategory.size(), 3);
+        assertEquals(menusFilteredByCategory.size(), 1);
     }
 
     @Test
     public void SearchWithAllParametersShouldBringMenusAccordingToCriteria() throws Exception {
         // Arrange
-        SupplierUser supplier1 = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
-        SupplierUser supplier2 = new SupplierUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");
-        SupplierUser supplier3 = new SupplierUser("Brian", "Loquillo", "bra@gmail.com", "bra123", "1161635613", "Canale 3134");
+        Service service1 = new ServiceBuilder("Burguer King", null).setAddressTown("Bernal").build();
+        Service service2 = new ServiceBuilder("McDonalds", null).setAddressTown("Bernal").build();
+        Service service3 = new ServiceBuilder("Mostaza", null).setAddressTown("Quilmes").build();
+        Menu menu1 = new MenuBuilder(1).setMenuName("Whopper").setCategory(Category.Hamburguesa).build();
+        Menu menu2 = new MenuBuilder(2).setMenuName("Mc Pollo").setCategory(Category.Hamburguesa).build();
+        Menu menu3 = new MenuBuilder(3).setMenuName("Mostaza Whopper").setCategory(Category.Hamburguesa).build();
+        service1.getValidMenus().add(menu1);
+        service2.getValidMenus().add(menu2);
+        service3.getValidMenus().add(menu3);
 
-        UnityOfWork unityOfWork = new UnityOfWork();
-        ViendasYaFacade viendasYa = new ViendasYaFacade(unityOfWork);
-        viendasYa.addSupplier(supplier1);
-        viendasYa.addSupplier(supplier2);
-        viendasYa.addSupplier(supplier3);
-
-        viendasYa.addService(supplier1, new ServiceBuilder("Burguer King", supplier1).setAddressTown("Bernal").build());
-        viendasYa.addService(supplier2, new ServiceBuilder("McDonalds", supplier2).setAddressTown("Bernal").build());
-        viendasYa.addService(supplier3, new ServiceBuilder("Mostaza", supplier3).setAddressTown("Quilmes").build());
-
-        viendasYa.addMenuToService("Burguer King", new MenuBuilder(1).setMenuName("Whopper").setCategory(Category.Hamburguesa).build());
-        viendasYa.addMenuToService("McDonalds", new MenuBuilder(2).setMenuName("Mc Pollo").setCategory(Category.Hamburguesa).build());
-        viendasYa.addMenuToService("Mostaza", new MenuBuilder(3).setMenuName("Mostaza Whopper").setCategory(Category.Hamburguesa).build());
+        List<Service> services = new ArrayList<>();
+        services.add(service1);
+        services.add(service2);
+        services.add(service3);
+        List<Menu> menus = new ArrayList<>();
+        menus.add(menu1);
+        menus.add(menu2);
+        menus.add(menu3);
 
         // Act
         Search search = new Search();
-        List<Menu> menusFilteredByCategory = search.search(unityOfWork.getAllServices(), unityOfWork.getAllMenus(),"Whopper", Category.Hamburguesa, "Bernal");
+        List<Menu> menusFilteredByCategory = search.search(services, menus,"Whopper", Category.Hamburguesa, "Bernal");
 
         // Assert
         assertFalse(menusFilteredByCategory.isEmpty());

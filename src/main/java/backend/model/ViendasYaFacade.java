@@ -16,8 +16,7 @@ public class ViendasYaFacade {
 
     private UnityOfWork unityOfWork;
 
-    public ViendasYaFacade() {
-    }
+    public ViendasYaFacade() { }
 
     public ViendasYaFacade(UnityOfWork unityOfWork) {
         this.unityOfWork = unityOfWork;

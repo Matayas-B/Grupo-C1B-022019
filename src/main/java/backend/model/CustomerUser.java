@@ -1,6 +1,6 @@
 package backend.model;
 
-import backend.model.exception.MenuNotFoundException;
+import backend.model.exception.CustomerScoreNotFoundException;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class CustomerUser extends User {
         return customerScores.stream().filter(us -> us.getServiceId() == serviceId &&
                 us.getMenuId() == menuId &&
                 !us.isFinished())
-                .findFirst().orElseThrow(MenuNotFoundException::new);
+                .findFirst().orElseThrow(CustomerScoreNotFoundException::new);
     }
 
     CustomerScore getCustomerScoreById(long customerScoreId) {

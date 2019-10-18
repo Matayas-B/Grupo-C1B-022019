@@ -53,12 +53,6 @@ public class Service {
 
     public Service() { }
 
-    /* Constructor for testing purposes -> ServiceBuilder */
-    public Service(String serviceName, SupplierUser supplier) {
-        this.serviceName = serviceName;
-        this.supplier = supplier;
-    }
-
     public Service(String serviceName, String icon, Address address, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance, SupplierUser supp) {
         this.serviceName = serviceName;
         this.icon = icon;
@@ -92,6 +86,10 @@ public class Service {
 
     public Long getServiceId() {
         return serviceId;
+    }
+
+    public void setServiceId(Long serviceId) {
+        this.serviceId = serviceId;
     }
 
     public int getDeliveryDistanceKm() {

@@ -41,29 +41,6 @@ public class Menu {
     @OneToMany(cascade = CascadeType.ALL)
     private List<MenuScore> menuScores = new ArrayList<>();
 
-    /* Constructor for testing purposes -> MenuBuilder */
-    public Menu(int id) {
-        this.menuId = id;
-    }
-
-    // Deprecated
-    public Menu(int id, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
-        this.menuId = id;
-        this.name = name;
-        this.description = description;
-        this.category = category;
-        this.deliveryFee = deliveryFee;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.deliveryHours = deliveryHours;
-        this.averageDeliveryMinutes = averageDeliveryMinutes;
-        this.price = price;
-        this.minQuantity = minQuantity;
-        this.minQuantityPrice = minQuantityPrice;
-        this.maxDailySales = maxDailySales;
-        this.isValidMenu = true;
-    }
-
     public Menu() {
     }
 

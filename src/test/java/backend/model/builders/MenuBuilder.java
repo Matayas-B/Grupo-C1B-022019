@@ -47,7 +47,8 @@ public class MenuBuilder {
     }
 
     public Menu build() {
-        Menu menu = new Menu(this.menuId);
+        Menu menu = new Menu();
+        menu.setMenuId(this.menuId);
         menu.setName(this.name);
         menu.setDescription(this.description);
         menu.setCategory(this.category);

@@ -1,11 +1,8 @@
 package backend.model;
 
-import backend.model.enums.Category;
 import backend.model.enums.OfficeDays;
 import backend.model.enums.OfficeHours;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.joda.time.LocalDate;
 
 import javax.persistence.*;
 import java.util.List;
@@ -59,9 +56,5 @@ public class SupplierUser extends User {
 
     public void addService(String serviceName, String icon, Address address, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance) {
         service = new Service(serviceName, icon, address, description, email, phoneNumber, officeDays, officeHours, deliveryDistance, this);
-    }
-
-    public void deleteService() {
-        service = null;
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ServiceBuilder {
 
-    private int serviceId;
+    private long serviceId;
     private String serviceName;
     private SupplierUser supplier;
     private String icon = "Empty Icon";
@@ -23,7 +23,8 @@ public class ServiceBuilder {
     private List<OfficeHours> officeHours = Arrays.asList(OfficeHours.values());
     private int deliveryDistanceKm = 10;
 
-    public ServiceBuilder(String serviceName, SupplierUser supplier) {
+    public ServiceBuilder(long serviceId, String serviceName, SupplierUser supplier) {
+        this.serviceId = serviceId;
         this.serviceName = serviceName;
         this.supplier = supplier;
     }
@@ -34,7 +35,10 @@ public class ServiceBuilder {
     }
 
     public Service build() {
-        Service service = new Service(this.serviceName, this.supplier);
+        Service service = new Service();
+        service.setServiceId(this.serviceId);
+        service.setServiceName(this.serviceName);
+        service.setSupplier(this.supplier);
         service.setIcon(this.icon);
         service.setAddress(this.address);
         service.setDescription(this.description);

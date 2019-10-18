@@ -16,7 +16,7 @@ public class SearchTest {
     @Test
     public void SearchByMenuNameShouldBringAllMenusWithThatName() throws Exception {
         // Arrange
-        Service service1 = new ServiceBuilder("Burguer King", null).build();
+        Service service1 = new ServiceBuilder(1, "Burguer King", null).build();
         Menu menu1 = new MenuBuilder(1).setMenuName("Whopper").setCategory(Category.Hamburguesa).build();
         Menu menu2 = new MenuBuilder(3).setMenuName("BK Stacker").setCategory(Category.Hamburguesa).build();
         Menu menu3 = new MenuBuilder(2).setMenuName("BK Salad").setCategory(Category.Green).build();
@@ -43,7 +43,7 @@ public class SearchTest {
     @Test
     public void SearchByCategoryShouldBringAllMenusWithThatCategory() throws Exception {
         // Arrange
-        Service service1 = new ServiceBuilder("Burguer King", null).build();
+        Service service1 = new ServiceBuilder(1,"Burguer King", null).build();
         Menu menu1 = new MenuBuilder(1).setMenuName("Whopper").setCategory(Category.Hamburguesa).build();
         Menu menu2 = new MenuBuilder(3).setMenuName("BK Stacker").setCategory(Category.Hamburguesa).build();
         Menu menu3 = new MenuBuilder(2).setMenuName("BK Salad").setCategory(Category.Green).build();
@@ -70,8 +70,8 @@ public class SearchTest {
     @Test
     public void SearchByTownShouldBringAllMenusWhichServiceBelongsToThatTown() throws Exception {
         // Arrange
-        Service service1 = new ServiceBuilder("Burguer King", null).build();
-        Service service2 = new ServiceBuilder("McDonalds", null).setAddressTown("Bernal").build();
+        Service service1 = new ServiceBuilder(1,"Burguer King", null).build();
+        Service service2 = new ServiceBuilder(1,"McDonalds", null).setAddressTown("Bernal").build();
         Menu menu1 = new MenuBuilder(1).setMenuName("Whopper").setCategory(Category.Hamburguesa).build();
         Menu menu2 = new MenuBuilder(3).setMenuName("BK Stacker").setCategory(Category.Hamburguesa).build();
         Menu menu3 = new MenuBuilder(2).setMenuName("Mc Pollo").setCategory(Category.Hamburguesa).build();
@@ -99,9 +99,9 @@ public class SearchTest {
     @Test
     public void SearchWithAllParametersShouldBringMenusAccordingToCriteria() throws Exception {
         // Arrange
-        Service service1 = new ServiceBuilder("Burguer King", null).setAddressTown("Bernal").build();
-        Service service2 = new ServiceBuilder("McDonalds", null).setAddressTown("Bernal").build();
-        Service service3 = new ServiceBuilder("Mostaza", null).setAddressTown("Quilmes").build();
+        Service service1 = new ServiceBuilder(1,"Burguer King", null).setAddressTown("Bernal").build();
+        Service service2 = new ServiceBuilder(1,"McDonalds", null).setAddressTown("Bernal").build();
+        Service service3 = new ServiceBuilder(1,"Mostaza", null).setAddressTown("Quilmes").build();
         Menu menu1 = new MenuBuilder(1).setMenuName("Whopper").setCategory(Category.Hamburguesa).build();
         Menu menu2 = new MenuBuilder(2).setMenuName("Mc Pollo").setCategory(Category.Hamburguesa).build();
         Menu menu3 = new MenuBuilder(3).setMenuName("Mostaza Whopper").setCategory(Category.Hamburguesa).build();

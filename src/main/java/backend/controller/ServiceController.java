@@ -25,6 +25,11 @@ public class ServiceController {
         return serviceService.getAllValidMenusForService(serviceId);
     }
 
+    @GetMapping(value = "/service/getMenu")
+    public Menu getMenuById(int menuId) {
+        return serviceService.getMenuById(menuId);
+    }
+
     @PostMapping(value = "/service/addMenu")
     public void addMenuToService(@Valid @RequestBody NewMenuRequest newMenuRequest) {
         serviceService.addMenuToService(newMenuRequest);

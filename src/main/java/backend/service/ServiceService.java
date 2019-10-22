@@ -4,7 +4,9 @@ import backend.controller.requests.NewMenuRequest;
 import backend.model.Menu;
 import backend.model.Service;
 import backend.model.exception.InvalidServiceException;
+import backend.model.exception.MenuNotFoundException;
 import backend.model.exception.ServiceNotFoundException;
+import backend.repository.IMenuRepository;
 import backend.repository.IServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,6 +18,8 @@ public class ServiceService {
 
     @Autowired
     IServiceRepository serviceRepository;
+    @Autowired
+    IMenuRepository menuRepository;
 
     public Iterable<Service> getAllValidServices() {
         return StreamSupport.stream(serviceRepository.findAll().spliterator(), false).filter(Service::isValidService).collect(Collectors.toList());
@@ -24,6 +28,10 @@ public class ServiceService {
     public Iterable<Menu> getAllValidMenusForService(long serviceId) {
         backend.model.Service service = serviceRepository.findById(serviceId).orElseThrow(ServiceNotFoundException::new);
         return service.getValidMenus();
+    }
+
+    public Menu getMenuById(int menuId) {
+        return menuRepository.findById(menuId).orElseThrow(MenuNotFoundException::new);
     }
 
     public void addMenuToService(NewMenuRequest newMenuRequest) {

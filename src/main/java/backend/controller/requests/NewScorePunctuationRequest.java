@@ -30,4 +30,8 @@ public class NewScorePunctuationRequest {
     public int getPunctuation() {
         return punctuation;
     }
+
+    public String toString() {
+        return String.format("Customer id: %d, Service id: %d, Menu id: %d, Punctuation: %d", customerId, serviceId, menuId, punctuation);
+    }
 }

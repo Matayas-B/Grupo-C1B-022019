@@ -30,4 +30,8 @@ public class SearchRequest {
     public void setServicetown(String servicetown) {
         this.servicetown = servicetown;
     }
+
+    public String toString() {
+        return String.format("Menu name: %s, Menu category: %s, Service town: %s.", menuname, menucategory, servicetown);
+    }
 }

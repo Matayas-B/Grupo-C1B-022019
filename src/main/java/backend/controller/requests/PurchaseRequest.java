@@ -21,4 +21,8 @@ public class PurchaseRequest {
     public int getQuantity() {
         return quantity;
     }
+
+    public String toString() {
+        return String.format("Customer id: %d, Service id: %d, Menu id: %d, Quantity: %d", customerId, serviceId, menuId, quantity);
+    }
 }

@@ -30,7 +30,6 @@ public class CustomerServiceTest {
     private CustomerUser customer;
 
     @Test
-    @Ignore
     public void createCustomerShouldSaveCustomerToTheDB() throws Exception {
         // Arrange
         customer = new CustomerUser("Facundo", "Vigo", "facundovigo@gmail.com", "facuvigo123", "1161635613", "Canale 3134");

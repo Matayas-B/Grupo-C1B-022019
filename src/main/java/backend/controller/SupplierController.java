@@ -68,9 +68,7 @@ public class SupplierController {
     }
 
     @RequestMapping(value = "/supplier/getById", method = RequestMethod.GET)
-    public SupplierUser getCustomerById(long supplierId) {
+    public SupplierUser getSupplierById(long supplierId) {
         return supplierService.getSupplierById(supplierId);
     }
-
-
 }

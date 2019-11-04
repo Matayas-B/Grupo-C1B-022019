@@ -3,7 +3,6 @@ package backend.controller;
 import backend.controller.requests.NewServiceRequest;
 import backend.controller.requests.NewUserRequest;
 import backend.model.HistoricalPurchases;
-import backend.model.Purchase;
 import backend.model.Service;
 import backend.model.SupplierUser;
 import backend.service.SupplierService;
@@ -67,4 +66,11 @@ public class SupplierController {
     public void finishPurchaseDelivery(long purchaseId) {
         supplierService.finishPurchaseDelivery(purchaseId);
     }
+
+    @RequestMapping(value = "/supplier/getById", method = RequestMethod.GET)
+    public SupplierUser getCustomerById(long supplierId) {
+        return supplierService.getSupplierById(supplierId);
+    }
+
+
 }

@@ -46,6 +46,7 @@ public class ServiceService {
     public void deleteMenuFromService(long serviceId, long menuId) {
         backend.model.Service service = serviceRepository.findById(serviceId).orElseThrow(ServiceNotFoundException::new);
         service.deleteMenu(menuId);
+        menuRepository.deleteById((int)menuId);
         serviceRepository.save(service);
     }
 }

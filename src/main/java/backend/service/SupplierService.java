@@ -91,4 +91,8 @@ public class SupplierService {
         viendasYaFacade.finishDeliveryForPurchase(purchase);
         purchaseRepository.save(purchase);
     }
+
+    public SupplierUser getSupplierById(long supplierId) {
+        return supplierRepository.findById(supplierId).orElseThrow(() -> new UserNotFoundException(supplierId));
+    }
 }

@@ -64,8 +64,8 @@ public class SupplierService {
         if (!supplier.hasService() && supplier.getService().getServiceId() != serviceRequest.getServiceId())
             throw new ServiceNotFoundException();
 
-        backend.model.Service serviceToUpdate = mapDTOToService(serviceRequest);
-        serviceRepository.save(serviceToUpdate);
+        backend.model.Service updatedService = mapDTOToService(serviceRequest, supplier.getService());
+        serviceRepository.save(updatedService);
     }
 
     public backend.model.Service getSupplierService(long supplierId) throws ServiceNotFoundException, UserNotFoundException {
@@ -106,19 +106,47 @@ public class SupplierService {
         return supplierRepository.findById(supplierId).orElseThrow(() -> new UserNotFoundException(supplierId));
     }
 
-    private backend.model.Service mapDTOToService(ServiceRequest serviceRequest) {
-        ModelMapper mapper = new ModelMapper();
-        Converter<ServiceRequest, backend.model.Service> addressConverter = new Converter<ServiceRequest, backend.model.Service>() {
-            @Override
-            public backend.model.Service convert(MappingContext<ServiceRequest, backend.model.Service> mappingContext) {
-                backend.model.Service mappedService = new backend.model.Service();
+    /* Private Methods */
 
-                mappedService.setAddress(new Address(mappingContext.getSource().getAddressTown(), mappingContext.getSource().getAddressLocation()));
-                return mappedService;
-            }
-        };
-        mapper.addConverter(addressConverter);
+    private backend.model.Service mapDTOToService(ServiceRequest request, backend.model.Service service) {
+        service.setIcon(request.getIcon());
+        service.setServiceName(request.getServiceName());
+        service.getAddress().setTown(request.getAddressTown());
+        service.getAddress().setLocation(request.getAddressLocation());
+        service.setDescription(request.getDescription());
+        service.setEmail(request.getEmail());
+        service.setPhoneNumber(request.getPhoneNumber());
+        service.setOfficeDays(request.getOfficeDays());
+        service.setOfficeHours(request.getOfficeHours());
+        service.setDeliveryDistance(request.getDeliveryDistance());
 
-        return mapper.map(serviceRequest, backend.model.Service.class);
+        return service;
     }
+
+//    private backend.model.Service mapDTOToService(ServiceRequest serviceRequest, SupplierUser supplier) {
+//        ModelMapper mapper = new ModelMapper();
+//        Converter<ServiceRequest, backend.model.Service> addressConverter = new Converter<ServiceRequest, backend.model.Service>() {
+//            @Override
+//            public backend.model.Service convert(MappingContext<ServiceRequest, backend.model.Service> mappingContext) {
+//                backend.model.Service mappedService = new backend.model.Service();
+//                ServiceRequest request = mappingContext.getSource();
+//
+//                mappedService.setServiceId(request.getServiceId());
+//                mappedService.setIcon(request.getIcon());
+//                mappedService.setServiceName(request.getServiceName());
+//                mappedService.setAddress(new Address(request.getAddressTown(), request.getAddressLocation()));
+//                mappedService.setDescription(request.getDescription());
+//                mappedService.setEmail(request.getEmail());
+//                mappedService.setPhoneNumber(request.getPhoneNumber());
+//                mappedService.setOfficeDays(request.getOfficeDays());
+//                mappedService.setOfficeHours(request.getOfficeHours());
+//                mappedService.setDeliveryDistance(request.getDeliveryDistance());
+//                mappedService.setSupplier(supplier);
+//                return mappedService;
+//            }
+//        };
+//        mapper.addConverter(addressConverter);
+//
+//        return mapper.map(serviceRequest, backend.model.Service.class);
+//    }
 }

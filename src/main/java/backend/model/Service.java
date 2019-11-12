@@ -182,6 +182,10 @@ public class Service {
         return menus.stream().filter(m -> m.getMenuId() == menuId).findFirst().orElseThrow(MenuNotFoundException::new);
     }
 
+    public boolean existsMenuById(long menuId) {
+        return menus.stream().anyMatch(m -> m.getMenuId() == menuId);
+    }
+
     public void markMenuAsInvalid(Menu invalidMenu) {
         invalidMenu.markAsInvalid();
         getValidMenus().remove(invalidMenu);

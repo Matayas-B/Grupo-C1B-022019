@@ -9,9 +9,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-public class NewMenuRequest {
+public class MenuRequest {
     @Positive
     long serviceId;
+    @Positive
+    long menuId;
     @NotEmpty(message = "Please, provide a name to the menu.")
     String name;
     @NotEmpty(message = "Describe what your menu is about ! ! !")
@@ -39,6 +41,10 @@ public class NewMenuRequest {
 
     public long getServiceId() {
         return serviceId;
+    }
+
+    public long getMenuId() {
+        return menuId;
     }
 
     public String getName() {
@@ -91,6 +97,10 @@ public class NewMenuRequest {
 
     public void setServiceId(long serviceId) {
         this.serviceId = serviceId;
+    }
+
+    public void setMenuId(long menuId) {
+        this.menuId = menuId;
     }
 
     public void setName(String name) {

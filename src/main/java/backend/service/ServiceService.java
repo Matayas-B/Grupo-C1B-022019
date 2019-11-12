@@ -1,6 +1,6 @@
 package backend.service;
 
-import backend.controller.requests.NewMenuRequest;
+import backend.controller.requests.MenuRequest;
 import backend.model.Menu;
 import backend.model.Service;
 import backend.model.exception.InvalidServiceException;
@@ -8,6 +8,7 @@ import backend.model.exception.MenuNotFoundException;
 import backend.model.exception.ServiceNotFoundException;
 import backend.repository.IMenuRepository;
 import backend.repository.IServiceRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.stream.Collectors;
@@ -34,17 +35,32 @@ public class ServiceService {
         return menuRepository.findById(menuId).orElseThrow(MenuNotFoundException::new);
     }
 
-    public void addMenuToService(NewMenuRequest newMenuRequest) {
-        backend.model.Service service = serviceRepository.findById(newMenuRequest.getServiceId()).orElseThrow(ServiceNotFoundException::new);
+    public void addMenuToService(MenuRequest menuRequest) {
+        backend.model.Service service = serviceRepository.findById(menuRequest.getServiceId()).orElseThrow(ServiceNotFoundException::new);
         if (!service.isValidService())
             throw new InvalidServiceException();
 
-        service.addMenu(newMenuRequest.getName(), newMenuRequest.getDescription(), newMenuRequest.getCategory(), newMenuRequest.getDeliveryFee(), newMenuRequest.getStartDate(), newMenuRequest.getEndDate(), newMenuRequest.getDeliveryHours(), newMenuRequest.getAverageDeliveryMinutes(), newMenuRequest.getPrice(), newMenuRequest.getMinQuantity(), newMenuRequest.getMinQuantityPrice(), newMenuRequest.getMaxDailySales());
+        service.addMenu(menuRequest.getName(), menuRequest.getDescription(), menuRequest.getCategory(), menuRequest.getDeliveryFee(), menuRequest.getStartDate(), menuRequest.getEndDate(), menuRequest.getDeliveryHours(), menuRequest.getAverageDeliveryMinutes(), menuRequest.getPrice(), menuRequest.getMinQuantity(), menuRequest.getMinQuantityPrice(), menuRequest.getMaxDailySales());
         serviceRepository.save(service);
+    }
+
+    public void updateMenuFromService(MenuRequest menuRequest) {
+        backend.model.Service service = serviceRepository.findById(menuRequest.getServiceId()).orElseThrow(ServiceNotFoundException::new);
+        if (!service.isValidService())
+            throw new InvalidServiceException();
+        if (!service.existsMenuById(menuRequest.getMenuId()))
+            throw new MenuNotFoundException();
+
+        ModelMapper mapper = new ModelMapper();
+        Menu menuToUpdate = mapper.map(menuRequest, Menu.class);
+        menuRepository.save(menuToUpdate);
     }
 
     public void deleteMenuFromService(long serviceId, long menuId) {
         backend.model.Service service = serviceRepository.findById(serviceId).orElseThrow(ServiceNotFoundException::new);
+        if (!service.isValidService())
+            throw new InvalidServiceException();
+
         service.deleteMenu(menuId);
         menuRepository.deleteById((int)menuId);
         serviceRepository.save(service);

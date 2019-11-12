@@ -9,9 +9,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
-public class NewServiceRequest {
+public class ServiceRequest {
     @Positive
     long supplierId;
+    @Positive
+    long serviceId;
     String icon;
     @NotEmpty(message = "Please, provide a name to the service.")
     String serviceName;
@@ -33,6 +35,10 @@ public class NewServiceRequest {
 
     public long getSupplierId() {
         return supplierId;
+    }
+
+    public long getServiceId() {
+        return serviceId;
     }
 
     public List<OfficeDays> getOfficeDays() {
@@ -77,6 +83,10 @@ public class NewServiceRequest {
 
     public void setSupplierId(long supplierId) {
         this.supplierId = supplierId;
+    }
+
+    public void setServiceId(long serviceId) {
+        this.serviceId = serviceId;
     }
 
     public void setIcon(String icon) {

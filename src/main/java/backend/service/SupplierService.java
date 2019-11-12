@@ -1,11 +1,8 @@
 package backend.service;
 
-import backend.controller.requests.NewServiceRequest;
+import backend.controller.requests.ServiceRequest;
 import backend.controller.requests.NewUserRequest;
-import backend.model.HistoricalPurchases;
-import backend.model.Purchase;
-import backend.model.SupplierUser;
-import backend.model.ViendasYaFacade;
+import backend.model.*;
 import backend.model.exception.InsufficientFundsException;
 import backend.model.exception.PurchaseNotFoundException;
 import backend.model.exception.ServiceNotFoundException;
@@ -13,6 +10,10 @@ import backend.model.exception.UserNotFoundException;
 import backend.repository.IPurchaseRepository;
 import backend.repository.IServiceRepository;
 import backend.repository.ISupplierRepository;
+import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,10 +53,19 @@ public class SupplierService {
         return supplier.getAccount().getFunds();
     }
 
-    public void addService(NewServiceRequest newServiceRequest) throws Exception {
-        SupplierUser supplier = supplierRepository.findById(newServiceRequest.getSupplierId()).orElseThrow(() -> new UserNotFoundException(newServiceRequest.getSupplierId()));
-        viendasYaFacade.addServiceToSupplier(supplier, newServiceRequest.getServiceName(), newServiceRequest.getIcon(), newServiceRequest.getAddressTown(), newServiceRequest.getAddressLocation(), newServiceRequest.getDescription(), newServiceRequest.getEmail(), newServiceRequest.getPhoneNumber(), newServiceRequest.getOfficeDays(), newServiceRequest.getOfficeHours(), newServiceRequest.getDeliveryDistance());
+    public void addService(ServiceRequest serviceRequest) throws Exception {
+        SupplierUser supplier = supplierRepository.findById(serviceRequest.getSupplierId()).orElseThrow(() -> new UserNotFoundException(serviceRequest.getSupplierId()));
+        viendasYaFacade.addServiceToSupplier(supplier, serviceRequest.getServiceName(), serviceRequest.getIcon(), serviceRequest.getAddressTown(), serviceRequest.getAddressLocation(), serviceRequest.getDescription(), serviceRequest.getEmail(), serviceRequest.getPhoneNumber(), serviceRequest.getOfficeDays(), serviceRequest.getOfficeHours(), serviceRequest.getDeliveryDistance());
         supplierRepository.save(supplier);
+    }
+
+    public void updateService(ServiceRequest serviceRequest) {
+        SupplierUser supplier = supplierRepository.findById(serviceRequest.getSupplierId()).orElseThrow(() -> new UserNotFoundException(serviceRequest.getSupplierId()));
+        if (!supplier.hasService() && supplier.getService().getServiceId() != serviceRequest.getServiceId())
+            throw new ServiceNotFoundException();
+
+        backend.model.Service serviceToUpdate = mapDTOToService(serviceRequest);
+        serviceRepository.save(serviceToUpdate);
     }
 
     public backend.model.Service getSupplierService(long supplierId) throws ServiceNotFoundException, UserNotFoundException {
@@ -94,5 +104,21 @@ public class SupplierService {
 
     public SupplierUser getSupplierById(long supplierId) {
         return supplierRepository.findById(supplierId).orElseThrow(() -> new UserNotFoundException(supplierId));
+    }
+
+    private backend.model.Service mapDTOToService(ServiceRequest serviceRequest) {
+        ModelMapper mapper = new ModelMapper();
+        Converter<ServiceRequest, backend.model.Service> addressConverter = new Converter<ServiceRequest, backend.model.Service>() {
+            @Override
+            public backend.model.Service convert(MappingContext<ServiceRequest, backend.model.Service> mappingContext) {
+                backend.model.Service mappedService = new backend.model.Service();
+
+                mappedService.setAddress(new Address(mappingContext.getSource().getAddressTown(), mappingContext.getSource().getAddressLocation()));
+                return mappedService;
+            }
+        };
+        mapper.addConverter(addressConverter);
+
+        return mapper.map(serviceRequest, backend.model.Service.class);
     }
 }

@@ -3,16 +3,13 @@ package backend.controller.requests;
 import backend.model.enums.OfficeDays;
 import backend.model.enums.OfficeHours;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 import java.util.List;
 
 public class ServiceRequest {
     @Positive
     long supplierId;
-    @Positive
+    @PositiveOrZero
     long serviceId;
     String icon;
     @NotEmpty(message = "Please, provide a name to the service.")

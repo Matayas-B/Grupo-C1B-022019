@@ -4,15 +4,12 @@ import backend.model.enums.Category;
 import backend.model.enums.OfficeHours;
 import org.joda.time.LocalDate;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 
 public class MenuRequest {
     @Positive
     long serviceId;
-    @Positive
+    @PositiveOrZero
     long menuId;
     @NotEmpty(message = "Please, provide a name to the menu.")
     String name;

@@ -8,8 +8,6 @@ import backend.model.exception.ServiceNotFoundException;
 import backend.model.exception.UserNotFoundException;
 import backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,13 +26,16 @@ public class CustomerService {
     @Autowired
     private ICustomerScoreRepository customerScoreRepository;
     @Autowired
-    private JavaMailSender javaMailSender;
+    private CommunicationService communicationService;
 
     private ViendasYaFacade viendasYaFacade = new ViendasYaFacade();
 
     public CustomerUser createCustomer(NewUserRequest customer) {
         CustomerUser newCustomer = new CustomerUser(customer.getName(), customer.getLastName(), customer.getEmail(), customer.getPassword(), customer.getPhone(), customer.getAddress());
-        return customerRepository.save(newCustomer);
+        customerRepository.save(newCustomer);
+        communicationService.sendWelcomeEmail(newCustomer.getEmail(), String.format("Welcome to our world, %s", newCustomer.getName()), newCustomer.getName());
+
+        return newCustomer;
     }
 
     public Iterable<CustomerUser> getAllCustomers() {
@@ -82,33 +83,20 @@ public class CustomerService {
 
     public MenuScore createScoreForMenu(NewScorePunctuationRequest newScorePunctuationRequest) throws Exception {
         CustomerUser customer = getCustomerById(newScorePunctuationRequest.getCustomerId());
-        backend.model.Service service = getServiceById(newScorePunctuationRequest.getServiceId());
+        backend.model.Service service = serviceRepository.findById(newScorePunctuationRequest.getServiceId()).orElseThrow(ServiceNotFoundException::new);
         Menu menu = service.getMenuByMenuId(newScorePunctuationRequest.getMenuId());
 
         MenuScore menuScore = viendasYaFacade.createMenuScore(customer, service, menu, newScorePunctuationRequest.getPunctuation());
         viendasYaFacade.checkMenuAndServiceValidity(service, menu);
 
         if (!menu.isValidMenu())
-            sendEmail(service.getSupplier().getEmail(), "You have lost a menu ! ! !", String.format("Menu with name %s has been marked as invalid. We are sorry for that :(.", menu.getName()));
+            communicationService.sendSimpleEmail(service.getSupplier().getEmail(), "You have lost a menu ! ! !", String.format("Menu with name %s has been marked as invalid. We are sorry for that :(.", menu.getName()));
         if (!service.isValidService())
-            sendEmail(service.getSupplier().getEmail(), "Man, your service sucks !", String.format("The %s service you used to provide, has been marked as invalid, based on customers complaints.", service.getServiceName()));
+            communicationService.sendSimpleEmail(service.getSupplier().getEmail(), "Man, your service sucks !", String.format("The %s service you used to provide, has been marked as invalid, based on customers complaints.", service.getServiceName()));
 
         serviceRepository.save(service);
         customerRepository.save(customer);
 
         return menuScore;
-    }
-
-    /* Private Methods */
-    private backend.model.Service getServiceById(long serviceId) throws ServiceNotFoundException {
-        return serviceRepository.findById(serviceId).orElseThrow(ServiceNotFoundException::new);
-    }
-
-    private void sendEmail(String toMail, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toMail);
-        message.setSubject(subject);
-        message.setText(body);
-        javaMailSender.send(message);
     }
 }

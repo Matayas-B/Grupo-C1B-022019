@@ -30,12 +30,17 @@ public class SupplierService {
     private IServiceRepository serviceRepository;
     @Autowired
     private IPurchaseRepository purchaseRepository;
+    @Autowired
+    private CommunicationService communicationService;
 
     private ViendasYaFacade viendasYaFacade = new ViendasYaFacade();
 
     public SupplierUser createSupplier(NewUserRequest supplier) {
         SupplierUser newSupplier = new SupplierUser(supplier.getName(), supplier.getLastName(), supplier.getEmail(), supplier.getPassword(), supplier.getPhone(), supplier.getAddress());
-        return supplierRepository.save(newSupplier);
+        supplierRepository.save(newSupplier);
+        communicationService.sendWelcomeEmail(newSupplier.getEmail(), String.format("Welcome to our world, %s", newSupplier.getName()), newSupplier.getName());
+
+        return newSupplier;
     }
 
     public Iterable<SupplierUser> getAllSuppliers() {

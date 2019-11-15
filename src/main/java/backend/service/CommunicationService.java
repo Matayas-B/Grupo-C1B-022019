@@ -1,6 +1,6 @@
 package backend.service;
 
-import javafx.util.Pair;
+import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -68,7 +68,7 @@ public class CommunicationService {
             String finalContent = shouldIncludeSignature ? content + addSignatureToEmail() : content;
             messageHelper.setText(finalContent, true);
             for (Pair<String, String> resource : resourcesList) {
-                messageHelper.addInline(resource.getKey(), new ClassPathResource(resource.getValue()));
+                messageHelper.addInline(resource.getValue0(), new ClassPathResource(resource.getValue1()));
             }
         };
     }

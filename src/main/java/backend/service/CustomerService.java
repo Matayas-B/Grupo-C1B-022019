@@ -93,7 +93,7 @@ public class CustomerService {
         if (!menu.isValidMenu())
             communicationService.sendInvalidMenuEmail(service.getSupplier().getEmail(), "You have lost a menu!", menu.getName(), menu.getScoreAverage());
         if (!service.isValidService())
-            communicationService.sendSimpleEmail(service.getSupplier().getEmail(), "Pal, your service sucks!", String.format("The %s service you used to provide, has been marked as invalid, based on customers complaints.", service.getServiceName()));
+            communicationService.sendSimpleEmail(service.getSupplier().getEmail(), "Oh man, your service sucks!", String.format("The %s service you used to provide, has been marked as invalid, based on customers complaints.", service.getServiceName()));
 
         serviceRepository.save(service);
         customerRepository.save(customer);

@@ -1,40 +1,81 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head></head>
 <body>
-<h1>Welcome to Viendas Ya, <strong><span th:text="${message}" style="color: #EB7035"></span></strong></h1>
+<h1 style="font-style: italic;">Welcome to Viendas Ya, <strong><span th:text="${message}" style="color: #EB7035"></span></strong>
+</h1>
+<br>
 
-<p style="font-size: 20px;">
+<h2 style="font-weight: 100;">
     We hope you find our application quite amusing, and make your daily gluttons whims come true...
-</p>
-
+</h2>
+<br>
+<br>
 <p>
-    Feel free to enter our app and start purchasing as many menus as you want
+    Feel free to enter our app and start purchasing as many menus as you want:
 </p>
 <p>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<table>
     <tr>
-        <td>
-            <table border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td bgcolor="#EB7035" style="padding: 12px 18px 12px 18px; border-radius:3px" align="center">
-                        <a href="https://viendasya-test.herokuapp.com/" target="_blank"
-                           style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; color: #ffffff; text-decoration: none; display: inline-block;">
-                            Go to Viendas Ya &rarr;
-                        </a>
-                    </td>
-                </tr>
-            </table>
+        <td bgcolor="#EB7035" style="padding: 12px 18px 12px 18px; border-radius: 9px" align="center">
+            <a href="https://viendasya-test.herokuapp.com/" target="_blank"
+               style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; color: #ffffff; text-decoration: none; display: inline-block;">
+                Go to <span style="font-style: italic">Viendas Ya</span>
+            </a>
         </td>
     </tr>
 </table>
 </p>
 
 <br>
-<div style="font-family: initial; padding-left: 10px;">
-    <h2 style="font-weight: 100">Thanks and kindly regards,</h2>
-    <h3>The ViendasYa support team.</h3>
-    <img src="cid:viendasya_icon.png" alt="Logo" style="display: block; height: 50px;"/>
+<h2 style="font-weight: 100; font-family: initial;">Thanks, and kindly regards.</h2>
+<br>
+
+<div class="presentational-container">
+    <table role="presentation">
+        <tbody>
+        <tr class="outer-row">
+            <td style="padding-right: 15px;">
+                <a href="https://viendasya-test.herokuapp.com">
+                    <img src="cid:viendasya_icon.png" alt="Logo" style="display: block; height: 75px;"/>
+                </a>
+            </td>
+            <td class="description-cell">
+                <table role="presentation">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <h3 style="color: #EB7035;"><span style="font-style: italic;">Viendas Ya</span> support team &#174;</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>Get to know the dev team behind this:</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ul style="padding-left: 0px;">
+                                <li style="height: 30px; display: inline-block;">
+                                    <a href="https://www.linkedin.com/in/matayas">
+                                        <img src="cid:linkedin.png" style="height: 30px;"
+                                             alt="Connected with me on LinkedIn!"/>
+                                    </a>
+                                </li>
+                                <li style="height: 30px; display: inline-block;">
+                                    <a href="https://www.linkedin.com/in/facundo-vigo-224b2b34/">
+                                        <img src="cid:linkedin.png" style="height: 30px;"
+                                             alt="Connected with me on LinkedIn!"/>
+                                    </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

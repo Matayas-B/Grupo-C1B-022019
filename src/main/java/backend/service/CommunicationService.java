@@ -34,6 +34,7 @@ public class CommunicationService {
             String content = buildWelcomeEmail(userName);
             messageHelper.setText(content, true);
             messageHelper.addInline("viendasya_icon.png", new ClassPathResource("./images/viendasya_icon.png"));
+            messageHelper.addInline("linkedin.png", new ClassPathResource("./images/linkedin.png"));
         };
 
         javaMailSender.send(messagePreparator);

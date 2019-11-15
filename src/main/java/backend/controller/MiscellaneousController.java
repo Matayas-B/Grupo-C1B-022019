@@ -24,7 +24,12 @@ public class MiscellaneousController {
     }
 
     @GetMapping(value = "miscellaneous/sendFakeInvalidMenuMail")
-    public void sendFakeWelcomeMail(String toMail, String menuName, Double score) throws MessagingException {
+    public void sendFakeInvalidMenuMail(String toMail, String menuName, Double score) throws MessagingException {
         communicationService.sendInvalidMenuEmail(toMail, "You have lost a menu!", menuName, score);
+    }
+
+    @GetMapping(value = "miscellaneous/sendFakeInvalidServiceMail")
+    public void sendFakeInvalidServiceMail(String toMail, String serviceName) throws MessagingException {
+        communicationService.sendInvalidServiceEmail(toMail, "Oh man, your service sucks!", serviceName);
     }
 }

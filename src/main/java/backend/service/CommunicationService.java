@@ -39,13 +39,19 @@ public class CommunicationService {
         javaMailSender.send(buildInvalidMenuEmail(toMail, subject, menuName, score));
     }
 
+    public void sendInvalidServiceEmail(String toMail, String subject, String serviceName) throws MessagingException {
+        javaMailSender.send(buildInvalidServiceEmail(toMail, subject, serviceName));
+    }
+
     /* Private Methods */
 
     private MimeMessagePreparator buildWelcomeEmail(String toMail, String subject, String userName) throws MessagingException {
         Context context = new Context();
         context.setVariable("message", userName);
         String content = templateEngine.process("NewUserMailTemplate", context);
-        List<Pair<String, String>> resources = Arrays.asList(new Pair<>("viendasya_icon.png", "./images/viendasya_icon.png"), new Pair<>("linkedin.png", "./images/linkedin.png"));
+        List<Pair<String, String>> resources = Arrays.asList(
+                new Pair<>("viendasya_icon.png", "./images/viendasya_icon.png"),
+                new Pair<>("linkedin.png", "./images/linkedin.png"));
         return buildFinalMessagePreparator(toMail, subject, content, resources, true);
     }
 
@@ -54,7 +60,20 @@ public class CommunicationService {
         context.setVariable("message", menuName);
         context.setVariable("score", score);
         String content = templateEngine.process("InvalidMenuMailTemplate", context);
-        List<Pair<String, String>> resources = Arrays.asList(new Pair<>("sad_emoji.png", "./images/sad_emoji.png"),
+        List<Pair<String, String>> resources = Arrays.asList(
+                new Pair<>("sad_emoji.png", "./images/sad_emoji.png"),
+                new Pair<>("viendasya_icon.png", "./images/viendasya_icon.png"),
+                new Pair<>("linkedin.png", "./images/linkedin.png"));
+        return buildFinalMessagePreparator(toMail, subject, content, resources, true);
+    }
+
+    private MimeMessagePreparator buildInvalidServiceEmail(String toMail, String subject, String serviceName) throws MessagingException {
+        Context context = new Context();
+        context.setVariable("message", serviceName);
+        String content = templateEngine.process("InvalidServiceMailTemplate", context);
+        List<Pair<String, String>> resources = Arrays.asList(
+                new Pair<>("sealed_emoji.png", "./images/sealed_emoji.png"),
+                new Pair<>("animated_emoji.png", "./images/animated_emoji.png"),
                 new Pair<>("viendasya_icon.png", "./images/viendasya_icon.png"),
                 new Pair<>("linkedin.png", "./images/linkedin.png"));
         return buildFinalMessagePreparator(toMail, subject, content, resources, true);

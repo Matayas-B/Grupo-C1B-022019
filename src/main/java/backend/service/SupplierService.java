@@ -38,7 +38,7 @@ public class SupplierService {
     public SupplierUser createSupplier(NewUserRequest supplier) {
         SupplierUser newSupplier = new SupplierUser(supplier.getName(), supplier.getLastName(), supplier.getEmail(), supplier.getPassword(), supplier.getPhone(), supplier.getAddress());
         supplierRepository.save(newSupplier);
-        communicationService.sendWelcomeEmail(newSupplier.getEmail(), String.format("Welcome to our world, %s", newSupplier.getName()), newSupplier.getName());
+        communicationService.sendWelcomeEmail(newSupplier.getEmail(), String.format("Welcome to our tasty world, %s", newSupplier.getName()), newSupplier.getName());
 
         return newSupplier;
     }

@@ -33,7 +33,7 @@ public class CustomerService {
     public CustomerUser createCustomer(NewUserRequest customer) {
         CustomerUser newCustomer = new CustomerUser(customer.getName(), customer.getLastName(), customer.getEmail(), customer.getPassword(), customer.getPhone(), customer.getAddress());
         customerRepository.save(newCustomer);
-        communicationService.sendWelcomeEmail(newCustomer.getEmail(), String.format("Welcome to our world, %s", newCustomer.getName()), newCustomer.getName());
+        communicationService.sendWelcomeEmail(newCustomer.getEmail(), String.format("Welcome to our tasty world, %s", newCustomer.getName()), newCustomer.getName());
 
         return newCustomer;
     }

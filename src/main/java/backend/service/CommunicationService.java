@@ -27,24 +27,26 @@ public class CommunicationService {
     }
 
     public void sendWelcomeEmail(String toMail, String subject, String userName) {
-        MimeMessagePreparator messagePreparator = mimeMessage -> {
-            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-            messageHelper.setTo(toMail);
-            messageHelper.setSubject(subject);
-            String content = buildWelcomeEmail(userName);
-            messageHelper.setText(content, true);
-            messageHelper.addInline("viendasya_icon.png", new ClassPathResource("./images/viendasya_icon.png"));
-            messageHelper.addInline("linkedin.png", new ClassPathResource("./images/linkedin.png"));
-        };
-
+        MimeMessagePreparator messagePreparator = buildMessagePreparator(toMail, subject, buildWelcomeEmail(userName));
         javaMailSender.send(messagePreparator);
     }
 
     /* Private Methods */
 
-    private String buildWelcomeEmail(String message) {
+    private MimeMessagePreparator buildMessagePreparator(String toMail, String subject, String content) {
+        return mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            messageHelper.setTo(toMail);
+            messageHelper.setSubject(subject);
+            messageHelper.setText(content, true);
+            messageHelper.addInline("viendasya_icon.png", new ClassPathResource("./images/viendasya_icon.png"));
+            messageHelper.addInline("linkedin.png", new ClassPathResource("./images/linkedin.png"));
+        };
+    }
+
+    private String buildWelcomeEmail(String userName) {
         Context context = new Context();
-        context.setVariable("message", message);
+        context.setVariable("message", userName);
         return templateEngine.process("newUserMailTemplate", context);
     }
 }

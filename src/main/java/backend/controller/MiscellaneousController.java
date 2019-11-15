@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
+
 @RestController
 public class MiscellaneousController {
 
@@ -17,7 +19,12 @@ public class MiscellaneousController {
     }
 
     @GetMapping(value = "miscellaneous/sendFakeWelcomeMail")
-    public void sendFakeWelcomeMail(String toMail, String userName) {
+    public void sendFakeWelcomeMail(String toMail, String userName) throws MessagingException {
         communicationService.sendWelcomeEmail(toMail, "Welcome to our world !", userName);
+    }
+
+    @GetMapping(value = "miscellaneous/sendFakeInvalidMenuMail")
+    public void sendFakeWelcomeMail(String toMail, String menuName, Double score) throws MessagingException {
+        communicationService.sendInvalidMenuEmail(toMail, "You have lost a menu!", menuName, score);
     }
 }

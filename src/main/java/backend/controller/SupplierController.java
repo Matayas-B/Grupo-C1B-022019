@@ -9,6 +9,7 @@ import backend.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 @RestController
@@ -18,7 +19,7 @@ public class SupplierController {
     private SupplierService supplierService = new SupplierService();
 
     @RequestMapping(value = "/supplier", method = RequestMethod.POST)
-    public SupplierUser createSupplier(@Valid @RequestBody NewUserRequest supplier) {
+    public SupplierUser createSupplier(@Valid @RequestBody NewUserRequest supplier) throws MessagingException {
         return supplierService.createSupplier(supplier);
     }
 

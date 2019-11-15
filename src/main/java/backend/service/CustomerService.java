@@ -10,6 +10,7 @@ import backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -30,7 +31,7 @@ public class CustomerService {
 
     private ViendasYaFacade viendasYaFacade = new ViendasYaFacade();
 
-    public CustomerUser createCustomer(NewUserRequest customer) {
+    public CustomerUser createCustomer(NewUserRequest customer) throws MessagingException {
         CustomerUser newCustomer = new CustomerUser(customer.getName(), customer.getLastName(), customer.getEmail(), customer.getPassword(), customer.getPhone(), customer.getAddress());
         customerRepository.save(newCustomer);
         communicationService.sendWelcomeEmail(newCustomer.getEmail(), String.format("Welcome to our tasty world, %s", newCustomer.getName()), newCustomer.getName());
@@ -90,9 +91,9 @@ public class CustomerService {
         viendasYaFacade.checkMenuAndServiceValidity(service, menu);
 
         if (!menu.isValidMenu())
-            communicationService.sendSimpleEmail(service.getSupplier().getEmail(), "You have lost a menu ! ! !", String.format("Menu with name %s has been marked as invalid. We are sorry for that :(.", menu.getName()));
+            communicationService.sendInvalidMenuEmail(service.getSupplier().getEmail(), "You have lost a menu!", menu.getName(), menu.getScoreAverage());
         if (!service.isValidService())
-            communicationService.sendSimpleEmail(service.getSupplier().getEmail(), "Man, your service sucks !", String.format("The %s service you used to provide, has been marked as invalid, based on customers complaints.", service.getServiceName()));
+            communicationService.sendSimpleEmail(service.getSupplier().getEmail(), "Pal, your service sucks!", String.format("The %s service you used to provide, has been marked as invalid, based on customers complaints.", service.getServiceName()));
 
         serviceRepository.save(service);
         customerRepository.save(customer);

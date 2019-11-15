@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+<h1 style="font-style: italic;">We are sorry to announce this but your
+    <strong><span th:text="${message}" style="color: #EB7035"></span></strong>
+    was rejected by the public!
+    <img src="cid:sad_emoji.png" alt="Logo" style="display: inline-block; height: 32px;"/>
+</h1>
+<br>
+
+<h2 style="font-weight: 100;">
+    So many punctuations were done, with an average score of
+    <span th:text="${score}" style="color: #EB7035"></span>, that's why we decided to remove it.
+</h2>
+<br>
+<br>
+<p>
+    But don't get sad about it! It's a great opportunity to charge batteries, and create the next tasteful success:
+</p>
+<p>
+<table>
+    <tr>
+        <td bgcolor="#EB7035" style="padding: 12px 18px 12px 18px; border-radius: 9px" align="center">
+            <a href="https://viendasya-test.herokuapp.com/supplier/menus" target="_blank"
+               style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; font-weight: normal; color: #ffffff; text-decoration: none; display: inline-block;">
+                Let's create more menus
+            </a>
+        </td>
+    </tr>
+</table>
+</p>
+
+<br>
+<h2 style="font-weight: 100; font-family: initial;">Thanks, and kindly regards.</h2>
+<br>
+</body>
+</html>

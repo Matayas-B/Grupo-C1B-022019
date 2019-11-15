@@ -91,7 +91,7 @@ public class Menu {
         return menuScores.size() >= 20;
     }
 
-    Double getScoreAverage() {
+    public Double getScoreAverage() {
         return menuScores.stream().mapToDouble(MenuScore::getPunctuation).average().getAsDouble();
     }
 

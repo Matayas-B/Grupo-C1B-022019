@@ -1,8 +1,10 @@
 package backend.model;
 
+import backend.model.enums.Category;
 import backend.model.exception.ExistingServiceException;
 import backend.model.enums.OfficeDays;
 import backend.model.enums.OfficeHours;
+import backend.model.exception.MaxNumberOfMenusAllowedException;
 import org.joda.time.LocalDate;
 
 import java.util.List;
@@ -11,6 +13,13 @@ import java.util.stream.Collectors;
 public class ViendasYaFacade {
 
     public ViendasYaFacade() { }
+
+    public void addMenuToService(Service service, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
+        if (service.getValidMenus().size() >= 20)
+            throw new MaxNumberOfMenusAllowedException(service.getServiceId());
+
+        service.addMenu(name, description, category, deliveryFee, startDate, endDate, deliveryHours, averageDeliveryMinutes, price, minQuantity, minQuantityPrice, maxDailySales);
+    }
 
     public void addServiceToSupplier(SupplierUser supp, String serviceName, String icon, String addressTown, String addressLocation, String description, String email, String phoneNumber, List<OfficeDays> officeDays, List<OfficeHours> officeHours, int deliveryDistance) throws Exception {
         if (supp.hasService())

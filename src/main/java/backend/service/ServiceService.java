@@ -3,6 +3,7 @@ package backend.service;
 import backend.controller.requests.MenuRequest;
 import backend.model.Menu;
 import backend.model.Service;
+import backend.model.ViendasYaFacade;
 import backend.model.exception.InvalidServiceException;
 import backend.model.exception.MenuNotFoundException;
 import backend.model.exception.ServiceNotFoundException;
@@ -22,6 +23,8 @@ public class ServiceService {
     @Autowired
     IMenuRepository menuRepository;
 
+    private ViendasYaFacade viendasYaFacade = new ViendasYaFacade();
+
     public Iterable<Service> getAllValidServices() {
         return StreamSupport.stream(serviceRepository.findAll().spliterator(), false).filter(Service::isValidService).collect(Collectors.toList());
     }
@@ -40,7 +43,7 @@ public class ServiceService {
         if (!service.isValidService())
             throw new InvalidServiceException();
 
-        service.addMenu(menuRequest.getName(), menuRequest.getDescription(), menuRequest.getCategory(), menuRequest.getDeliveryFee(), menuRequest.getStartDate(), menuRequest.getEndDate(), menuRequest.getDeliveryHours(), menuRequest.getAverageDeliveryMinutes(), menuRequest.getPrice(), menuRequest.getMinQuantity(), menuRequest.getMinQuantityPrice(), menuRequest.getMaxDailySales());
+        viendasYaFacade.addMenuToService(service, menuRequest.getName(), menuRequest.getDescription(), menuRequest.getCategory(), menuRequest.getDeliveryFee(), menuRequest.getStartDate(), menuRequest.getEndDate(), menuRequest.getDeliveryHours(), menuRequest.getAverageDeliveryMinutes(), menuRequest.getPrice(), menuRequest.getMinQuantity(), menuRequest.getMinQuantityPrice(), menuRequest.getMaxDailySales());
         serviceRepository.save(service);
     }
 

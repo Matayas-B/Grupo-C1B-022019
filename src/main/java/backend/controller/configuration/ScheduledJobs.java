@@ -13,14 +13,12 @@ public class ScheduledJobs {
     @Autowired
     JobService jobService;
 
-    // @Scheduled(cron = "0 0 23 ? * ?", zone = "UTC") ---> TODO: uncomment
-    @Scheduled(cron = "0 35 00 ? * ?", zone = "UTC")
+    @Scheduled(cron = "0 0 23 ? * ?", zone = "UTC")
     public void sendCustomersPurchasesEmail() throws MessagingException {
          jobService.sendCustomersPurchasesEmail();
     }
 
-    // @Scheduled(cron = "0 15 23 ? * ?", zone = "UTC") ---> TODO: uncomment
-    @Scheduled(cron = "0 35 00 ? * ?", zone = "UTC")
+    @Scheduled(cron = "0 15 23 ? * ?", zone = "UTC")
     public void sendSuppliersSalesEmail() throws MessagingException {
         jobService.sendSuppliersSalesEmail();
     }

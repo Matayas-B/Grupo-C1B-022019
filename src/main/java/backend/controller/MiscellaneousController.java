@@ -1,6 +1,7 @@
 package backend.controller;
 
 import backend.service.CommunicationService;
+import backend.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,8 @@ public class MiscellaneousController {
 
     @Autowired
     private CommunicationService communicationService;
+    @Autowired
+    private JobService jobService;
 
     @GetMapping(value = "miscellaneous/sendFakeMail")
     public void sendFakeMail(String toMail) {
@@ -31,5 +34,15 @@ public class MiscellaneousController {
     @GetMapping(value = "miscellaneous/sendFakeInvalidServiceMail")
     public void sendFakeInvalidServiceMail(String toMail, String serviceName) throws MessagingException {
         communicationService.sendInvalidServiceEmail(toMail, "Oh man, your service sucks!", serviceName);
+    }
+
+    @GetMapping(value = "miscellaneous/customerPurchasesEmail")
+    public void customerPurchasesEmail() throws MessagingException {
+        jobService.sendCustomersPurchasesEmail();
+    }
+
+    @GetMapping(value = "miscellaneous/supplierPurchasesEmail")
+    public void supplierPurchasesEmail() throws MessagingException {
+        jobService.sendSuppliersSalesEmail();
     }
 }

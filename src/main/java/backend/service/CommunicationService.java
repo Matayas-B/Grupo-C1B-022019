@@ -1,5 +1,6 @@
 package backend.service;
 
+import backend.controller.configuration.emailTemplateDTOs.UserPurchases;
 import org.javatuples.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -43,6 +44,12 @@ public class CommunicationService {
         javaMailSender.send(buildInvalidServiceEmail(toMail, subject, serviceName));
     }
 
+    public void sendDailyPurchases(String subject, List<UserPurchases> dailyPurchases, boolean isSupplier) throws MessagingException {
+        for (UserPurchases dailyPurchase : dailyPurchases) {
+            javaMailSender.send(buildDailyPurchasesEmail(dailyPurchase.getUser().getEmail(), subject, dailyPurchase, isSupplier));
+        }
+    }
+
     /* Private Methods */
 
     private MimeMessagePreparator buildWelcomeEmail(String toMail, String subject, String userName) throws MessagingException {
@@ -74,6 +81,20 @@ public class CommunicationService {
         List<Pair<String, String>> resources = Arrays.asList(
                 new Pair<>("sealed_emoji.png", "./images/sealed_emoji.png"),
                 new Pair<>("animated_emoji.png", "./images/animated_emoji.png"),
+                new Pair<>("viendasya_icon.png", "./images/viendasya_icon.png"),
+                new Pair<>("linkedin.png", "./images/linkedin.png"));
+        return buildFinalMessagePreparator(toMail, subject, content, resources, true);
+    }
+
+    private MimeMessagePreparator buildDailyPurchasesEmail(String toMail, String subject, UserPurchases dailyPurchase, boolean isSupplier) throws MessagingException {
+        Context context = new Context();
+        context.setVariable("isSupplier", isSupplier);
+        context.setVariable("userName", dailyPurchase.getUser().getName());
+        context.setVariable("today", dailyPurchase.getToday().toString("dd/MM/yyyy"));
+        context.setVariable("menuPurchases", dailyPurchase.getMenuPurchases());
+        context.setVariable("totalAmount", dailyPurchase.getTotalAmount());
+        String content = templateEngine.process("DailyPurchasesMailTemplate", context);
+        List<Pair<String, String>> resources = Arrays.asList(
                 new Pair<>("viendasya_icon.png", "./images/viendasya_icon.png"),
                 new Pair<>("linkedin.png", "./images/linkedin.png"));
         return buildFinalMessagePreparator(toMail, subject, content, resources, true);

@@ -1,11 +1,8 @@
 package backend.service;
 
-import backend.controller.requests.NewServiceRequest;
+import backend.controller.requests.ServiceRequest;
 import backend.controller.requests.NewUserRequest;
-import backend.model.HistoricalPurchases;
-import backend.model.Purchase;
-import backend.model.SupplierUser;
-import backend.model.ViendasYaFacade;
+import backend.model.*;
 import backend.model.exception.InsufficientFundsException;
 import backend.model.exception.PurchaseNotFoundException;
 import backend.model.exception.ServiceNotFoundException;
@@ -13,9 +10,14 @@ import backend.model.exception.UserNotFoundException;
 import backend.repository.IPurchaseRepository;
 import backend.repository.IServiceRepository;
 import backend.repository.ISupplierRepository;
+import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -29,12 +31,17 @@ public class SupplierService {
     private IServiceRepository serviceRepository;
     @Autowired
     private IPurchaseRepository purchaseRepository;
+    @Autowired
+    private CommunicationService communicationService;
 
     private ViendasYaFacade viendasYaFacade = new ViendasYaFacade();
 
-    public SupplierUser createSupplier(NewUserRequest supplier) {
+    public SupplierUser createSupplier(NewUserRequest supplier) throws MessagingException {
         SupplierUser newSupplier = new SupplierUser(supplier.getName(), supplier.getLastName(), supplier.getEmail(), supplier.getPassword(), supplier.getPhone(), supplier.getAddress());
-        return supplierRepository.save(newSupplier);
+        supplierRepository.save(newSupplier);
+        communicationService.sendWelcomeEmail(newSupplier.getEmail(), String.format("Welcome to our tasty world, %s", newSupplier.getName()), newSupplier.getName());
+
+        return newSupplier;
     }
 
     public Iterable<SupplierUser> getAllSuppliers() {
@@ -52,10 +59,19 @@ public class SupplierService {
         return supplier.getAccount().getFunds();
     }
 
-    public void addService(NewServiceRequest newServiceRequest) throws Exception {
-        SupplierUser supplier = supplierRepository.findById(newServiceRequest.getSupplierId()).orElseThrow(() -> new UserNotFoundException(newServiceRequest.getSupplierId()));
-        viendasYaFacade.addServiceToSupplier(supplier, newServiceRequest.getServiceName(), newServiceRequest.getIcon(), newServiceRequest.getAddressTown(), newServiceRequest.getAddressLocation(), newServiceRequest.getDescription(), newServiceRequest.getEmail(), newServiceRequest.getPhoneNumber(), newServiceRequest.getOfficeDays(), newServiceRequest.getOfficeHours(), newServiceRequest.getDeliveryDistance());
+    public void addService(ServiceRequest serviceRequest) throws Exception {
+        SupplierUser supplier = supplierRepository.findById(serviceRequest.getSupplierId()).orElseThrow(() -> new UserNotFoundException(serviceRequest.getSupplierId()));
+        viendasYaFacade.addServiceToSupplier(supplier, serviceRequest.getServiceName(), serviceRequest.getIcon(), serviceRequest.getAddressTown(), serviceRequest.getAddressLocation(), serviceRequest.getDescription(), serviceRequest.getEmail(), serviceRequest.getPhoneNumber(), serviceRequest.getOfficeDays(), serviceRequest.getOfficeHours(), serviceRequest.getDeliveryDistance());
         supplierRepository.save(supplier);
+    }
+
+    public void updateService(ServiceRequest serviceRequest) {
+        SupplierUser supplier = supplierRepository.findById(serviceRequest.getSupplierId()).orElseThrow(() -> new UserNotFoundException(serviceRequest.getSupplierId()));
+        if (!supplier.hasService() && supplier.getService().getServiceId() != serviceRequest.getServiceId())
+            throw new ServiceNotFoundException();
+
+        backend.model.Service updatedService = mapDTOToService(serviceRequest, supplier.getService());
+        serviceRepository.save(updatedService);
     }
 
     public backend.model.Service getSupplierService(long supplierId) throws ServiceNotFoundException, UserNotFoundException {
@@ -95,4 +111,48 @@ public class SupplierService {
     public SupplierUser getSupplierById(long supplierId) {
         return supplierRepository.findById(supplierId).orElseThrow(() -> new UserNotFoundException(supplierId));
     }
+
+    /* Private Methods */
+
+    private backend.model.Service mapDTOToService(ServiceRequest request, backend.model.Service service) {
+        service.setIcon(request.getIcon());
+        service.setServiceName(request.getServiceName());
+        service.getAddress().setTown(request.getAddressTown());
+        service.getAddress().setLocation(request.getAddressLocation());
+        service.setDescription(request.getDescription());
+        service.setEmail(request.getEmail());
+        service.setPhoneNumber(request.getPhoneNumber());
+        service.setOfficeDays(request.getOfficeDays());
+        service.setOfficeHours(request.getOfficeHours());
+        service.setDeliveryDistance(request.getDeliveryDistance());
+
+        return service;
+    }
+
+//    private backend.model.Service mapDTOToService(ServiceRequest serviceRequest, SupplierUser supplier) {
+//        ModelMapper mapper = new ModelMapper();
+//        Converter<ServiceRequest, backend.model.Service> addressConverter = new Converter<ServiceRequest, backend.model.Service>() {
+//            @Override
+//            public backend.model.Service convert(MappingContext<ServiceRequest, backend.model.Service> mappingContext) {
+//                backend.model.Service mappedService = new backend.model.Service();
+//                ServiceRequest request = mappingContext.getSource();
+//
+//                mappedService.setServiceId(request.getServiceId());
+//                mappedService.setIcon(request.getIcon());
+//                mappedService.setServiceName(request.getServiceName());
+//                mappedService.setAddress(new Address(request.getAddressTown(), request.getAddressLocation()));
+//                mappedService.setDescription(request.getDescription());
+//                mappedService.setEmail(request.getEmail());
+//                mappedService.setPhoneNumber(request.getPhoneNumber());
+//                mappedService.setOfficeDays(request.getOfficeDays());
+//                mappedService.setOfficeHours(request.getOfficeHours());
+//                mappedService.setDeliveryDistance(request.getDeliveryDistance());
+//                mappedService.setSupplier(supplier);
+//                return mappedService;
+//            }
+//        };
+//        mapper.addConverter(addressConverter);
+//
+//        return mapper.map(serviceRequest, backend.model.Service.class);
+//    }
 }

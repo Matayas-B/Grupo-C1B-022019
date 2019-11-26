@@ -1,3 +1,27 @@
-Version 1.1
+***** Version 1.1 *****
 
+# Included features:
 1. Added all domain logic for ViendasYa application backend. Unittest covered for all this logic.
+
+# Missing stuff:
+1. Pretty much, the rest of the app.
+
+***** Version 2.1 *****
+
+# Included features:
+1. Customers and Suppliers creation.
+2. Services creation.
+3. Menu creation.
+4. Purchases.
+5. Punctuation for menus.
+6. Search.
+7. Logging for: Exceptions, Requests and Responses.
+8. Email sender (currently sending when a menu or a service are marked as invalid.).
+9. Beginning and ending of the delivery.
+10. Funds deposit for Customers.
+11. Funds extraction for Suppliers.
+
+# Missing stuff:
+1. Authorization and Authentication.
+2. Run job for sending all daily purchases for Customers.
+3. Run job for sending all daily sales for Suppliers.

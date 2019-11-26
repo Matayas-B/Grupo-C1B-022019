@@ -1,6 +1,6 @@
 package backend.controller;
 
-import backend.controller.requests.NewServiceRequest;
+import backend.controller.requests.ServiceRequest;
 import backend.controller.requests.NewUserRequest;
 import backend.model.HistoricalPurchases;
 import backend.model.Service;
@@ -9,6 +9,7 @@ import backend.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 @RestController
@@ -18,7 +19,7 @@ public class SupplierController {
     private SupplierService supplierService = new SupplierService();
 
     @RequestMapping(value = "/supplier", method = RequestMethod.POST)
-    public SupplierUser createSupplier(@Valid @RequestBody NewUserRequest supplier) {
+    public SupplierUser createSupplier(@Valid @RequestBody NewUserRequest supplier) throws MessagingException {
         return supplierService.createSupplier(supplier);
     }
 
@@ -38,8 +39,13 @@ public class SupplierController {
     }
 
     @RequestMapping(value = "/supplier/addService", method = RequestMethod.POST)
-    public void addService(@Valid @RequestBody NewServiceRequest newServiceRequest) throws Exception {
-        supplierService.addService(newServiceRequest);
+    public void addService(@Valid @RequestBody ServiceRequest serviceRequest) throws Exception {
+        supplierService.addService(serviceRequest);
+    }
+
+    @RequestMapping(value = "/supplier/updateService", method = RequestMethod.POST)
+    public void updateService(@Valid @RequestBody ServiceRequest serviceRequest) {
+        supplierService.updateService(serviceRequest);
     }
 
     @RequestMapping(value = "/supplier/getSupplierService", method = RequestMethod.GET)

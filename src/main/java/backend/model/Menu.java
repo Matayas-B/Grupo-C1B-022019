@@ -9,6 +9,7 @@ import org.joda.time.LocalDate;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalDouble;
 
 @Entity
 public class Menu {
@@ -91,8 +92,9 @@ public class Menu {
         return menuScores.size() >= 20;
     }
 
-    Double getScoreAverage() {
-        return menuScores.stream().mapToDouble(MenuScore::getPunctuation).average().getAsDouble();
+    public Double getScoreAverage() {
+        OptionalDouble averageScore = menuScores.stream().mapToDouble(MenuScore::getPunctuation).average();
+        return averageScore.isPresent() ? averageScore.getAsDouble() : 0;
     }
 
     void markAsInvalid() {

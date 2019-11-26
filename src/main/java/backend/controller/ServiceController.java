@@ -1,6 +1,6 @@
 package backend.controller;
 
-import backend.controller.requests.NewMenuRequest;
+import backend.controller.requests.MenuRequest;
 import backend.model.Menu;
 import backend.model.Service;
 import backend.service.ServiceService;
@@ -31,14 +31,17 @@ public class ServiceController {
     }
 
     @PostMapping(value = "/service/addMenu")
-    public void addMenuToService(@Valid @RequestBody NewMenuRequest newMenuRequest) {
-        serviceService.addMenuToService(newMenuRequest);
+    public void addMenuToService(@Valid @RequestBody MenuRequest menuRequest) {
+        serviceService.addMenuToService(menuRequest);
+    }
+
+    @PostMapping(value = "/service/updateMenu")
+    public void updateMenuFromService(@Valid @RequestBody MenuRequest menuRequest) {
+        serviceService.updateMenuFromService(menuRequest);
     }
 
     @GetMapping(value = "/service/deleteMenu")
     public void deleteMenuFromService(long serviceId, long menuId) {
         serviceService.deleteMenuFromService(serviceId, menuId);
     }
-
-
 }

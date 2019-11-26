@@ -11,6 +11,7 @@ import backend.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 @RestController
@@ -20,7 +21,7 @@ public class CustomerController {
     private CustomerService customerService = new CustomerService();
 
     @RequestMapping(value = "/customer", method = RequestMethod.POST)
-    public CustomerUser createCustomer(@Valid @RequestBody NewUserRequest customer) {
+    public CustomerUser createCustomer(@Valid @RequestBody NewUserRequest customer) throws MessagingException {
         return customerService.createCustomer(customer);
     }
 

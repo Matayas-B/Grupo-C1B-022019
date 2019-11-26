@@ -2,9 +2,13 @@ package backend.model;
 
 import backend.model.builders.MenuBuilder;
 import backend.model.builders.ServiceBuilder;
+import backend.model.enums.Category;
 import backend.model.enums.PurchaseStatus;
 import backend.model.enums.OfficeDays;
 import backend.model.enums.OfficeHours;
+import backend.model.exception.MaxNumberOfMenusAllowedException;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,6 +19,47 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class ViendasYaFacadeTest {
+
+    @Test(expected = Exception.class)
+    public void AddMenuToServiceWhenItHasAlreadyTwentyMenusShouldThrowException() throws Exception {
+        // Arrange
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
+        Service service = new ServiceBuilder(1, "Burguer King", supplier).build();
+        ViendasYaFacade viendasYa = new ViendasYaFacade();
+
+        for (int i = 0; i < 20; i++) {
+            Menu nextMenu = new MenuBuilder(i).build();
+            viendasYa.addMenuToService(service, nextMenu.getName(), nextMenu.getDescription(), nextMenu.getCategory(), nextMenu.getDeliveryFee(), nextMenu.getStartDate(), nextMenu.getEndDate(), nextMenu.getDeliveryHours(), nextMenu.getAverageDeliveryMinutes(), nextMenu.getPrice(), nextMenu.getMinQuantity(), nextMenu.getMinQuantityPrice(), nextMenu.getMaxDailySales());
+        }
+
+        try {
+            // Act
+            viendasYa.addMenuToService(service, "Whopper", "A terrific hamburguer", Category.Hamburguesa, 10, LocalDate.now(), LocalDate.now(),
+                    OfficeHours.Afternoon, 10, 100, 10, 100, 10);
+        } catch (MaxNumberOfMenusAllowedException ex) {
+            // Assert
+            assertEquals(ex.getMessage(), "Service with id 1 has reached the maximum number of allowed menus.");
+            throw ex;
+        }
+
+        Assert.fail();
+    }
+
+    @Test
+    public void AddMenuToServiceShouldIncludeThatMenuOnValidList() throws Exception {
+        // Arrange
+        SupplierUser supplier = new SupplierUser("Matayas", "Beca", "matayas.beca@gmail.com", "matayas123", "1111111111", "Yrigoyen 313");
+        Service service = new ServiceBuilder(1, "Burguer King", supplier).build();
+        ViendasYaFacade viendasYa = new ViendasYaFacade();
+
+        // Act
+        viendasYa.addMenuToService(service, "Whopper", "A terrific hamburguer", Category.Hamburguesa, 10, LocalDate.now(), LocalDate.now(),
+                OfficeHours.Afternoon, 10, 100, 10, 100, 10);
+
+        assertFalse(service.getValidMenus().isEmpty());
+        assertEquals(service.getValidMenus().size(), 1);
+        assertEquals(service.getValidMenus().get(0).getName(), "Whopper");
+    }
 
     @Test(expected = Exception.class)
     public void AddServiceToSupplierWhenHeAlreadyHasOneShouldThrowException() throws Exception {

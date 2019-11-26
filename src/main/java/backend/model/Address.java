@@ -28,6 +28,14 @@ public class Address {
         this.town = town;
     }
 
+    public void setAddressId(Long addressId) {
+        this.addressId = addressId;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public Address() { }
 
     public Address(String town, String location) {

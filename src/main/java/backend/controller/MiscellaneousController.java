@@ -33,7 +33,7 @@ public class MiscellaneousController {
 
     @GetMapping(value = "miscellaneous/sendFakeInvalidServiceMail")
     public void sendFakeInvalidServiceMail(String toMail, String serviceName) throws MessagingException {
-        communicationService.sendInvalidServiceEmail(toMail, "Oh man, your service sucks!", serviceName);
+        communicationService.sendInvalidServiceEmail("${FAKE_EMAIL_ADDRESS}", "Oh man, your service sucks!", serviceName);
     }
 
     @GetMapping(value = "miscellaneous/customerPurchasesEmail")

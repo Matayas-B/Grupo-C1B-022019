@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "spring.scheduler.cronjob",
+      "type": "java.lang.String",
+      "description": "Application properties for @Scheduled spring annotation."
+  }
+] }

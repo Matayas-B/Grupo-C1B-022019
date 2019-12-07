@@ -16,6 +16,11 @@ public class MiscellaneousController {
     @Autowired
     private JobService jobService;
 
+    @GetMapping
+    public String Index() {
+        return "<h1 style=\"text-align:center;color: limegreen;\">. . : ViendasYa is up and running : . .</h1>";
+    }
+
     @GetMapping(value = "miscellaneous/sendFakeMail")
     public void sendFakeMail(String toMail) {
         communicationService.sendSimpleEmail(toMail, "I dare you to enter...", "You've entered... Sadly, you've been cheated, man.");

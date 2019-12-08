@@ -28,7 +28,7 @@ public class MiscellaneousController {
 
     @GetMapping(value = "miscellaneous/sendFakeWelcomeMail")
     public void sendFakeWelcomeMail(String toMail, String userName) throws MessagingException {
-        communicationService.sendWelcomeEmail(toMail, "Welcome to our world !", userName);
+        communicationService.sendWelcomeEmail(toMail, "Welcome to our world !", userName, "123");
     }
 
     @GetMapping(value = "miscellaneous/sendFakeInvalidMenuMail")

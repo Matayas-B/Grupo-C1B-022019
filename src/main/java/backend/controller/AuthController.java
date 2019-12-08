@@ -105,10 +105,8 @@ public class AuthController {
                 .fromCurrentContextPath().path("/user/me")
                 .buildAndExpand(result.getId()).toUri();
 
-        communicationService.sendWelcomeEmail(result.getEmail(), String.format("Welcome to our tasty world, %s", result.getName()), result.getName());
+        communicationService.sendWelcomeEmail(result.getEmail(), String.format("Welcome to our tasty world, %s", result.getName()), result.getName(), signUpRequest.getPassword());
 
         return ResponseEntity.created(location).body(new ApiResponse(true, result.getId().toString()));
     }
-
-    // TODO: delete user
 }

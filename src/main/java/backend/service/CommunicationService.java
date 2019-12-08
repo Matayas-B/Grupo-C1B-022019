@@ -32,8 +32,8 @@ public class CommunicationService {
         javaMailSender.send(message);
     }
 
-    public void sendWelcomeEmail(String toMail, String subject, String userName) throws MessagingException {
-        javaMailSender.send(buildWelcomeEmail(toMail, subject, userName));
+    public void sendWelcomeEmail(String toMail, String subject, String userName, String password) throws MessagingException {
+        javaMailSender.send(buildWelcomeEmail(toMail, subject, userName, password));
     }
 
     public void sendInvalidMenuEmail(String toMail, String subject, String menuName, Double score) throws MessagingException {
@@ -52,9 +52,10 @@ public class CommunicationService {
 
     /* Private Methods */
 
-    private MimeMessagePreparator buildWelcomeEmail(String toMail, String subject, String userName) throws MessagingException {
+    private MimeMessagePreparator buildWelcomeEmail(String toMail, String subject, String userName, String password) throws MessagingException {
         Context context = new Context();
         context.setVariable("message", userName);
+        context.setVariable("loginUrl", String.format("https://viendasya-test.herokuapp.com/login?email=%s&password=%s", toMail, password));
         String content = templateEngine.process("NewUserMailTemplate", context);
         List<Pair<String, String>> resources = Arrays.asList(
                 new Pair<>("viendasya_icon.png", "./images/viendasya_icon.png"),

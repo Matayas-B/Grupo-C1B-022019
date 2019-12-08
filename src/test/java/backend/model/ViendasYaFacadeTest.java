@@ -29,12 +29,12 @@ public class ViendasYaFacadeTest {
 
         for (int i = 0; i < 20; i++) {
             Menu nextMenu = new MenuBuilder(i).build();
-            viendasYa.addMenuToService(service, nextMenu.getName(), nextMenu.getDescription(), nextMenu.getCategory(), nextMenu.getDeliveryFee(), nextMenu.getStartDate(), nextMenu.getEndDate(), nextMenu.getDeliveryHours(), nextMenu.getAverageDeliveryMinutes(), nextMenu.getPrice(), nextMenu.getMinQuantity(), nextMenu.getMinQuantityPrice(), nextMenu.getMaxDailySales());
+            viendasYa.addMenuToService(service, nextMenu.getName(), nextMenu.getDescription(), nextMenu.getImageUrl(), nextMenu.getCategory(), nextMenu.getDeliveryFee(), nextMenu.getStartDate(), nextMenu.getEndDate(), nextMenu.getDeliveryHours(), nextMenu.getAverageDeliveryMinutes(), nextMenu.getPrice(), nextMenu.getMinQuantity(), nextMenu.getMinQuantityPrice(), nextMenu.getMaxDailySales());
         }
 
         try {
             // Act
-            viendasYa.addMenuToService(service, "Whopper", "A terrific hamburguer", Category.Hamburguesa, 10, LocalDate.now(), LocalDate.now(),
+            viendasYa.addMenuToService(service, "Whopper", "A terrific hamburguer", "", Category.Hamburguesa, 10, LocalDate.now(), LocalDate.now(),
                     OfficeHours.Afternoon, 10, 100, 10, 100, 10);
         } catch (MaxNumberOfMenusAllowedException ex) {
             // Assert
@@ -53,7 +53,7 @@ public class ViendasYaFacadeTest {
         ViendasYaFacade viendasYa = new ViendasYaFacade();
 
         // Act
-        viendasYa.addMenuToService(service, "Whopper", "A terrific hamburguer", Category.Hamburguesa, 10, LocalDate.now(), LocalDate.now(),
+        viendasYa.addMenuToService(service, "Whopper", "A terrific hamburguer", "", Category.Hamburguesa, 10, LocalDate.now(), LocalDate.now(),
                 OfficeHours.Afternoon, 10, 100, 10, 100, 10);
 
         assertFalse(service.getValidMenus().isEmpty());

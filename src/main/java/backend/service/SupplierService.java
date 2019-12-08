@@ -1,7 +1,6 @@
 package backend.service;
 
 import backend.controller.requests.ServiceRequest;
-import backend.controller.requests.NewUserRequest;
 import backend.model.*;
 import backend.model.exception.InsufficientFundsException;
 import backend.model.exception.PurchaseNotFoundException;
@@ -10,14 +9,9 @@ import backend.model.exception.UserNotFoundException;
 import backend.repository.IPurchaseRepository;
 import backend.repository.IServiceRepository;
 import backend.repository.ISupplierRepository;
-import org.modelmapper.Converter;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
-import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -31,18 +25,8 @@ public class SupplierService {
     private IServiceRepository serviceRepository;
     @Autowired
     private IPurchaseRepository purchaseRepository;
-    @Autowired
-    private CommunicationService communicationService;
 
     private ViendasYaFacade viendasYaFacade = new ViendasYaFacade();
-
-    public SupplierUser createSupplier(NewUserRequest supplier) throws MessagingException {
-        SupplierUser newSupplier = new SupplierUser(supplier.getName(), supplier.getLastName(), supplier.getEmail(), supplier.getPassword(), supplier.getPhone(), supplier.getAddress());
-        supplierRepository.save(newSupplier);
-        communicationService.sendWelcomeEmail(newSupplier.getEmail(), String.format("Welcome to our tasty world, %s", newSupplier.getName()), newSupplier.getName());
-
-        return newSupplier;
-    }
 
     public Iterable<SupplierUser> getAllSuppliers() {
         return supplierRepository.findAll();

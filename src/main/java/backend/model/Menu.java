@@ -23,6 +23,7 @@ public class Menu {
     @Column(unique = true)
     private String name;
     private String description;
+    private String imageUrl;
     @Enumerated(EnumType.STRING)
     private Category category;
     private int deliveryFee;
@@ -45,10 +46,11 @@ public class Menu {
     public Menu() {
     }
 
-    public Menu(long serviceId, String name, String description, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
+    public Menu(long serviceId, String name, String description, String imageUrl, Category category, int deliveryFee, LocalDate startDate, LocalDate endDate, OfficeHours deliveryHours, int averageDeliveryMinutes, int price, int minQuantity, int minQuantityPrice, int maxDailySales) {
         this.serviceId = serviceId;
         this.name = name;
         this.description = description;
+        this.imageUrl = imageUrl;
         this.category = category;
         this.deliveryFee = deliveryFee;
         this.startDate = startDate;
@@ -207,5 +209,13 @@ public class Menu {
 
     public void setMaxDailySales(int maxDailySales) {
         this.maxDailySales = maxDailySales;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

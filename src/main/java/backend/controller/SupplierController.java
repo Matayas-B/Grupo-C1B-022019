@@ -1,36 +1,26 @@
 package backend.controller;
 
 import backend.controller.requests.ServiceRequest;
-import backend.controller.requests.NewUserRequest;
 import backend.model.HistoricalPurchases;
 import backend.model.Service;
 import backend.model.SupplierUser;
 import backend.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 @RestController
+@PreAuthorize("hasRole('SUPPLIER')")
 public class SupplierController {
 
     @Autowired
     private SupplierService supplierService = new SupplierService();
 
-    @RequestMapping(value = "/supplier", method = RequestMethod.POST)
-    public SupplierUser createSupplier(@Valid @RequestBody NewUserRequest supplier) throws MessagingException {
-        return supplierService.createSupplier(supplier);
-    }
-
     @RequestMapping(value = "/supplier", method = RequestMethod.GET)
     public Iterable<SupplierUser> getAllSuppliers() {
         return supplierService.getAllSuppliers();
-    }
-
-    @RequestMapping(value = "/supplier", method = RequestMethod.DELETE)
-    public void deleteSupplier(long id) {
-        supplierService.deleteSupplier(id);
     }
 
     @RequestMapping(value = "/supplier/extractMoney", method = RequestMethod.GET)

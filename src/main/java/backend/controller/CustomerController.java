@@ -1,7 +1,6 @@
 package backend.controller;
 
 import backend.controller.requests.NewScorePunctuationRequest;
-import backend.controller.requests.NewUserRequest;
 import backend.controller.requests.PurchaseRequest;
 import backend.model.CustomerUser;
 import backend.model.HistoricalPurchases;
@@ -9,53 +8,45 @@ import backend.model.MenuScore;
 import backend.model.Purchase;
 import backend.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 @RestController
+@RequestMapping("/customer")
+@PreAuthorize("hasRole('CUSTOMER')")
 public class CustomerController {
 
     @Autowired
     private CustomerService customerService = new CustomerService();
 
-    @RequestMapping(value = "/customer", method = RequestMethod.POST)
-    public CustomerUser createCustomer(@Valid @RequestBody NewUserRequest customer) throws MessagingException {
-        return customerService.createCustomer(customer);
-    }
-
-    @RequestMapping(value = "/customer", method = RequestMethod.GET)
+    @GetMapping
     public Iterable<CustomerUser> getAllCustomers() {
         return customerService.getAllCustomers();
     }
 
-    @RequestMapping(value = "/customer/getById", method = RequestMethod.GET)
+    @GetMapping(value = "/getById")
     public CustomerUser getCustomerById(long customerId) {
         return customerService.getCustomerById(customerId);
     }
 
-    @RequestMapping(value = "/customer", method = RequestMethod.DELETE)
-    public void deleteCustomer(long customerId) {
-        customerService.deleteCustomer(customerId);
-    }
-
-    @RequestMapping(value = "/customer/depositMoney", method = RequestMethod.GET)
+    @GetMapping(value = "/depositMoney")
     public int depositMoney(long customerId, int money) {
         return customerService.depositMoney(customerId, money);
     }
 
-    @GetMapping(value = "/customer/purchase")
+    @GetMapping(value = "/purchase")
     public Iterable<HistoricalPurchases> getCustomerPurchases(long customerId) {
         return customerService.getCustomerPurchases(customerId);
     }
 
-    @PostMapping(value = "/customer/purchase")
+    @PostMapping(value = "/purchase")
     public Purchase purchaseMenu(@RequestBody PurchaseRequest purchaseRequest) throws Exception {
         return customerService.purchaseMenu(purchaseRequest);
     }
 
-    @PostMapping(value = "/customer/score")
+    @PostMapping(value = "/score")
     public MenuScore createScoreForMenu(@Valid @RequestBody NewScorePunctuationRequest newScorePunctuationRequest) throws Exception {
         return customerService.createScoreForMenu(newScorePunctuationRequest);
     }

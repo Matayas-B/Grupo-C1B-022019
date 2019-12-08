@@ -1,7 +1,6 @@
 package backend.service;
 
 import backend.controller.requests.NewScorePunctuationRequest;
-import backend.controller.requests.NewUserRequest;
 import backend.controller.requests.PurchaseRequest;
 import backend.model.*;
 import backend.model.exception.ServiceNotFoundException;
@@ -10,7 +9,6 @@ import backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -30,14 +28,6 @@ public class CustomerService {
     private CommunicationService communicationService;
 
     private ViendasYaFacade viendasYaFacade = new ViendasYaFacade();
-
-    public CustomerUser createCustomer(NewUserRequest customer) throws MessagingException {
-        CustomerUser newCustomer = new CustomerUser(customer.getName(), customer.getLastName(), customer.getEmail(), customer.getPassword(), customer.getPhone(), customer.getAddress());
-        customerRepository.save(newCustomer);
-        communicationService.sendWelcomeEmail(newCustomer.getEmail(), String.format("Welcome to our tasty world, %s", newCustomer.getName()), newCustomer.getName());
-
-        return newCustomer;
-    }
 
     public Iterable<CustomerUser> getAllCustomers() {
         return customerRepository.findAll();

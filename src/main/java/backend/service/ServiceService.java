@@ -43,7 +43,7 @@ public class ServiceService {
         if (!service.isValidService())
             throw new InvalidServiceException();
 
-        viendasYaFacade.addMenuToService(service, menuRequest.getName(), menuRequest.getDescription(), menuRequest.getCategory(), menuRequest.getDeliveryFee(), menuRequest.getStartDate(), menuRequest.getEndDate(), menuRequest.getDeliveryHours(), menuRequest.getAverageDeliveryMinutes(), menuRequest.getPrice(), menuRequest.getMinQuantity(), menuRequest.getMinQuantityPrice(), menuRequest.getMaxDailySales());
+        viendasYaFacade.addMenuToService(service, menuRequest.getName(), menuRequest.getDescription(), menuRequest.getImageurl(), menuRequest.getCategory(), menuRequest.getDeliveryFee(), menuRequest.getStartDate(), menuRequest.getEndDate(), menuRequest.getDeliveryHours(), menuRequest.getAverageDeliveryMinutes(), menuRequest.getPrice(), menuRequest.getMinQuantity(), menuRequest.getMinQuantityPrice(), menuRequest.getMaxDailySales());
         serviceRepository.save(service);
     }
 

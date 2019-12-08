@@ -4,6 +4,21 @@
       "name": "spring.scheduler.cronjobtime",
       "type": "java.lang.String",
       "description": "Application properties for @Scheduled spring annotation."
+    },
+    {
+      "name": "app.auth.tokenSecret",
+      "type": "java.lang.String",
+      "description": "Token secret for App."
+    },
+    {
+      "name": "app.auth.tokenExpirationMsec",
+      "type": "java.lang.String",
+      "description": "Token secret expiration."
+    },
+    {
+      "name": "app.oauth2.authorizedRedirectUris",
+      "type": "java.lang.String",
+      "description": "Authorized redirect URI's."
     }
   ]
 }

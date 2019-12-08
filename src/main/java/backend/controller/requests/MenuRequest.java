@@ -15,6 +15,7 @@ public class MenuRequest {
     String name;
     @NotEmpty(message = "Describe what your menu is about ! ! !")
     String description;
+    String imageurl;
     @NotNull(message = "Select a Category for the service.")
     Category category;
     @NotNull(message = "How much does the delivery cost?")
@@ -146,5 +147,13 @@ public class MenuRequest {
 
     public void setMaxDailySales(int maxDailySales) {
         this.maxDailySales = maxDailySales;
+    }
+
+    public String getImageurl() {
+        return imageurl;
+    }
+
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
     }
 }

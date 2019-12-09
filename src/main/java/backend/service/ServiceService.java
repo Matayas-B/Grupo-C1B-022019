@@ -56,6 +56,7 @@ public class ServiceService {
 
         ModelMapper mapper = new ModelMapper();
         Menu menuToUpdate = mapper.map(menuRequest, Menu.class);
+        menuToUpdate.setValidMenu(true);
         menuRepository.save(menuToUpdate);
     }
 

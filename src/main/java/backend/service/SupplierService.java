@@ -2,10 +2,7 @@ package backend.service;
 
 import backend.controller.requests.ServiceRequest;
 import backend.model.*;
-import backend.model.exception.InsufficientFundsException;
-import backend.model.exception.PurchaseNotFoundException;
-import backend.model.exception.ServiceNotFoundException;
-import backend.model.exception.UserNotFoundException;
+import backend.model.exception.*;
 import backend.repository.IPurchaseRepository;
 import backend.repository.IServiceRepository;
 import backend.repository.ISupplierRepository;
@@ -13,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -44,6 +42,10 @@ public class SupplierService {
     }
 
     public void addService(ServiceRequest serviceRequest) throws Exception {
+        Optional<backend.model.Service> service = serviceRepository.findByServiceName(serviceRequest.getServiceName());
+        if (service.isPresent())
+            throw new ExistingServiceException(serviceRequest.getServiceName());
+
         SupplierUser supplier = supplierRepository.findById(serviceRequest.getSupplierId()).orElseThrow(() -> new UserNotFoundException(serviceRequest.getSupplierId()));
         viendasYaFacade.addServiceToSupplier(supplier, serviceRequest.getServiceName(), serviceRequest.getIcon(), serviceRequest.getAddressTown(), serviceRequest.getAddressLocation(), serviceRequest.getDescription(), serviceRequest.getEmail(), serviceRequest.getPhoneNumber(), serviceRequest.getOfficeDays(), serviceRequest.getOfficeHours(), serviceRequest.getDeliveryDistance());
         supplierRepository.save(supplier);

@@ -17,7 +17,7 @@
     },
     {
       "name": "app.oauth2.authorizedRedirectUris",
-      "type": "java.lang.String",
+      "type": "java.util.Set<java.lang.String>",
       "description": "Authorized redirect URI's."
     }
   ]

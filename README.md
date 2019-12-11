@@ -12,4 +12,4 @@ Commits structure should be: "(Type) - (Descriptive commit message)."
 
 [![Build Status](https://travis-ci.org/Matayas-B/Grupo-C1B-022019.svg?branch=master)](https://travis-ci.org/Matayas-B/Grupo-C1B-022019)
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://subasteando-c1b.herokuapp.com/)
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://viendasya-c1b-backend.herokuapp.com/)

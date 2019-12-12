@@ -25,3 +25,13 @@
 1. Authorization and Authentication.
 2. Run job for sending all daily purchases for Customers.
 3. Run job for sending all daily sales for Suppliers.
+
+***** Version 3.1 *****
+
+# Included features:
+1. Authorization and Authentication.
+2. Run job for sending all daily purchases for Customers.
+3. Run job for sending all daily sales for Suppliers.
+
+# Missing stuff:
+----- No missing stuff, hooray! -----

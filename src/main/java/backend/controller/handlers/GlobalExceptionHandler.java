@@ -3,11 +3,11 @@ package backend.controller.handlers;
 import backend.model.exception.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -68,6 +68,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = InsufficientFundsException.class)
     public ResponseEntity<Object> insufficientFundsException(InsufficientFundsException exception) {
+        logger.error(exception.getMessage());
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(value = AuthenticationException.class)
+    public ResponseEntity<Object> exception(AuthenticationException exception) {
         logger.error(exception.getMessage());
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
